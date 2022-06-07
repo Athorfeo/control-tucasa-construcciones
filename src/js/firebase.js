@@ -1,4 +1,4 @@
-import { firebaseConfig } from "./config.js";
+import { firebaseConfig } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-analytics.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut as signOutFirebase } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js';
