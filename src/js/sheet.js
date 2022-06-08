@@ -54,13 +54,9 @@ function fetchRows(sheet, successCallback, failedCallback){
   );
 }
 
-function addRow(sheet, row, successCallback, failedCallback){
-  var values = [
-    row
-  ];
-
+function addRows(sheet, rows, successCallback, failedCallback){
   var body = {
-    values: values
+    values: rows
   };
 
   gapi.client.sheets.spreadsheets.values.append({
@@ -71,9 +67,53 @@ function addRow(sheet, row, successCallback, failedCallback){
   })
   .then(
     function(response) {
-      updateAutoIncrementId(sheet, row[0]);
+      updateAutoIncrementId(sheet, rows[0][0]);
       successCallback(response);
     },
+    failedCallback
+  );
+}
+
+async function updateRow(sheet, indexRow, row, successCallback, failedCallback){
+  var values = [
+    row
+  ];
+
+  var body = {
+    values: values
+  };
+
+  gapi.client.sheets.spreadsheets.values.update({
+    spreadsheetId: googleConfig.database,
+    range: sheet.name + '!' + sheet.range.start + indexRow + ":" + sheet.range.end + indexRow,
+    valueInputOption: 'USER_ENTERED',
+    resource: body
+  })
+  .then(
+    successCallback,
+    failedCallback
+  );
+}
+
+async function updateRows(sheet, indexStart, indexEnd, rows, successCallback, failedCallback) {
+  var data = [];
+
+  data.push({
+    range: sheet.range.start + indexStart + ":" + sheet.range.end + indexEnd,
+    values: rows
+  });
+
+  var body = {
+    data: data,
+    valueInputOption: 'USER_ENTERED'
+  };
+
+  gapi.client.sheets.spreadsheets.values.batchUpdate({
+    spreadsheetId: googleConfig.database,
+    resource: body
+  })
+  .then(
+    successCallback,
     failedCallback
   );
 }

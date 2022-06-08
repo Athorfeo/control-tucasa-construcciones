@@ -47,9 +47,11 @@
   </head>
   <body>
     <div id="root_view">
-      <div id="content-view" class="container">
+      <div id="content-view" class="container d-flex flex-column">
         <button class="btn btn-primary" onclick="fetchProjects()">Fetch Sheet</button>
         <button class="btn btn-primary" onclick="addProject()">Add Row</button>
+        <button class="btn btn-primary" onclick="updateProject()">Update Row</button>
+        <button class="btn btn-primary" onclick="updateRowsProject()">Update Multiple Rows</button>
         <button class="btn btn-primary" onclick="requestAccessToken()">Request Access Token</button>
       </div>
     </div>
