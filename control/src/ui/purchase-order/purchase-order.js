@@ -37,7 +37,6 @@ function PurchaseOrder() {
       products: products
     };
 
-    console.log(products);
     console.log(JSON.stringify(data));
   };
 
@@ -73,19 +72,19 @@ function PurchaseOrder() {
 
                 <div className="mb-3">
                   <label for="inputProductName" className="form-label">Nombre del producto</label>
-                  <input type="text" className="form-control" id="inputProductName" aria-describedby="productNameHelp" value={productName} onChange={(e) => setProductName(e.target.value)}></input>
+                  <input type="text" className="form-control" id="inputProductName" aria-describedby="productNameHelp" value={productName} onChange={(e) => setProductName(e.target.value)} required></input>
                   <div id="productNameHelp" className="form-text">Coloca el nombre del producto a agregar.</div>
                 </div>
 
                 <div className="mb-3">
                   <label for="inputProductQuantity" className="form-label">Cantidad</label>
-                  <input type="number" className="form-control" id="inputProductQuantity" aria-describedby="productQuantityHelp" value={quantity} onChange={(e) => setQuantity(e.target.value)}></input>
+                  <input type="number" min="1" max="9999" className="form-control" id="inputProductQuantity" aria-describedby="productQuantityHelp" value={quantity} onChange={(e) => setQuantity(e.target.value)} required></input>
                   <div id="productQuantityHelp" className="form-text">Coloca la cantidad del producto a agregar.</div>
                 </div>
 
                 <div className="mb-3">
                   <label for="labelChapter" className="form-label">Capitulo</label>
-                    <select className="form-select" aria-label="Default select example" id="inputChapter" value={chapter} onChange={(e) => setChapter(e.target.value)}>
+                    <select className="form-select" aria-label="Default select example" id="inputChapter" value={chapter} onChange={(e) => setChapter(e.target.value)} required>
                       <option selected>Abrir para seleccionar el capitulo</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
@@ -96,7 +95,7 @@ function PurchaseOrder() {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Agregar</button>
+                <button type="submit" className="btn btn-primary" >Agregar</button>
               </div>
             </div>
           </div>
@@ -115,12 +114,12 @@ function PurchaseOrder() {
 
                 <div className="mb-3 mt-3">
                   <label for="labelDescription" className="form-label">Descripcion</label>
-                  <textarea className="form-control" id="inputDescription" rows="3" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                  <textarea className="form-control" id="inputDescription" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
                 </div>
 
                 <div className="mb-3">
                   <label for="labelSupplier" className="form-label">Proveedor</label>
-                    <select className="form-select" aria-label="Default select example" id="inputSuplier" value={supplier} onChange={(e) => setSupplier(e.target.value)}>
+                    <select className="form-select" aria-label="Default select example" id="inputSuplier" value={supplier} onChange={(e) => setSupplier(e.target.value)} required>
                       <option selected>Abrir para seleccionar el proveedor</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
