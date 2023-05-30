@@ -7,7 +7,8 @@ import './index.css';
 import App from './app/App';
 import Login from './ui/login/login';
 import Dashboard from './ui/dashboard/dashboard';
-import PurchaseOrder from './ui/purchase-order/purchase-order';
+import DashboardPurchaseOrder from './ui/purchase-order/dashboard-purchase-order';
+import DetailPurchaseOrder from './ui/purchase-order/detail/detail-purchase-order';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,11 @@ const router = createBrowserRouter([
       },
       {
         path: "purchase-order",
-        element: <PurchaseOrder />
+        element: <DashboardPurchaseOrder />
+      },
+      {
+        path: "/purchase-order/detail",
+        element: <DetailPurchaseOrder />
       }
     ],
   },

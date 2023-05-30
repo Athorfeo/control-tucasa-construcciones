@@ -33,8 +33,8 @@ function Navbar() {
 
               <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
                 <li className="nav-item">
-                  <Link to="/dashboard" className='text-decoration-none text-reset'>
-                    <a className="nav-link active" aria-current="page">Inicio</a>
+                  <Link to="/dashboard" className='text-decoration-none text-rese nav-link activet' aria-current="page">
+                    Inicio
                   </Link>
                 </li>
               </ul>

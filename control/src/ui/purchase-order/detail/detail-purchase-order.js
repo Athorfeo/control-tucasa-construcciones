@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import Navbar from '../../components/navbar';
-import Navigator from '../../components/navigator';
+import React, { useState } from 'react';
+import Navbar from '../../../components/navbar';
+import Navigator from '../../../components/navigator';
 
-function PurchaseOrder() {
+function DetailPurchaseOrder() {
   //Form Purchase Order
   const [description, setDescription] = useState('');
   const [supplier, setSupplier] = useState('');
@@ -21,19 +21,19 @@ function PurchaseOrder() {
   const productView = products.map((item, index) =>
     <tr key={index + 1}>
       <th scope="row">{index + 1}</th>
-      <td>{item[0]}</td>
-      <td>{item[1]}</td>
-      <td>{item[2]}</td>
+      <td>{item.productName}</td>
+      <td>{item.productQuantity}</td>
+      <td>{item.chapterName}</td>
       <td><button className="ms-2 btn btn-primary" onClick={(e) => removeProduct(index)}>Eliminar</button></td>
-  </tr>
+    </tr>
   );
 
   const handlePurchaseOrderSubmit = (e) => {
     e.preventDefault();
 
     const data = {
-      description: description,
-      supplier: supplier,
+      observations: description,
+      supplierName: supplier,
       products: products
     };
 
@@ -48,7 +48,13 @@ function PurchaseOrder() {
   const handleAddProductSubmit = (e) => {
     e.preventDefault();
 
-    products.push([productName, quantity, chapter]);
+    const row = {
+      productName: productName,
+      productQuantity: quantity,
+      chapterName: chapter
+    }
+
+    products.push(row);
     setProducts(products);
 
     setProductName('');
@@ -84,12 +90,12 @@ function PurchaseOrder() {
 
                 <div className="mb-3">
                   <label for="labelChapter" className="form-label">Capitulo</label>
-                    <select className="form-select" aria-label="Default select example" id="inputChapter" value={chapter} onChange={(e) => setChapter(e.target.value)} required>
-                      <option selected>Abrir para seleccionar el capitulo</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
+                  <select className="form-select" aria-label="Default select example" id="inputChapter" value={chapter} onChange={(e) => setChapter(e.target.value)} required>
+                    <option selected>Abrir para seleccionar el capitulo</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
                 </div>
 
               </div>
@@ -105,33 +111,35 @@ function PurchaseOrder() {
       <div className="container">
         <div className="row justify-content-md-center">
           <div className="col-sm-8">
-            <Navigator navigateTo="/dashboard"/>
+            <Navigator navigateTo="/purchase-order" />
             <div className='d-flex flex-column bg-body-secondary rounded p-4 mt-4'>
               <form onSubmit={handlePurchaseOrderSubmit}>
-                <div className='fs-5'>Orden de compra</div>
+                <div className='bg-body-tertiary p-3 mb-3'>
+                  <div className='fs-5'>Nueva | Orden de compra</div>
+                </div>
+                
+                <p>Modulo dedicado a la creacion o modificaciones de Ordenes de Compra. Cada orden de compra esta compuesta por: Observaciones, Proveedor y los Productos a comprar.</p>
+                <p>Verifica que todos los campos esten correctos antes de enviar la Orden. Recuerda que la Orden de compra se puede modificar hasta que se apruebe.</p>
+                
                 <hr></hr>
-                Rellena todos los campos antes de enviar la Orden de compra
-
                 <div className="mb-3 mt-3">
-                  <label for="labelDescription" className="form-label">Descripcion</label>
+                  <label for="labelDescription" className="form-label">Observaciones</label>
                   <textarea className="form-control" id="inputDescription" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
                 </div>
 
                 <div className="mb-3">
                   <label for="labelSupplier" className="form-label">Proveedor</label>
-                    <select className="form-select" aria-label="Default select example" id="inputSuplier" value={supplier} onChange={(e) => setSupplier(e.target.value)} required>
-                      <option selected>Abrir para seleccionar el proveedor</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
+                  <select className="form-select" aria-label="Default select example" id="inputSuplier" value={supplier} onChange={(e) => setSupplier(e.target.value)} required>
+                    <option selected>Abrir para seleccionar el proveedor</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
                 </div>
 
-                <div className='container bg-body-tertiary p-3 mt-5'>
-                  <div className='fs-5'>Productos</div>
-                </div>
+                <div className='fs-6 fw-bold mt-4'>Productos</div>
 
-                <button type="button" className="w-100 btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                <button type="button" className="w-100 btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
                   Agregar producto
                 </button>
 
@@ -150,7 +158,7 @@ function PurchaseOrder() {
                   </tbody>
                 </table>
 
-                <button type="submit" className="btn btn-primary mt-3">Enviar factura</button>
+                <button type="submit" className="w-100 btn btn-light mt-3">Enviar factura</button>
               </form>
             </div>
           </div>
@@ -160,4 +168,4 @@ function PurchaseOrder() {
   );
 }
 
-export default PurchaseOrder;
+export default DetailPurchaseOrder;
