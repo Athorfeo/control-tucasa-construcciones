@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Navbar from '../../../components/navbar';
 import Navigator from '../../../components/navigator';
+import { useParams } from 'react-router-dom';
 
 function DetailPurchaseOrder() {
+  let { start, end } = useParams();
   //Form Purchase Order
   const [description, setDescription] = useState('');
   const [supplier, setSupplier] = useState('');
-
   const [products, setProducts] = useState([]);
 
   const removeProduct = (index) => {
@@ -117,7 +118,6 @@ function DetailPurchaseOrder() {
                 <div className='bg-body-tertiary p-3 mb-3'>
                   <div className='fs-5'>Nueva | Orden de compra</div>
                 </div>
-                
                 <p>Modulo dedicado a la creacion o modificaciones de Ordenes de Compra. Cada orden de compra esta compuesta por: Observaciones, Proveedor y los Productos a comprar.</p>
                 <p>Verifica que todos los campos esten correctos antes de enviar la Orden. Recuerda que la Orden de compra se puede modificar hasta que se apruebe.</p>
                 

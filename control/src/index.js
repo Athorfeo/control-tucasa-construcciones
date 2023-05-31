@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <DashboardPurchaseOrder />
       },
       {
-        path: "/purchase-order/detail",
+        path: "/purchase-order/detail/start/:start/end/:end",
         element: <DetailPurchaseOrder />
       }
     ],

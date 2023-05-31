@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar';
 import Navigator from '../../components/navigator';
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 
 function DashboardPurchaseOrder() {
+  const offset = 3;
   const [pendingPurchases, setPendingPurchases] = useState([]);
   const [closedPurchases, seClosedPurchases] = useState([]);
 
-  const purchaseToPurchaseView = (item, isPending) => {
+  const purchaseToPurchaseView = (item, isPending, startPosition, endPosition) => {
     var view = null;
 
     if (isPending) {
@@ -16,7 +17,11 @@ function DashboardPurchaseOrder() {
           <th scope="row">{item[0]}</th>
           <td>{item[3]}</td>
           <td>{item[2]}</td>
-          <td><button className="ms-2 btn btn-dark">Modificar</button></td>
+          <td>
+            <Link className="d-grid gap-2 text-light text-decoration-none" to={"/purchase-order/detail/start/" + startPosition + "/end/" + endPosition}>
+              <button className="ms-2 btn btn-dark">Modificar</button>
+            </Link>
+            </td>
         </tr>
       );
     } else {
@@ -56,10 +61,10 @@ function DashboardPurchaseOrder() {
           endIndex = index - 1;
 
           if (parseInt(item[7]) === 0) {
-            _pendingPurchases.push(purchaseToPurchaseView(item, true));
+            _pendingPurchases.push(purchaseToPurchaseView(item, true, startIndex + offset, endIndex + offset));
             setPendingPurchases(_pendingPurchases);
           } else {
-            _closedPurchases.push(purchaseToPurchaseView(item, false));
+            _closedPurchases.push(purchaseToPurchaseView(item, false, startIndex + offset, endIndex + offset));
             seClosedPurchases(_closedPurchases);
           }
 
