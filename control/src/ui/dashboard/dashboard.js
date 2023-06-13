@@ -9,11 +9,11 @@ function Dashboard() {
     signOut(firebaseAuth).then(() => {
       console.log("SignOut success!");
     })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("SignOut failed!: [" + errorCode + "]:" + errorMessage);
-    });
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("SignOut failed!: [" + errorCode + "]:" + errorMessage);
+      });
   }
 
   return (
@@ -29,8 +29,11 @@ function Dashboard() {
             </div>
 
             <div className='d-flex flex-column p-3 border border-secondary rounded-3'>
-              Opciones
+              <div className='p-2'>
+                <div className='fs-5'>Proyectos</div>
+              </div>
               <hr></hr>
+
               <Link to="/purchase-order" className="text-decoration-none text-reset">
                 <div className='container-fluid p-3 d-flex flex-row align-items-center shadow-sm bg-body-tertiary'>
                   <div className='container-fluid p-0 d-flex flex-column'>
