@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { firebaseAuth } from '../../util/firebase/firebase-util';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js';
 import { Link } from "react-router-dom";
-import Navbar from '../../components/navbar';
+import Navbar from '../components/navbar';
 import { fetchUserById } from "../../network/user-api";
 import { fetchAllProjects } from "../../network/project-api";
 import { storageConfig, setJsonItem } from "../../data/storage-util";
@@ -77,19 +77,25 @@ function Dashboard() {
         </div>
       ) : (
         <div className='container d-flex flex-column'>
-            <div className='container border border-secondary rounded-3 mt-4 p-3'>
-              <div className='fs-4 mb-2'>Control | Tu Casa Construcciones</div>
-              <hr></hr>
-              Te damos la bienvenida al sistema de gestion.
-            </div>
-
-
-            <div className='container'>
-              <div className='fs-5 mt-4 text-uppercase'>Proyectos</div>
-              <p className='fw-light'>Presiona para ver las opciones del proyecto</p>
-            </div>
-            {projects}
+          <div className='container border border-secondary rounded-3 mt-4 p-3'>
+            <div className='fs-4 mb-2'>Control | Tu Casa Construcciones</div>
+            <hr></hr>
+            Te damos la bienvenida al sistema de gestion.
           </div>
+
+
+          <div className='container'>
+            <div className='fs-5 mt-4 text-uppercase'>Proyectos</div>
+            <p className='fw-light'>Presiona para ver las opciones del proyecto</p>
+          </div>
+          {projects.length > 0 ? (
+            projects
+          ) : (
+            <div className="container">
+              <i className="bi bi-exclamation-triangle-fill"></i> No se encontraron proyectos disponibles!
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

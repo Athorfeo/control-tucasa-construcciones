@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Navbar from '../../../components/navbar';
-import Navigator from '../../../components/navigator';
+import Navbar from '../../components/navbar';
+import Navigator from '../../components/navigator';
 import { useParams } from 'react-router-dom';
 
 function DetailPurchaseOrder() {

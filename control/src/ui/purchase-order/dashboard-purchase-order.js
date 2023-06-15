@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../../components/navbar';
-import Navigator from '../../components/navigator';
+import Navbar from '../components/navbar';
+import Navigator from '../components/navigator';
 import { Link  } from "react-router-dom";
 
 function DashboardPurchaseOrder() {

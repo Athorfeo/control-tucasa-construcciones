@@ -1,8 +1,8 @@
 import React from 'react';
-import { firebaseAuth } from '../util/firebase/firebase-util';
+import { firebaseAuth } from '../../util/firebase/firebase-util';
 import { signOut } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js';
 import { Link } from "react-router-dom";
-import logo from '../src/drawables/logo.svg';
+import logo from '../../resource/drawables/logo.svg';
 
 function Navbar() {
   function logout() {
