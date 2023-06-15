@@ -21,10 +21,10 @@ function Navbar() {
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
 
-            <a className="navbar-brand" href="#">
-              <img src={logo} width="200" height="80" className="d-inline-block align-top" alt="logo" />
-            </a>
-
+          <Link to="/dashboard" className='navbar-brand' aria-current="page">
+          <img src={logo} width="200" height="80" className="d-inline-block align-top" alt="logo" />
+          </Link>
+          
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
