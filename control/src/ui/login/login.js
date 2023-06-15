@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { firebaseAuth } from '../../util/firebase/firebase-util';
 import { signInWithEmailAndPassword, signOut as signOutFirebase  } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js';
 
@@ -13,7 +13,7 @@ function Login() {
 
   const login = async (email, password) => {
     signInWithEmailAndPassword(firebaseAuth, email, password)
-    .then((userCredential) => {
+    .then((_) => {
       console.log("SignIn success!");
     })
     .catch((error) => {

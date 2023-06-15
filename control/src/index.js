@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 
 import './index.css';
-import App from './app/App';
+import App from './ui/App';
 import Login from './ui/login/login';
 import Dashboard from './ui/dashboard/dashboard';
 import DashboardPurchaseOrder from './ui/purchase-order/dashboard-purchase-order';
