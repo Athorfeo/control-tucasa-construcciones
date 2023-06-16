@@ -1,5 +1,6 @@
 export const storageConfig = {
   userDataKey: "USER_DATA_KEY",
+  selectedProjectDataKey: "SELECTED_PROJECT_DATA_KEY",
 };
 
 export function setJsonItem(key, json) {
@@ -8,5 +9,9 @@ export function setJsonItem(key, json) {
 
 export function getJsonItem(key) {
   const json = sessionStorage.getItem(key);
-  return JSON.parse(json)
+  if (json == null) {
+    return json;
+  } else {
+    return JSON.parse(json);
+  }
 }
