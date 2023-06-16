@@ -39,7 +39,7 @@ function DashboardFeature() {
       ) : (
         <div className='container d-flex flex-column'>
 
-          <div className='container mt-4 p-3'>
+          <div className='container mt-4'>
             <div className='fs-4 mb-2'>Opciones</div>
             <hr></hr>
             Funcionalides disponibles
