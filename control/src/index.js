@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         element: <Dashboard />
       },
       {
-        path: "/purchase/order",
+        path: "/purchase/order/:spreadsheetId",
         element: <DashboardPurchaseOrder />
       },
       {

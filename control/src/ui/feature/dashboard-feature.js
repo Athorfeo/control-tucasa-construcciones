@@ -6,23 +6,58 @@ import { isSessionReady } from "../../util/session-util";
 import { useNavigate } from "react-router-dom";
 import ItemDashboardFeature from "./item-dashboard-feature";
 import LabelSectionDashboardFeature from "./label-section-dashboard-feature copy";
+import { storageConfig, getJsonItem } from "../../util/storage-util";
 
 function DashboardFeature() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedProjectName, setSelectedProjectName] = useState("");
+
+  const [purchasesSection, setPuchasesSection] = useState([]);
+  const [servicesSection, setServicesSection] = useState([]);
+  const [clientsSection, setClientsSection] = useState([]);
+  const [partnersSection, setPartnersSection] = useState([]);
+  const [statementsSection, setStatementsSection] = useState([]);
+  const [suppliersSection, setSuppliersSection] = useState([]);
+  const [aftersalesSection, setAftersalesSection] = useState([]);
 
   useEffect(() => {
     const task = async () => {
       setIsLoading(true);
-      if(isSessionReady()) {
+      if (isSessionReady()) {
+        const userSession = getJsonItem(storageConfig.userDataKey);
+        const selectedProject = getJsonItem(storageConfig.selectedProjectDataKey);
 
+        loadPurchaseFeatures(userSession, selectedProject);
       }
       setIsLoading(false);
     };
 
     task();
   }, []);
+
+  function loadPurchaseFeatures(userSession, selectedProject) {
+    console.log(userSession);
+    const features = [];
+    features.push(<LabelSectionDashboardFeature title='Compras' key={features.length + 1} />);
+
+    const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchaseOrder;
+
+    switch (userSession.rol) {
+      case '0':
+        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={features.length + 1} />);
+        break;
+      case '1':
+        features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' key={features.length + 1} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Facturas' description='Esta es una descripcion' key={features.length + 1} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' key={features.length + 1} />);
+        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={features.length + 1} />);
+        break;
+      default:
+        console.log("No default handle!");
+    }
+
+    setPuchasesSection(features);
+  }
 
   return (
     <div>
@@ -43,12 +78,7 @@ function DashboardFeature() {
             Funcionalides disponibles
           </div>
 
-          
-          <LabelSectionDashboardFeature title='Compras' />
-          <ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/dashboard' title='Facturas' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/purchase/order' title='Orden de compra' description='Esta es una descripcion' />
+          {purchasesSection}
 
           <LabelSectionDashboardFeature title='Servicios' />
           <ItemDashboardFeature route='/dashboard' title='Actas de avance de obra' description='Esta es una descripcion' />
