@@ -1,4 +1,4 @@
-import { networkConfig, fetchExecutor } from "./network-util";
+import { networkConfig, fetchExecutor } from "../util/network-util";
 
 export async function fetchAllProjects() {
   const url = networkConfig.url + networkConfig.project;

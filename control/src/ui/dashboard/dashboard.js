@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from '../components/navbar';
 import { fetchUserById } from "../../network/user-api";
 import { fetchAllProjects } from "../../network/project-api";
-import { storageConfig, setJsonItem } from "../../data/storage-util";
+import { storageConfig, setJsonItem } from "../../util/storage-util";
 import Loading from "../components/loading"
 import RetryAlert from "../components/retry-alert"
 import { Project } from "../../model/Project"
