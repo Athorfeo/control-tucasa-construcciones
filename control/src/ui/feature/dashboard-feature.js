@@ -28,6 +28,12 @@ function DashboardFeature() {
         const selectedProject = getJsonItem(storageConfig.selectedProjectDataKey);
 
         loadPurchaseFeatures(userSession, selectedProject);
+        loadServicesFeatures(userSession, selectedProject);
+        loadClientsFeatures(userSession, selectedProject);
+        loadPatnersFeatures(userSession, selectedProject);
+        loadStatementsFeatures(userSession, selectedProject);
+        loadSuppliersFeatures(userSession, selectedProject);
+        loadAftersalesFeatures(userSession, selectedProject);
       }
       setIsLoading(false);
     };
@@ -38,25 +44,146 @@ function DashboardFeature() {
   function loadPurchaseFeatures(userSession, selectedProject) {
     console.log(userSession);
     const features = [];
-    features.push(<LabelSectionDashboardFeature title='Compras' key={features.length + 1} />);
+    const titleKey = 'purchases';
+    features.push(<LabelSectionDashboardFeature title='Compras' key={titleKey + (features.length + 1)} />);
 
     const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchaseOrder;
 
     switch (userSession.rol) {
       case '0':
-        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={features.length + 1} />);
+        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
         break;
       case '1':
-        features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' key={features.length + 1} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Facturas' description='Esta es una descripcion' key={features.length + 1} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' key={features.length + 1} />);
-        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={features.length + 1} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}/>);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Facturas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}/>);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion'isEnable={false}  key={titleKey + (features.length + 1)}/>);
+        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)}/>);
         break;
       default:
         console.log("No default handle!");
     }
 
     setPuchasesSection(features);
+  }
+
+  function loadServicesFeatures(userSession, selectedProject) {
+    const features = [];
+    const titleKey = 'services';
+
+    features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)}/>);
+
+    switch (userSession.rol) {
+      case '0':
+        features.push(<ItemDashboardFeature route='/dashboard' title='Actas de avance de obra' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}/>);
+        break;
+      case '1':
+        features.push(<ItemDashboardFeature route='/dashboard' title='Actas de avance de obra' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Pagos a contratistas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+        break;
+      default:
+        console.log("No default handle!");
+    }
+
+    setServicesSection(features);
+  }
+
+  function loadClientsFeatures(userSession, selectedProject) {
+    const features = [];
+    const titleKey = 'clients';
+
+    switch (userSession.rol) {
+      case '0':
+        console.log("No rol 0 handle!");
+        break;
+      case '1':
+        features.push(<LabelSectionDashboardFeature title='Clientes' key={titleKey + (features.length + 1)} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Abonos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Clientes' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+        break;
+      default:
+        console.log("No default handle!");
+    }
+
+    setClientsSection(features);
+  }
+
+  function loadPatnersFeatures(userSession, selectedProject) {
+    const features = [];
+    const titleKey = 'patners';
+
+    switch (userSession.rol) {
+      case '0':
+        console.log("No rol 0 handle!");
+        break;
+      case '1':
+        features.push(<LabelSectionDashboardFeature title='Socios' key={titleKey + (features.length + 1)} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Aportes' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Socios' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Prestamos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+        break;
+      default:
+        console.log("No default handle!");
+    }
+
+    setPartnersSection(features);
+  }
+
+  function loadStatementsFeatures(userSession, selectedProject) {
+    const features = [];
+    const titleKey = 'statements';
+
+    switch (userSession.rol) {
+      case '0':
+        console.log("No rol 0 handle!");
+        break;
+      case '1':
+        features.push(<LabelSectionDashboardFeature title='Extractos' key={titleKey + (features.length + 1)} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Extractos mensuales bancos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Movimientos semanales bancos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+        break;
+      default:
+        console.log("No default handle!");
+    }
+
+    setStatementsSection(features);
+  }
+
+  function loadSuppliersFeatures(userSession, selectedProject) {
+    const features = [];
+    const titleKey = 'suppliers';
+
+    switch (userSession.rol) {
+      case '0':
+        console.log("No rol 0 handle!");
+        break;
+      case '1':
+        features.push(<LabelSectionDashboardFeature title='Proveedores' key={titleKey + (features.length + 1)} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Dashboard Proveedores' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
+        break;
+      default:
+        console.log("No default handle!");
+    }
+
+    setSuppliersSection(features);
+  }
+
+  function loadAftersalesFeatures(userSession, selectedProject) {
+    const features = [];
+    const titleKey = 'suppliers';
+
+    switch (userSession.rol) {
+      case '0':
+        console.log("No rol 0 handle!");
+        break;
+      case '1':
+        features.push(<LabelSectionDashboardFeature title='Postventa' key={titleKey + (features.length + 1)} />);
+        features.push(<ItemDashboardFeature route='/dashboard' title='Dashboard Postventa' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
+        break;
+      default:
+        console.log("No default handle!");
+    }
+
+    setAftersalesSection(features);
   }
 
   return (
@@ -79,29 +206,12 @@ function DashboardFeature() {
           </div>
 
           {purchasesSection}
-
-          <LabelSectionDashboardFeature title='Servicios' />
-          <ItemDashboardFeature route='/dashboard' title='Actas de avance de obra' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/dashboard' title='Pagos a contratistas' description='Esta es una descripcion' />
-
-          <LabelSectionDashboardFeature title='Clientes' />
-          <ItemDashboardFeature route='/dashboard' title='Abonos' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/dashboard' title='Clientes' description='Esta es una descripcion' />
-
-          <LabelSectionDashboardFeature title='Socios' />
-          <ItemDashboardFeature route='/dashboard' title='Aportes' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/dashboard' title='Socios' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/dashboard' title='Prestamos' description='Esta es una descripcion' />
-
-          <LabelSectionDashboardFeature title='Extractos' />
-          <ItemDashboardFeature route='/dashboard' title='Extractos mensuales bancos' description='Esta es una descripcion' />
-          <ItemDashboardFeature route='/dashboard' title='Movimientos semanales bancos' description='Esta es una descripcion' />
-
-          <LabelSectionDashboardFeature title='Proveedores' />
-          <ItemDashboardFeature route='/dashboard' title='Dashboard Proveedores' description='Esta es una descripcion' />
-
-          <LabelSectionDashboardFeature title='Postventa' />
-          <ItemDashboardFeature route='/dashboard' title='Dashboard Proveedores' description='Esta es una descripcion' />
+          {servicesSection}
+          {clientsSection}
+          {statementsSection}
+          {partnersSection}
+          {suppliersSection}
+          {aftersalesSection}
         </div>
       )}
     </div>

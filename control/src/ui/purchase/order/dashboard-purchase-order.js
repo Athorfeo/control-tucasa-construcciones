@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar';
 import Navigator from '../../components/navigator';
-import { Link  } from "react-router-dom";
+import Loading from "../../components/loading";
+import { Link } from "react-router-dom";
 
 function DashboardPurchaseOrder() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const offset = 3;
   const [pendingPurchases, setPendingPurchases] = useState([]);
   const [closedPurchases, seClosedPurchases] = useState([]);
@@ -21,7 +24,7 @@ function DashboardPurchaseOrder() {
             <Link className="d-grid gap-2 text-light text-decoration-none" to={"/purchase-order/detail/start/" + startPosition + "/end/" + endPosition}>
               <button className="ms-2 btn btn-dark">Modificar</button>
             </Link>
-            </td>
+          </td>
         </tr>
       );
     } else {
@@ -53,7 +56,7 @@ function DashboardPurchaseOrder() {
       //Ojo que aca inicia
       var startIndex = 0;
       var endIndex = -1;
-      
+
 
       purchases.forEach((item, index) => {
         if (lastId !== item[0]) {
@@ -72,7 +75,7 @@ function DashboardPurchaseOrder() {
           console.log("endIndex: " + endIndex);
 
           console.log("A" + (startIndex + 3) + ":H" + (endIndex + 3));
-          
+
           startIndex = index;
         }
       });
@@ -88,62 +91,76 @@ function DashboardPurchaseOrder() {
     <div>
       <Navbar />
 
-      <div className="container">
-        <Navigator navigateTo="/dashboard" />
-        <div className='d-flex flex-column bg-body-secondary rounded p-4 mt-4'>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className='container d-flex flex-column'>
+          <Navigator navigateTo="/feature" />
 
-          <div className='bg-body-tertiary p-3'>
-            <div className='fs-5'>Dashboard | Orden de compra</div>
+          <div className='container mt-4'>
+            <div className='fs-4 mb-2'>Opciones</div>
+            <hr></hr>
+            Funcionalides disponibles
           </div>
-          <hr></hr>
 
-          <div>
-            <div className="row align-items-start">
-              <div className="col">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum magna, non scelerisque eros. Fusce blandit aliquam varius. Sed eu semper tortor. Nunc fermentum et augue tristique dictum.
+          <div className="container">
+            <Navigator navigateTo="/dashboard" />
+            <div className='d-flex flex-column bg-body-secondary rounded p-4 mt-4'>
+
+              <div className='bg-body-tertiary p-3'>
+                <div className='fs-5'>Dashboard | Orden de compra</div>
               </div>
-              <div className="col bg-body-tertiary p-4">
-                <div className='fs-6 fw-bold'>Opciones</div>
-                <hr></hr>
-                <Link className="d-grid gap-2 text-light text-decoration-none" to="/purchase-order/detail">
-                  <button className="btn btn-outline-light text-start">Nueva Orden de Compra</button>
-                </Link>
+              <hr></hr>
+
+              <div>
+                <div className="row align-items-start">
+                  <div className="col">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum magna, non scelerisque eros. Fusce blandit aliquam varius. Sed eu semper tortor. Nunc fermentum et augue tristique dictum.
+                  </div>
+                  <div className="col bg-body-tertiary p-4">
+                    <div className='fs-6 fw-bold'>Opciones</div>
+                    <hr></hr>
+                    <Link className="d-grid gap-2 text-light text-decoration-none" to="/purchase-order/detail">
+                      <button className="btn btn-outline-light text-start">Nueva Orden de Compra</button>
+                    </Link>
+                  </div>
+                </div>
               </div>
+
+              <div className='fs-6 fw-bold mt-4'>Pendientes</div>
+              <table className="table mt-2">
+                <caption>Lista de orden de compra pendientes</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Observaciones</th>
+                    <th scope="col">Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pendingPurchases}
+                </tbody>
+              </table>
+
+              <div className='fs-6 fw-bold mt-4'>Cerradas</div>
+              <table className="table mt-2">
+                <caption>Lista de orden de compra cerradas</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Observaciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {closedPurchases}
+                </tbody>
+              </table>
             </div>
           </div>
-
-          <div className='fs-6 fw-bold mt-4'>Pendientes</div>
-          <table className="table mt-2">
-            <caption>Lista de orden de compra pendientes</caption>
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Proveedor</th>
-                <th scope="col">Observaciones</th>
-                <th scope="col">Accion</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pendingPurchases}
-            </tbody>
-          </table>
-
-          <div className='fs-6 fw-bold mt-4'>Cerradas</div>
-          <table className="table mt-2">
-            <caption>Lista de orden de compra cerradas</caption>
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Proveedor</th>
-                <th scope="col">Observaciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {closedPurchases}
-            </tbody>
-          </table>
         </div>
-      </div>
+      )}
     </div>
   );
 }
