@@ -1,5 +1,10 @@
 export const networkConfig = {
   url: "http://127.0.0.1:5001/tcc-control-system/us-central1/api",
+  data: {
+    suppliers: {
+      getAll: "/data/suppliers",
+    }
+  },
   user: "/user",
   project: "/project",
   purchase: {
