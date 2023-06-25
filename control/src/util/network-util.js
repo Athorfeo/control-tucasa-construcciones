@@ -2,6 +2,10 @@ export const networkConfig = {
   url: "http://127.0.0.1:5001/tcc-control-system/us-central1/api",
   user: "/user",
   project: "/project",
+  purchase: {
+    order: "/purchase/order",
+    orderByRange: "/purchase/order/range",
+  }
 };
 
 export async function fetchExecutor(url, options) {

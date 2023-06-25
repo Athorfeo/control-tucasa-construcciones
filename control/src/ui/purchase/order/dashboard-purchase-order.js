@@ -2,90 +2,126 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar';
 import Navigator from '../../components/navigator';
 import Loading from "../../components/loading";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { fetchAllOrderPurchase } from "../../../network/purchase-api"
+import { storageConfig, getJsonItem } from "../../../util/storage-util"
+
 
 function DashboardPurchaseOrder() {
+  let { spreadsheetId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
-  const offset = 3;
+  const offset = 2;
   const [pendingPurchases, setPendingPurchases] = useState([]);
   const [closedPurchases, seClosedPurchases] = useState([]);
 
-  const purchaseToPurchaseView = (item, isPending, startPosition, endPosition) => {
-    var view = null;
+  useEffect(() => {
+    fetchOrderPurchase();
+  }, []);
 
-    if (isPending) {
-      view = (
-        <tr key={item[0]}>
-          <th scope="row">{item[0]}</th>
-          <td>{item[3]}</td>
-          <td>{item[2]}</td>
-          <td>
-            <Link className="d-grid gap-2 text-light text-decoration-none" to={"/purchase-order/detail/start/" + startPosition + "/end/" + endPosition}>
-              <button className="ms-2 btn btn-dark">Modificar</button>
-            </Link>
-          </td>
-        </tr>
-      );
-    } else {
-      view = (
-        <tr key={item[0]}>
-          <th scope="row">{item[0]}</th>
-          <td>{item[3]}</td>
-          <td>{item[2]}</td>
-        </tr>
-      );
+  async function fetchOrderPurchase() {
+    try {
+      setIsLoading(true);
+      await fetchAllOrderPurchase(spreadsheetId)
+        .then((response) => {
+          console.log(response);
+          handleOrderPurchaseResponse(response);
+        });
+    } catch (error) {
+      console.error("Error:", error);
     }
+  }
+
+  function handleOrderPurchaseResponse(response) {
+    const purchases = response.data.values;
+    const _purchases = [];
+    const _pendingPurchases = [];
+    const _closedPurchases = [];
+
+    var lastId = -1;
+    var startPositionInSheet = 1 + offset;
+    var endPositionInSheet = -1;
+
+    purchases.forEach((item, index) => {
+      if (lastId !== item[0]) {
+        lastId = item[0];
+        startPositionInSheet = (index + (1 + offset));
+
+        //Actualizar el endpositionInSheet del anterior item purchase ya que se encontro uno nuevo
+        if (_purchases.length > 0) {
+          _purchases[_purchases.length - 1].endPosition = endPositionInSheet;
+        }
+
+        _purchases.push({
+          item: item,
+          isPending: (parseInt(item[7]) === 0) ? true : false,
+          startPosition: startPositionInSheet,
+          endPosition: endPositionInSheet,
+        });
+      } else {
+        //Actualizo la ultima posicion
+        endPositionInSheet = (index + (1 + offset));
+      }
+
+      if (index + 1 === purchases.length) {
+        _purchases[_purchases.length - 1].endPosition = (index + (1 + offset));
+      }
+    });
+    console.log(_purchases);
+
+    const userSession = getJsonItem(storageConfig.userDataKey);
+    _purchases.forEach((item, index) => {
+      if (item.isPending) {
+        _pendingPurchases.push(purchaseToPurchaseView(item, parseInt(userSession.rol)));
+        setPendingPurchases(_pendingPurchases);
+      } else {
+        _closedPurchases.push(purchaseToPurchaseView(item, parseInt(userSession.rol)));
+        seClosedPurchases(_closedPurchases);
+      }
+    });
+
+    setIsLoading(false);
+  }
+
+  const purchaseToPurchaseView = (purchase, userRol) => {
+    var view = (
+      <div className='container-fluid d-flex flex-column p-3 mb-2 bg-body-tertiary' key={purchase.item[0]}>
+        <div className='container-fluid p-0 d-flex flex-column'>
+          <div className='d-flex flex-row'>
+            <div className='fw-bold'>#{purchase.item[0]}</div>
+            <div className='fw-light ms-2'>| {purchase.item[3]}</div>
+          </div>
+
+          <div className='fw-light mt-2'>{purchase.item[2]}</div>
+        </div>
+
+        <div className='d-flex flex-row justify-content-end border-top mt-3'>
+          {purchase.isPending ? (
+            <div>
+              {(userRol === 0 || userRol === 1) ? (
+                <Link className="gap-2 text-light text-decoration-none" to={'/purchase/order/' + spreadsheetId +'/detail' + '/start/' + purchase.startPosition + '/end/' + purchase.endPosition}>
+                  <button type="button" className="btn btn-outline-light mt-3">Modificar</button>
+                </Link>
+              ) : (null)}
+              {(userRol > 0) ? (
+                <Link className="gap-2 text-light text-decoration-none" to="/purchase-order/detail">
+                  <button type="button" className="btn btn-outline-light mt-3 ms-3">Aprobar</button>
+                </Link>
+              ) : (null)}
+            </div>
+          ) : (
+            <div>{(userRol > 0) ? (
+              <Link className="gap-2 text-light text-decoration-none" to="/purchase-order/detail">
+                <button type="button" className="btn btn-outline-light mt-3">Descargar PDF</button>
+              </Link>
+            ) : (null)}</div>
+          )}
+        </div>
+      </div>
+    );
 
     return view;
   }
-
-  useEffect(() => {
-    const task = async () => {
-      const rawData = '{"range":"Sheet1!A1:H1000","majorDimension":"ROWS","values":[["lastId","3"],["id","Fecha","Observaciones","Proveedor Nombre","Articulo","Cantidad","Capitulo","Aprobado"],["1","30/5/2023","None","Supplier Name","Product Name 1","10","PRELIMINAR","0"],["1","30/5/2023","None","Supplier Name","Product Name 2","5","EXCAVACIONES","0"],["2","30/5/2023","None","Supplier Name","Product Name 1","10","PRELIMINAR","1"],["2","30/5/2023","None","Supplier Name","Product Name 2","5","EXCAVACIONES","1"],["3","30/5/2023","None","Supplier Name","Product Name 1","10","PRELIMINAR","0"],["3","30/5/2023","None","Supplier Name","Product Name 2","5","EXCAVACIONES","0"]]}';
-      const data = JSON.parse(rawData);
-
-      const purchases = data.values;
-      delete purchases[0];
-      delete purchases[1];
-
-      const _pendingPurchases = [];
-      const _closedPurchases = [];
-
-      var lastId = -1;
-      //Ojo que aca inicia
-      var startIndex = 0;
-      var endIndex = -1;
-
-
-      purchases.forEach((item, index) => {
-        if (lastId !== item[0]) {
-          lastId = item[0];
-          endIndex = index - 1;
-
-          if (parseInt(item[7]) === 0) {
-            _pendingPurchases.push(purchaseToPurchaseView(item, true, startIndex + offset, endIndex + offset));
-            setPendingPurchases(_pendingPurchases);
-          } else {
-            _closedPurchases.push(purchaseToPurchaseView(item, false, startIndex + offset, endIndex + offset));
-            seClosedPurchases(_closedPurchases);
-          }
-
-          console.log("startIndex: " + startIndex);
-          console.log("endIndex: " + endIndex);
-
-          console.log("A" + (startIndex + 3) + ":H" + (endIndex + 3));
-
-          startIndex = index;
-        }
-      });
-
-      console.log(_pendingPurchases);
-      console.log(_closedPurchases);
-    };
-
-    task();
-  }, []);
 
   return (
     <div>
@@ -97,68 +133,29 @@ function DashboardPurchaseOrder() {
         <div className='container d-flex flex-column'>
           <Navigator navigateTo="/feature" />
 
-          <div className='container mt-4'>
-            <div className='fs-4 mb-2'>Opciones</div>
+          <div className='mt-4'>
+            <div className='fs-4 mb-2'>Orden de compra</div>
             <hr></hr>
-            Funcionalides disponibles
+            <p>Modulo que maneja las ordenes de compra.</p>
           </div>
 
-          <div className="container">
-            <Navigator navigateTo="/dashboard" />
-            <div className='d-flex flex-column bg-body-secondary rounded p-4 mt-4'>
-
-              <div className='bg-body-tertiary p-3'>
-                <div className='fs-5'>Dashboard | Orden de compra</div>
-              </div>
-              <hr></hr>
-
-              <div>
-                <div className="row align-items-start">
-                  <div className="col">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum magna, non scelerisque eros. Fusce blandit aliquam varius. Sed eu semper tortor. Nunc fermentum et augue tristique dictum.
-                  </div>
-                  <div className="col bg-body-tertiary p-4">
-                    <div className='fs-6 fw-bold'>Opciones</div>
-                    <hr></hr>
-                    <Link className="d-grid gap-2 text-light text-decoration-none" to="/purchase-order/detail">
-                      <button className="btn btn-outline-light text-start">Nueva Orden de Compra</button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              <div className='fs-6 fw-bold mt-4'>Pendientes</div>
-              <table className="table mt-2">
-                <caption>Lista de orden de compra pendientes</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Proveedor</th>
-                    <th scope="col">Observaciones</th>
-                    <th scope="col">Accion</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pendingPurchases}
-                </tbody>
-              </table>
-
-              <div className='fs-6 fw-bold mt-4'>Cerradas</div>
-              <table className="table mt-2">
-                <caption>Lista de orden de compra cerradas</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Proveedor</th>
-                    <th scope="col">Observaciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {closedPurchases}
-                </tbody>
-              </table>
-            </div>
+          <div className="d-flex flex-column bg-body-tertiary p-3">
+            <div className='fs-6 fw-bold'>Opciones</div>
+            <hr></hr>
+            <Link className="d-grid gap-2 text-light text-decoration-none" to={'/purchase/order/' + spreadsheetId + '/add'}>
+              <button className="btn btn-outline-light text-start">Nueva Orden de Compra</button>
+            </Link>
           </div>
+
+          <div className='mt-4'>
+            <p className='fw-light text-uppercase mt-4 mb-2'>Ordenes Pendientes</p>
+          </div>
+          {pendingPurchases}
+
+          <div className='mt-4'>
+            <p className='fw-light text-uppercase mt-4 mb-2'>Ordenes Aprobadas</p>
+          </div>
+          {closedPurchases}
         </div>
       )}
     </div>
