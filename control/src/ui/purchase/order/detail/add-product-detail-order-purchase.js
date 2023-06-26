@@ -3,28 +3,46 @@ import Navbar from '../../../components/navbar';
 import Navigator from '../../../components/navigator';
 import Loading from "../../../components/loading";
 import { useParams } from 'react-router-dom';
-import { fetchAllOrderPurchase } from "../../../../network/purchase-api"
-import { storageConfig, getJsonItem } from "../../../../util/storage-util"
+import { fetchAllOrderPurchase } from "../../../../network/purchase-api";
+import { storageConfig, getJsonItem } from "../../../../util/storage-util";
+import { staticData } from "../../../../data/static-data";
 
 function AddProductDetailOrderPurchase(props) {
   const [productName, setProductName] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [chapter, setChapter] = useState('');
+  const [positionSelectedChapter, setPositionSelectedChapter] = useState(0);
+
+  function chapterSelectView() {
+    const optionsView = staticData.chapters.map((item, index) => {
+      return (<option value={index} key={index}>{item.name}</option>);
+    });
+
+    return (
+      <div className="mb-4">
+        <label htmlFor="labelChapter" className="form-label">Capitulo</label>
+        <select className="form-select" aria-label="Default select example" id="inputChapter" value={positionSelectedChapter} onChange={(e) => setPositionSelectedChapter(e.target.value)} required>
+          {optionsView}
+        </select>
+      </div>
+    );
+  }
 
   const handleSubmitAddProduct = (e) => {
     e.preventDefault();
 
-    const row = {
+    const selectedChapter = staticData.chapters[positionSelectedChapter];
+
+    const product = {
       productName: productName,
       productQuantity: quantity,
-      chapterName: chapter
+      chapterName: selectedChapter.name
     }
 
-    props.callback(row);
+    props.callback(product);
 
     setProductName('');
     setQuantity('');
-    setChapter('');
+    setPositionSelectedChapter('');
   };
 
   useEffect(() => {
@@ -32,7 +50,11 @@ function AddProductDetailOrderPurchase(props) {
   }, []);
 
   const isSubmitButtonEnable = () => {
-    if (productName !== '' && quantity !== '' && chapter !== '') {
+    if (
+      productName !== '' && 
+      quantity !== '' &&
+      quantity.length <= 4 &&
+      positionSelectedChapter !== '') {
       return true;
     } else {
       return false;
@@ -63,25 +85,22 @@ function AddProductDetailOrderPurchase(props) {
                 <div id="productQuantityHelp" className="form-text">Coloca la cantidad del producto a agregar.</div>
               </div>
 
-              <div className="mb-3">
-                <label htmlFor="labelChapter" className="form-label">Capitulo</label>
-                <select className="form-select" aria-label="Default select example" id="inputChapter" value={chapter} onChange={(e) => setChapter(e.target.value)} required>
-                  <option>Abrir para seleccionar el capitulo</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>
+              {chapterSelectView()}
+
+              <hr></hr>
+              {isSubmitButtonEnable() ? (
+                <div className='d-grid gap-2'>
+                  <button type="submit" className="btn btn-light" data-bs-dismiss="modal" >Agregar</button>
+                </div>
+              ) : (
+                <div className='d-grid gap-2 text-center'>
+                  <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled>Agregar</button>
+                  Completa todos los campos del formulario
+                </div>
+              )}
             </form>
           </div>
 
-          <div className="modal-footer">
-            {isSubmitButtonEnable() ? (
-              <button type="button" className="btn btn-primary" data-bs-dismiss="modal" >Agregar</button>
-            ) : (
-              <button type="button" className="btn btn-primary" data-bs-dismiss="modal" disabled>Agregar</button>
-            )}
-          </div>
 
         </div>
       </div>
