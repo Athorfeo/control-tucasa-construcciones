@@ -68,9 +68,10 @@ function DashboardPurchaseOrder() {
       }
     });
     console.log(_purchases);
-
     const userSession = getJsonItem(storageConfig.userDataKey);
-    _purchases.forEach((item, index) => {
+    _purchases
+    .sort((a, b) => parseInt(b.item[0]) - parseInt(a.item[0]))
+    .forEach((item, index) => {
       if (item.isPending) {
         _pendingPurchases.push(purchaseToPurchaseView(item, parseInt(userSession.rol)));
         setPendingPurchases(_pendingPurchases);

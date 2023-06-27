@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../../../components/navbar';
 import Navigator from '../../../components/navigator';
 import Loading from "../../../components/loading";
+import NoCancelableModal from "../../../components/no-cancelable-modal";
+import ErrorModal from "../../../components/error-modal";
 import AddProductDetailOrderPurchase from "./add-product-detail-order-purchase";
-import { useParams } from 'react-router-dom';
-import { fetchAllOrderPurchase } from "../../../../network/purchase-api";
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchAllOrderPurchase, fetchAppendOrderPurchase } from "../../../../network/purchase-api";
 import { fetchAllSuppliers } from "../../../../network/data-api";
 import { storageConfig, getJsonItem } from "../../../../util/storage-util";
+import * as bootstrap from 'bootstrap';
 
 function DetailPurchaseOrder() {
+  const navigate = useNavigate();
   let { spreadsheetId, action, start, end } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
-  //Form Purchase Order
+  // Logic
   const [description, setDescription] = useState('');
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
@@ -32,7 +36,22 @@ function DetailPurchaseOrder() {
     setProducts(products.concat([product]));
   };
 
+
+  // UI
   const [titleAction, setTitleAction] = useState('');
+  const [errorModalData, setErrorModalData] = useState({
+    isShowing: false,
+    action: "",
+    error: "",
+    callbackButton: null
+  });
+  const [finishDialogData, setFinishDialogData] = useState({
+    isShowing: false,
+    title: "",
+    message: "",
+    labelButton: "",
+    callbackButton: null
+  });
 
   function productsView() {
     const productsView = products.map((item, index) =>
@@ -75,6 +94,7 @@ function DetailPurchaseOrder() {
     );
   }
 
+  // Services
   useEffect(() => {
     setIsLoading(true);
     switch (action) {
@@ -94,6 +114,36 @@ function DetailPurchaseOrder() {
     }
   }, []);
 
+  // Fetch Suppliers
+  async function fetchSuppliers() {
+    try {
+      await fetchAllSuppliers(spreadsheetId)
+        .then((response) => {
+          console.log(response);
+          handleSuppliersResponse(response);
+        });
+    } catch (error) {
+      console.error("Error:", error);
+
+      setErrorModalData({
+        isShowing: true,
+        action: "Suppliers",
+        error: error,
+        callbackButton: () => { navigate('/purchase/order/' + spreadsheetId); }
+      });
+
+      const modal = new bootstrap.Modal('#errorModal');
+      modal.show();
+      setIsLoading(false);
+    }
+  }
+
+  function handleSuppliersResponse(response) {
+    setSuppliers(response.data.suppliers);
+    setIsLoading(false);
+  }
+
+  // Fetch Order Purchase
   async function fetchOrderPurchase() {
     try {
       await fetchAllOrderPurchase(spreadsheetId)
@@ -110,38 +160,59 @@ function DetailPurchaseOrder() {
     setIsLoading(false);
   }
 
-  async function fetchSuppliers() {
+  // Append Order Purchase
+  async function appendOrderPurchase(orderPurchase) {
+    setIsLoading(true);
     try {
-      await fetchAllSuppliers(spreadsheetId)
-        .then((response) => {
-          console.log(response);
-          handleSuppliersResponse(response);
+      await fetchAppendOrderPurchase(spreadsheetId, orderPurchase)
+        .then((_) => {
+          handleAppendOrderPurchase();
         });
     } catch (error) {
       console.error("Error:", error);
+
+      setErrorModalData({
+        isShowing: true,
+        action: "Append",
+        error:  error,
+        callbackButton: null
+      });
+
+      const finishModal = new bootstrap.Modal('#errorModal');
+      finishModal.show();
+
+      setIsLoading(false);
     }
   }
 
-  function handleSuppliersResponse(response) {
-    setSuppliers(response.data.suppliers);
+  function handleAppendOrderPurchase() {
+    setFinishDialogData({
+      isShowing: true,
+      title: "Agregado correctamente",
+      message: "El orden de compra se ha agregado exitosamente. Pulse el boton para finalizar.",
+      labelButton: "Finalizar",
+      callbackButton: () => { navigate('/purchase/order/' + spreadsheetId); }
+    });
     setIsLoading(false);
+    const finishModal = new bootstrap.Modal('#noCancelableModal');
+    finishModal.show();
   }
 
+  // Form
   const handleSubmitOrderPurchase = (e) => {
     e.preventDefault();
 
     const selectedSupplier = suppliers[positionSelectedSupplier];
 
-    const data = {
+    const orderPurchase = {
       observations: description,
       supplierName: (selectedSupplier[1] + ' ' + selectedSupplier[2]),
       products: products
     };
 
-    console.log(JSON.stringify(data));
-
     switch (action) {
       case 'add':
+        appendOrderPurchase(orderPurchase);
         break;
       case 'update':
         break;
@@ -150,9 +221,12 @@ function DetailPurchaseOrder() {
       default:
     }
   };
+
   return (
     <div>
       <Navbar />
+      <ErrorModal id="errorModal" data={errorModalData} />
+      <NoCancelableModal id="noCancelableModal" data={finishDialogData} />
       <AddProductDetailOrderPurchase callback={onAddProduct} />
 
       {isLoading ? (

@@ -16,9 +16,14 @@ export const networkConfig = {
 export async function fetchExecutor(url, options) {
   return fetch(url, options)
     .then((response) => {
+      console.log(response);
       if (!response.ok) {
         throw new Error("Response not ok!");
       }
-      return response.json();
+      if (response.body != null) {
+        return response.json();
+      } else {
+        return null;
+      }
     });
 }
