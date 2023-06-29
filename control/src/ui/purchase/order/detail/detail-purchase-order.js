@@ -4,38 +4,27 @@ import Navigator from '../../../components/navigator';
 import Loading from "../../../components/loading";
 import NoCancelableModal from "../../../components/no-cancelable-modal";
 import ErrorModal from "../../../components/error-modal";
-import AddProductDetailOrderPurchase from "./add-product-detail-order-purchase";
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchAllOrderPurchase, fetchAppendOrderPurchase } from "../../../../network/purchase-api";
 import { fetchAllSuppliers } from "../../../../network/data-api";
 import { storageConfig, getJsonItem } from "../../../../util/storage-util";
 import * as bootstrap from 'bootstrap';
+import { useProductsOrderPurchase } from "./hook/useProductsOrderPurchase";
+import { useSuppliersOrderPurchase } from "./hook/useSuppliersOrderPurchase";
+import ViewProductsDetailOrderPurchase from "./view/ViewProductsDetailOrderPurchase";
+import ViewAddProductDetailOrderPurchase from "./view/ViewAddProductDetailOrderPurchase";
+import ViewSuppliersDetailOrderPurchase from "./view/ViewSuppliersDetailOrderPurchase";
 
 function DetailPurchaseOrder() {
-  const navigate = useNavigate();
   let { spreadsheetId, action, start, end } = useParams();
+  const navigate = useNavigate();
+  const { products, setProducts, onRemoveProduct, onAddProduct } = useProductsOrderPurchase();
+  const { suppliers, positionSelectedSupplier, setPositionSelectedSupplier, fetchSuppliers } = useSuppliersOrderPurchase(spreadsheetId);
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Logic
   const [description, setDescription] = useState('');
-  const [products, setProducts] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
-  const [positionSelectedSupplier, setPositionSelectedSupplier] = useState('0');
-
-  const removeProduct = (index) => {
-    const position = products.indexOf(index);
-
-    if (position > -1) {
-      products.splice(position, 1);
-    }
-
-    setProducts(products);
-  }
-
-  const onAddProduct = (product) => {
-    setProducts(products.concat([product]));
-  };
-
 
   // UI
   const [titleAction, setTitleAction] = useState('');
@@ -53,95 +42,30 @@ function DetailPurchaseOrder() {
     callbackButton: null
   });
 
-  function productsView() {
-    const productsView = products.map((item, index) =>
-      <div className='container-fluid d-flex flex-column p-3 mb-2 bg-secondary-subtle' key={index + 1}>
-        <div className='container-fluid p-0 d-flex flex-column'>
-          <div className='d-flex flex-row d-flex justify-content-between'>
-            <div className='fw-bold'>Nombre del producto</div>
-            <div className='fw-bold'>#{index + 1}</div>
-          </div>
-          <div className='fw-light'>{item.productName}</div>
-
-
-          <div className='fw-bold mt-2'>Cantidad</div>
-          <div className='fw-light'>{item.productQuantity}</div>
-
-          <div className='fw-bold mt-2'>Capitulo</div>
-          <div className='fw-light'>{item.chapterName}</div>
-        </div>
-
-        <div className='d-flex flex-row justify-content-end border-top mt-3'>
-          <button type="button" className="btn btn-outline-light mt-3" onClick={(e) => removeProduct(index)}><i className="bi bi-x-lg"></i> Eliminar</button>
-        </div>
-      </div>
-    );
-    return productsView;
-  }
-
-  function suppliersView() {
-    const optionsView = suppliers.map((item, index) => {
-      return (<option value={index} key={index}>{item[1] + ' ' + item[2] + ' - ' + item[4]}</option>);
-    });
-
-    return (
-      <div className="mb-3">
-        <label htmlFor="labelSupplier" className="form-label">Proveedor</label>
-        <select className="form-select" aria-label="Default select example" id="inputSuplier" value={positionSelectedSupplier} onChange={(e) => setPositionSelectedSupplier(e.target.value)} required>
-          {optionsView}
-        </select>
-      </div>
-    );
-  }
-
   // Services
   useEffect(() => {
-    setIsLoading(true);
-    switch (action) {
-      case 'add':
-        setTitleAction('Nueva');
-        fetchSuppliers();
-        break;
-      case 'update':
-        setTitleAction('Modificar');
-        fetchOrderPurchase();
-        break;
-      case 'approve':
-        setTitleAction('Aprobar');
-        fetchOrderPurchase();
-        break;
-      default:
-    }
-  }, []);
-
-  // Fetch Suppliers
-  async function fetchSuppliers() {
-    try {
-      await fetchAllSuppliers(spreadsheetId)
-        .then((response) => {
-          console.log(response);
-          handleSuppliersResponse(response);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-
-      setErrorModalData({
-        isShowing: true,
-        action: "Suppliers",
-        error: error,
-        callbackButton: () => { navigate('/purchase/order/' + spreadsheetId); }
-      });
-
-      const modal = new bootstrap.Modal('#errorModal');
-      modal.show();
+    const task = async () => {
+      setIsLoading(true);
+      switch (action) {
+        case 'add':
+          setTitleAction('Nueva');
+          await fetchSuppliers();
+          break;
+        case 'update':
+          setTitleAction('Modificar');
+          fetchOrderPurchase();
+          break;
+        case 'approve':
+          setTitleAction('Aprobar');
+          fetchOrderPurchase();
+          break;
+        default:
+      }
       setIsLoading(false);
     }
-  }
 
-  function handleSuppliersResponse(response) {
-    setSuppliers(response.data.suppliers);
-    setIsLoading(false);
-  }
+    task();
+  }, []);
 
   // Fetch Order Purchase
   async function fetchOrderPurchase() {
@@ -174,7 +98,7 @@ function DetailPurchaseOrder() {
       setErrorModalData({
         isShowing: true,
         action: "Append",
-        error:  error,
+        error: error,
         callbackButton: null
       });
 
@@ -227,7 +151,7 @@ function DetailPurchaseOrder() {
       <Navbar />
       <ErrorModal id="errorModal" data={errorModalData} />
       <NoCancelableModal id="noCancelableModal" data={finishDialogData} />
-      <AddProductDetailOrderPurchase callback={onAddProduct} />
+      <ViewAddProductDetailOrderPurchase onAddProduct={onAddProduct} />
 
       {isLoading ? (
         <Loading />
@@ -251,17 +175,15 @@ function DetailPurchaseOrder() {
                   <textarea className="form-control" id="inputDescription" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
                 </div>
 
-                {suppliersView()}
+                <ViewSuppliersDetailOrderPurchase suppliers={suppliers} positionSelectedSupplier={positionSelectedSupplier} setPositionSelectedSupplier={setPositionSelectedSupplier} />
               </div>
 
-              <p className='mt-2 mb-2'>Productos</p>
+              <div className='d-flex flex-column'>
+                <p className='mt-2 mb-2'>Productos</p>
 
-              <button type="button" className="btn btn-outline-light mb-4 mt-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Agregar Producto</button>
-              {products.length > 0 ? (
-                productsView()
-              ) : (
-                <div>No hay productos añadidos</div>
-              )}
+                <button type="button" className="btn btn-outline-light mb-4 mt-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Agregar Producto</button>
+                <ViewProductsDetailOrderPurchase products={products} onAddProduct={onAddProduct} onRemoveProduct={onRemoveProduct} />
+              </div>
 
               <div className='d-flex flex-row justify-content-end border-top mt-3'>
                 <button type="submit" className="btn btn-light mt-3">Enviar factura</button>
