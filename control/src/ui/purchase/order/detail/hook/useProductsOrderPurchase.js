@@ -4,17 +4,15 @@ export const useProductsOrderPurchase = () => {
   const [products, setProducts] = useState([]);
 
   const onRemoveProduct = (index) => {
-    const position = products.indexOf(index);
-
-    if (position > -1) {
-      products.splice(position, 1);
-    }
-
-    setProducts(products);
+    const temp = [...products];
+    temp.splice(index, 1);
+    setProducts(temp);
   }
 
   const onAddProduct = (product) => {
-    setProducts(products.concat([product]));
+    const temp = [...products];
+    temp.push(product);
+    setProducts(temp);
   };
 
   return {

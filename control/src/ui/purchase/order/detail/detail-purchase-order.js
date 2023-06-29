@@ -18,6 +18,7 @@ import ViewSuppliersDetailOrderPurchase from "./view/ViewSuppliersDetailOrderPur
 function DetailPurchaseOrder() {
   let { spreadsheetId, action, start, end } = useParams();
   const navigate = useNavigate();
+
   const { products, setProducts, onRemoveProduct, onAddProduct } = useProductsOrderPurchase();
   const { suppliers, positionSelectedSupplier, setPositionSelectedSupplier, fetchSuppliers } = useSuppliersOrderPurchase(spreadsheetId);
 
@@ -182,7 +183,7 @@ function DetailPurchaseOrder() {
                 <p className='mt-2 mb-2'>Productos</p>
 
                 <button type="button" className="btn btn-outline-light mb-4 mt-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Agregar Producto</button>
-                <ViewProductsDetailOrderPurchase products={products} onAddProduct={onAddProduct} onRemoveProduct={onRemoveProduct} />
+                <ViewProductsDetailOrderPurchase products={products} onRemoveProduct={onRemoveProduct} />
               </div>
 
               <div className='d-flex flex-row justify-content-end border-top mt-3'>
