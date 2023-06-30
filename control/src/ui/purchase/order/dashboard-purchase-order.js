@@ -104,7 +104,7 @@ function DashboardPurchaseOrder() {
           {purchase.isPending ? (
             <div>
               {(userRol === 0 || userRol === 1) ? (
-                <Link className="gap-2 text-light text-decoration-none" to={'/purchase/order/' + spreadsheetId +'/detail' + '/start/' + purchase.startPosition + '/end/' + purchase.endPosition}>
+                <Link className="gap-2 text-light text-decoration-none" to={'/purchase/order/' + spreadsheetId +'/update' + '/start/' + purchase.startPosition + '/end/' + purchase.endPosition}>
                   <button type="button" className="btn btn-outline-light mt-3">Modificar</button>
                 </Link>
               ) : (null)}

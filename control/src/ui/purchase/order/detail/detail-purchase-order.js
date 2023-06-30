@@ -86,7 +86,9 @@ function DetailPurchaseOrder() {
     setIsLoading(true);
     tryExecute({
       block: () => {
-        fetchSuppliers().then(() => {setIsLoading(false);});
+        fetchSuppliers().then(() => {
+          setIsLoading(false);
+        });
       }
     });
   }
