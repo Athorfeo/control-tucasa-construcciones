@@ -28,7 +28,7 @@ function DetailPurchaseOrder() {
 
   const { products, setProducts, onRemoveProduct, onAddProduct } = useProductsOrderPurchase();
   const { suppliers, positionSelectedSupplier, setPositionSelectedSupplier, fetchSuppliers } = useSuppliersOrderPurchase(spreadsheetId);
-  const { description, setDescription, appendOrderPurchase } = useDetailOrderPurchase(spreadsheetId);
+  const { description, setDescription, appendOrderPurchase, getOrderPurchaseByRange } = useDetailOrderPurchase(spreadsheetId);
 
   //UI
   const [isLoading, setIsLoading] = useState(false);
@@ -38,16 +38,17 @@ function DetailPurchaseOrder() {
     setIsLoading(false);
   }
 
-  // Services
+  // Load initial data
   useEffect(() => {
     const task = async () => {
       switch (action) {
         case 'add':
           setTitleAction('Nueva');
-          handleFetchSuppliers();
+          initAsAddAction();
           break;
         case 'update':
           setTitleAction('Modificar');
+          initAsUpdateAction()
           break;
         case 'approve':
           setTitleAction('Aprobar');
@@ -59,6 +60,32 @@ function DetailPurchaseOrder() {
     task();
   }, []);
 
+  async function initAsAddAction() {
+    setIsLoading(true);
+    tryExecute({
+      block: () => {
+        fetchSuppliers().then(() => {
+          setIsLoading(false);
+        });
+      }
+    });
+  }
+
+  async function initAsUpdateAction() {
+    setIsLoading(true);
+    tryExecute({
+      block: () => {
+        fetchSuppliers().then(() => {
+          getOrderPurchaseByRange(start, end).then((response) => {
+            console.log(response);
+            setIsLoading(false);
+          });
+        });
+      }
+    });
+  }
+
+  // Form
   const handleSubmitOrderPurchase = (e) => {
     e.preventDefault();
 
@@ -82,17 +109,6 @@ function DetailPurchaseOrder() {
     }
   };
 
-  async function handleFetchSuppliers() {
-    setIsLoading(true);
-    tryExecute({
-      block: () => {
-        fetchSuppliers().then(() => {
-          setIsLoading(false);
-        });
-      }
-    });
-  }
-
   async function handleAppendOrderPurchase(orderPurchase) {
     setIsLoading(true);
     tryExecute({
@@ -114,7 +130,7 @@ function DetailPurchaseOrder() {
   return (
     <div>
       <Navbar />
-      <ErrorModal data={errorModalData}/>
+      <ErrorModal data={errorModalData} />
       <FinishModal data={finishModalData} />
       <ViewAddProductDetailOrderPurchase onAddProduct={onAddProduct} />
 

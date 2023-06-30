@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fetchAppendOrderPurchase } from "network/purchase-api";
+import { fetchOrderPurchaseByRange, fetchAppendOrderPurchase } from "network/purchase-api";
 
 export const useDetailOrderPurchase = (spreadsheetId) => {
   const [description, setDescription] = useState('');
@@ -8,9 +8,14 @@ export const useDetailOrderPurchase = (spreadsheetId) => {
     return await fetchAppendOrderPurchase(spreadsheetId, orderPurchase);
   }
 
+  async function getOrderPurchaseByRange(startPosition, endPosition) {
+    return await fetchOrderPurchaseByRange(spreadsheetId, startPosition, endPosition);
+  }
+
   return {
     description,
     setDescription,
-    appendOrderPurchase
+    appendOrderPurchase,
+    getOrderPurchaseByRange
   };
 }
