@@ -28,6 +28,8 @@ export async function fetchOrderPurchaseByRange(spreadsheetId, startPosition, en
 
 export async function fetchAppendOrderPurchase(spreadsheetId, orderPurchase) {
   const url = networkConfig.url + networkConfig.purchase.order;
+  const body = JSON.stringify({data: orderPurchase});
+  console.log('Body: ' + body);
   return fetchExecutor(
     url,
     {
@@ -36,9 +38,7 @@ export async function fetchAppendOrderPurchase(spreadsheetId, orderPurchase) {
         'Content-Type': 'application/json;charset=utf-8',
         "Spreadsheet-Id": spreadsheetId,
       },
-      body: JSON.stringify({
-        data: orderPurchase
-      })
+      body: body
     }
   );
 }

@@ -33,6 +33,10 @@ function DashboardPurchaseOrder() {
   }
 
   function handleOrderPurchaseResponse(response) {
+    if(response.data.values == undefined) {
+      setIsLoading(false);
+      return;
+    }
     const purchases = response.data.values;
     const _purchases = [];
     const _pendingPurchases = [];
@@ -90,7 +94,7 @@ function DashboardPurchaseOrder() {
         <div className='container-fluid p-0 d-flex flex-column'>
           <div className='d-flex flex-row'>
             <div className='fw-bold'>#{purchase.item[0]}</div>
-            <div className='fw-light ms-2'>| {purchase.item[3]}</div>
+            <div className='fw-light ms-2'>{purchase.item[3]}</div>
           </div>
 
           <div className='fw-light mt-2'>{purchase.item[2]}</div>

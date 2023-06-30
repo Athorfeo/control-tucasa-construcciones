@@ -1,129 +1,64 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Navbar from '../../../components/navbar';
-import Navigator from '../../../components/navigator';
-import Loading from "../../../components/loading";
-import NoCancelableModal from "../../../components/no-cancelable-modal";
-import ErrorModal from "../../../components/error-modal";
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchAllOrderPurchase, fetchAppendOrderPurchase } from "../../../../network/purchase-api";
-import { fetchAllSuppliers } from "../../../../network/data-api";
-import { storageConfig, getJsonItem } from "../../../../util/storage-util";
-import * as bootstrap from 'bootstrap';
-import { useProductsOrderPurchase } from "./hook/useProductsOrderPurchase";
-import { useSuppliersOrderPurchase } from "./hook/useSuppliersOrderPurchase";
+
+import ErrorModal from "ui/components/modal/error/ErrorModal";
+import { useErrorModal } from "ui/components/modal/error/useErrorModal";
+import FinishModal from "ui/components/modal/finish/FinishModal";
+import { useFinishModal } from "ui/components/modal/finish/useFinishModal";
+
+import { useDetailOrderPurchase } from "./hook/useDetailOrderPurchase";
+
 import ViewProductsDetailOrderPurchase from "./view/ViewProductsDetailOrderPurchase";
-import ViewAddProductDetailOrderPurchase from "./view/ViewAddProductDetailOrderPurchase";
+import { useProductsOrderPurchase } from "./hook/useProductsOrderPurchase";
 import ViewSuppliersDetailOrderPurchase from "./view/ViewSuppliersDetailOrderPurchase";
+import { useSuppliersOrderPurchase } from "./hook/useSuppliersOrderPurchase";
+
+import Navbar from 'ui/components/navbar';
+import Navigator from 'ui/components/navigator';
+import Loading from "ui/components/loading";
+import ViewAddProductDetailOrderPurchase from "./view/ViewAddProductDetailOrderPurchase";
+
 
 function DetailPurchaseOrder() {
   let { spreadsheetId, action, start, end } = useParams();
   const navigate = useNavigate();
 
+  const { errorModalData, tryExecute } = useErrorModal(defaultDismissAction);
+  const { finishModalData, showFinishDialog } = useFinishModal();
+
   const { products, setProducts, onRemoveProduct, onAddProduct } = useProductsOrderPurchase();
   const { suppliers, positionSelectedSupplier, setPositionSelectedSupplier, fetchSuppliers } = useSuppliersOrderPurchase(spreadsheetId);
+  const { description, setDescription, appendOrderPurchase } = useDetailOrderPurchase(spreadsheetId);
 
+  //UI
   const [isLoading, setIsLoading] = useState(false);
-
-  // Logic
-  const [description, setDescription] = useState('');
-
-  // UI
   const [titleAction, setTitleAction] = useState('');
-  const [errorModalData, setErrorModalData] = useState({
-    isShowing: false,
-    action: "",
-    error: "",
-    callbackButton: null
-  });
-  const [finishDialogData, setFinishDialogData] = useState({
-    isShowing: false,
-    title: "",
-    message: "",
-    labelButton: "",
-    callbackButton: null
-  });
+
+  function defaultDismissAction() {
+    setIsLoading(false);
+  }
 
   // Services
   useEffect(() => {
     const task = async () => {
-      setIsLoading(true);
       switch (action) {
         case 'add':
           setTitleAction('Nueva');
-          await fetchSuppliers();
+          handleFetchSuppliers();
           break;
         case 'update':
           setTitleAction('Modificar');
-          fetchOrderPurchase();
           break;
         case 'approve':
           setTitleAction('Aprobar');
-          fetchOrderPurchase();
           break;
         default:
       }
-      setIsLoading(false);
     }
 
     task();
   }, []);
 
-  // Fetch Order Purchase
-  async function fetchOrderPurchase() {
-    try {
-      await fetchAllOrderPurchase(spreadsheetId)
-        .then((response) => {
-          console.log(response);
-          handleOrderPurchaseResponse(response);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
-  function handleOrderPurchaseResponse(response) {
-    setIsLoading(false);
-  }
-
-  // Append Order Purchase
-  async function appendOrderPurchase(orderPurchase) {
-    setIsLoading(true);
-    try {
-      await fetchAppendOrderPurchase(spreadsheetId, orderPurchase)
-        .then((_) => {
-          handleAppendOrderPurchase();
-        });
-    } catch (error) {
-      console.error("Error:", error);
-
-      setErrorModalData({
-        isShowing: true,
-        action: "Append",
-        error: error,
-        callbackButton: null
-      });
-
-      const finishModal = new bootstrap.Modal('#errorModal');
-      finishModal.show();
-
-      setIsLoading(false);
-    }
-  }
-
-  function handleAppendOrderPurchase() {
-    setFinishDialogData({
-      isShowing: true,
-      title: "Agregado correctamente",
-      message: "El orden de compra se ha agregado exitosamente. Pulse el boton para finalizar.",
-      labelButton: "Finalizar",
-      callbackButton: () => { navigate('/purchase/order/' + spreadsheetId); }
-    });
-    setIsLoading(false);
-    const finishModal = new bootstrap.Modal('#noCancelableModal');
-    finishModal.show();
-  }
-
-  // Form
   const handleSubmitOrderPurchase = (e) => {
     e.preventDefault();
 
@@ -137,7 +72,7 @@ function DetailPurchaseOrder() {
 
     switch (action) {
       case 'add':
-        appendOrderPurchase(orderPurchase);
+        handleAppendOrderPurchase(orderPurchase);
         break;
       case 'update':
         break;
@@ -147,11 +82,38 @@ function DetailPurchaseOrder() {
     }
   };
 
+  async function handleFetchSuppliers() {
+    setIsLoading(true);
+    tryExecute({
+      block: () => {
+        fetchSuppliers().then(() => {setIsLoading(false);});
+      }
+    });
+  }
+
+  async function handleAppendOrderPurchase(orderPurchase) {
+    setIsLoading(true);
+    tryExecute({
+      block: () => {
+        appendOrderPurchase(orderPurchase).then((response) => {
+          showFinishDialog({
+            title: 'Agregado correctamente',
+            message: 'La orden de compra se ha agregado exitosamente. Pulse el boton para finalizar.',
+            labelButton: 'Finalizar',
+            onDismissAction: () => {
+              navigate('/purchase/order/' + spreadsheetId);
+            }
+          });
+        });
+      }
+    });
+  }
+
   return (
     <div>
       <Navbar />
-      <ErrorModal id="errorModal" data={errorModalData} />
-      <NoCancelableModal id="noCancelableModal" data={finishDialogData} />
+      <ErrorModal data={errorModalData}/>
+      <FinishModal data={finishModalData} />
       <ViewAddProductDetailOrderPurchase onAddProduct={onAddProduct} />
 
       {isLoading ? (
