@@ -4,18 +4,25 @@ import * as bootstrap from 'bootstrap';
 
 export const useSuppliersOrderPurchase = ({spreadsheetId}) => {
   const [suppliers, setSuppliers] = useState([]);
-  const [positionSelectedSupplier, setPositionSelectedSupplier] = useState('0');
+  const [positionSelectedSupplier, setPositionSelectedSupplier] = useState(0);
 
   async function fetchSuppliers() {
-    return await fetchAllSuppliers(spreadsheetId).then((response) => {
+    return fetchAllSuppliers(spreadsheetId).then((response) => {
+      console.log(response);
       setSuppliers(response.data.suppliers);
     });
+  }
+
+  function loadSupplier(supplierName){
+    const index = suppliers.findIndex(item => (item[1] + " " + item[2]) === supplierName)
+    setPositionSelectedSupplier(index);
   }
 
   return {
     suppliers,
     positionSelectedSupplier,
     setPositionSelectedSupplier,
-    fetchSuppliers
+    fetchSuppliers,
+    loadSupplier
   };
 }

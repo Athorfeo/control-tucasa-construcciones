@@ -23,12 +23,12 @@ function DetailPurchaseOrder() {
   let { spreadsheetId, action, start, end } = useParams();
   const navigate = useNavigate();
 
-  const { errorModalData, tryExecute } = useErrorModal(defaultDismissAction);
+  const { errorModalData, showErrorModal } = useErrorModal(defaultDismissAction);
   const { finishModalData, showFinishDialog } = useFinishModal();
 
-  const { products, setProducts, onRemoveProduct, onAddProduct } = useProductsOrderPurchase();
-  const { suppliers, positionSelectedSupplier, setPositionSelectedSupplier, fetchSuppliers } = useSuppliersOrderPurchase(spreadsheetId);
-  const { description, setDescription, appendOrderPurchase, getOrderPurchaseByRange } = useDetailOrderPurchase(spreadsheetId);
+  const { products, onRemoveProduct, onAddProduct, loadProducts } = useProductsOrderPurchase();
+  const { suppliers, positionSelectedSupplier, setPositionSelectedSupplier, fetchSuppliers, loadSupplier } = useSuppliersOrderPurchase(spreadsheetId);
+  const { description, setDescription, appendOrderPurchase, getOrderPurchaseByRange, updateOrderPurchase } = useDetailOrderPurchase(spreadsheetId);
 
   //UI
   const [isLoading, setIsLoading] = useState(false);
@@ -38,51 +38,62 @@ function DetailPurchaseOrder() {
     setIsLoading(false);
   }
 
-  // Load initial data
+  // Load initial data (Suppliers)
   useEffect(() => {
     const task = async () => {
-      switch (action) {
-        case 'add':
-          setTitleAction('Nueva');
-          initAsAddAction();
-          break;
-        case 'update':
-          setTitleAction('Modificar');
-          initAsUpdateAction()
-          break;
-        case 'approve':
-          setTitleAction('Aprobar');
-          break;
-        default:
-      }
+      setIsLoading(true);
+      fetchSuppliers()
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          showErrorModal({
+            error: error
+          });
+        });
     }
 
     task();
   }, []);
 
-  async function initAsAddAction() {
-    setIsLoading(true);
-    tryExecute({
-      block: () => {
-        fetchSuppliers().then(() => {
-          setIsLoading(false);
-        });
-      }
-    });
-  }
+  // Load Order Purchase
+  useEffect(() => {
+    switch (action) {
+      case 'add':
+        setTitleAction('Nueva');
+        break;
+      case 'update':
+        setTitleAction('Modificar');
+        loadOrderPurchase();
+        break;
+      case 'approve':
+        setTitleAction('Aprobar');
+        break;
+      default:
+    }
+  }, [suppliers]);
 
-  async function initAsUpdateAction() {
-    setIsLoading(true);
-    tryExecute({
-      block: () => {
-        fetchSuppliers().then(() => {
-          getOrderPurchaseByRange(start, end).then((response) => {
-            console.log(response);
-            setIsLoading(false);
+  // Load Order Purchase
+  async function loadOrderPurchase() {
+    if (suppliers.length > 0) {
+      setIsLoading(true);
+      getOrderPurchaseByRange(start, end)
+        .then((response) => {
+          console.log(response);
+          setDescription(response.data.values[0][2]);
+          loadSupplier(response.data.values[0][3]);
+          loadProducts(response.data.values);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          showErrorModal({
+            error: error,
+            onDismissAction: () => {
+              navigate('/purchase/order/' + spreadsheetId);
+            }
           });
-        });
-      }
-    });
+        });;
+    }
   }
 
   // Form
@@ -102,6 +113,7 @@ function DetailPurchaseOrder() {
         handleAppendOrderPurchase(orderPurchase);
         break;
       case 'update':
+        handleUpdateOrderPurchase(orderPurchase);
         break;
       case 'approve':
         break;
@@ -109,22 +121,49 @@ function DetailPurchaseOrder() {
     }
   };
 
+  // Append
   async function handleAppendOrderPurchase(orderPurchase) {
     setIsLoading(true);
-    tryExecute({
-      block: () => {
-        appendOrderPurchase(orderPurchase).then((response) => {
-          showFinishDialog({
-            title: 'Agregado correctamente',
-            message: 'La orden de compra se ha agregado exitosamente. Pulse el boton para finalizar.',
-            labelButton: 'Finalizar',
-            onDismissAction: () => {
-              navigate('/purchase/order/' + spreadsheetId);
-            }
-          });
+    appendOrderPurchase(start, end, orderPurchase)
+      .then((response) => {
+        showFinishDialog({
+          title: 'Agregado correctamente',
+          message: 'La orden de compra se ha agregado exitosamente. Pulse el boton para finalizar.',
+          labelButton: 'Finalizar',
+          onDismissAction: () => {
+            navigate('/purchase/order/' + spreadsheetId);
+          }
         });
-      }
-    });
+      })
+      .catch((error) => {
+        showErrorModal({
+          error: error,
+          onDismissAction: () => {
+            navigate('/purchase/order/' + spreadsheetId);
+          }
+        });
+      });
+  }
+
+  // Update
+  async function handleUpdateOrderPurchase(orderPurchase) {
+    setIsLoading(true);
+    updateOrderPurchase(start, end, orderPurchase)
+      .then((response) => {
+        showFinishDialog({
+          title: 'Actualizado correctamente',
+          message: 'La orden de compra se ha actualizado exitosamente. Pulse el boton para finalizar.',
+          labelButton: 'Finalizar',
+          onDismissAction: () => {
+            navigate('/purchase/order/' + spreadsheetId);
+          }
+        });
+      })
+      .catch((error) => {
+        showErrorModal({
+          error: error
+        });
+      });
   }
 
   return (

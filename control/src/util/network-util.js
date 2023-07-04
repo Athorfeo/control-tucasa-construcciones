@@ -8,8 +8,11 @@ export const networkConfig = {
   user: "/user",
   project: "/project",
   purchase: {
-    order: "/purchase/order",
-    orderByRange: "/purchase/order/range",
+    order: {
+      root: "/purchase/order",
+      getByRange: "/purchase/order/range",
+      update: "/purchase/order/update",
+    }
   }
 };
 

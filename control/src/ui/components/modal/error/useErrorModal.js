@@ -21,28 +21,23 @@ export const useErrorModal = (defaultDismissAction) => {
     modal.show();
   }
 
-  const tryExecute = ({ block, onDismissAction }) => {
-    try {
-      if (onDismissAction != undefined || onDismissAction != null) {
-        setErrorModalData({
-          exception: null,
-          onDismissAction: onDismissAction
-        });
-      }
-      block();
-    } catch (error) {
-      console.error("tryExecute!");
-      console.error("Error:", error);
-      setErrorModalData({
-        exception: error,
-        onDismissAction: errorModalData.onDismissAction
-      });
-      showModal();
+  function showErrorModal({ error, onDismissAction }) {
+    console.error("Error:", error);
+    let _onDismissAction = defaultDismissAction
+
+    if (onDismissAction != undefined || onDismissAction != null) {
+      _onDismissAction = onDismissAction
     }
+
+    setErrorModalData({
+      exception: error,
+      onDismissAction: _onDismissAction
+    });
+    showModal();
   }
 
   return {
     errorModalData,
-    tryExecute,
+    showErrorModal
   };
 }

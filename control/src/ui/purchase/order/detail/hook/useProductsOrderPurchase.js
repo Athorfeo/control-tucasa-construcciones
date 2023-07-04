@@ -15,10 +15,21 @@ export const useProductsOrderPurchase = () => {
     setProducts(temp);
   };
 
+  const loadProducts = (products) => {
+    const temp = products.map((item) => {
+      return {
+        productName: item[4],
+        productQuantity: item[5],
+        chapterName: item[5]
+      }
+    });
+    setProducts(temp);
+  }
+
   return {
     products,
-    setProducts,
     onRemoveProduct,
-    onAddProduct
+    onAddProduct,
+    loadProducts
   };
 }
