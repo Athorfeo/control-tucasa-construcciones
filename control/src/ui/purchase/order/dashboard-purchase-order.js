@@ -109,7 +109,7 @@ function DashboardPurchaseOrder() {
                 </Link>
               ) : (null)}
               {(userRol > 0) ? (
-                <Link className="gap-2 text-light text-decoration-none" to="/purchase-order/detail">
+                <Link className="gap-2 text-light text-decoration-none" to={'/purchase/order/' + spreadsheetId +'/approve' + '/start/' + purchase.startPosition + '/end/' + purchase.endPosition}>
                   <button type="button" className="btn btn-outline-light mt-3 ms-3">Aprobar</button>
                 </Link>
               ) : (null)}

@@ -12,6 +12,7 @@ export const networkConfig = {
       root: "/purchase/order",
       getByRange: "/purchase/order/range",
       update: "/purchase/order/update",
+      approve: "/purchase/order/approve",
     }
   }
 };

@@ -28,10 +28,12 @@ function DetailPurchaseOrder() {
 
   const { products, onRemoveProduct, onAddProduct, loadProducts } = useProductsOrderPurchase();
   const { suppliers, positionSelectedSupplier, setPositionSelectedSupplier, fetchSuppliers, loadSupplier } = useSuppliersOrderPurchase(spreadsheetId);
-  const { description, setDescription, appendOrderPurchase, getOrderPurchaseByRange, updateOrderPurchase } = useDetailOrderPurchase(spreadsheetId);
+  const { description, setDescription, appendOrderPurchase, getOrderPurchaseByRange, updateOrderPurchase, approveOrderPurchase } = useDetailOrderPurchase(spreadsheetId);
 
   //UI
   const [isLoading, setIsLoading] = useState(false);
+  const [isFormDisable, setIsFormDisable] = useState(false);
+  const [labelSubmitButton, setLabelSubmitButton] = useState('');
   const [titleAction, setTitleAction] = useState('');
 
   function defaultDismissAction() {
@@ -61,13 +63,18 @@ function DetailPurchaseOrder() {
     switch (action) {
       case 'add':
         setTitleAction('Nueva');
+        setLabelSubmitButton("Agregar factura");
         break;
       case 'update':
         setTitleAction('Modificar');
+        setLabelSubmitButton("Modificar factura")
         loadOrderPurchase();
         break;
       case 'approve':
         setTitleAction('Aprobar');
+        setLabelSubmitButton("Aprobar factura");
+        setIsFormDisable(true);
+        loadOrderPurchase();
         break;
       default:
     }
@@ -116,6 +123,7 @@ function DetailPurchaseOrder() {
         handleUpdateOrderPurchase(orderPurchase);
         break;
       case 'approve':
+        handleApproveOrderPurchase();
         break;
       default:
     }
@@ -166,6 +174,27 @@ function DetailPurchaseOrder() {
       });
   }
 
+  // Approve
+  async function handleApproveOrderPurchase() {
+    setIsLoading(true);
+    approveOrderPurchase(start, end)
+      .then((response) => {
+        showFinishDialog({
+          title: 'Aprobado correctamente',
+          message: 'La orden de compra se ha aprobado exitosamente. Pulse el boton para finalizar.',
+          labelButton: 'Finalizar',
+          onDismissAction: () => {
+            navigate('/purchase/order/' + spreadsheetId);
+          }
+        });
+      })
+      .catch((error) => {
+        showErrorModal({
+          error: error
+        });
+      });
+  }
+
   return (
     <div>
       <Navbar />
@@ -192,21 +221,21 @@ function DetailPurchaseOrder() {
               <div className='container-fluid p-0 d-flex flex-column'>
                 <div className="mb-3">
                   <label htmlFor="labelDescription" className="form-label">Observaciones</label>
-                  <textarea className="form-control" id="inputDescription" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
+                  <textarea className="form-control" id="inputDescription" rows="3" value={description} onChange={(e) => setDescription(e.target.value)} required disabled={isFormDisable}></textarea>
                 </div>
 
-                <ViewSuppliersDetailOrderPurchase suppliers={suppliers} positionSelectedSupplier={positionSelectedSupplier} setPositionSelectedSupplier={setPositionSelectedSupplier} />
+                <ViewSuppliersDetailOrderPurchase suppliers={suppliers} positionSelectedSupplier={positionSelectedSupplier} setPositionSelectedSupplier={setPositionSelectedSupplier} isFormDisable={isFormDisable}/>
               </div>
 
               <div className='d-flex flex-column'>
                 <p className='mt-2 mb-2'>Productos</p>
 
-                <button type="button" className="btn btn-outline-light mb-4 mt-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Agregar Producto</button>
-                <ViewProductsDetailOrderPurchase products={products} onRemoveProduct={onRemoveProduct} />
+                <button type="button" className="btn btn-outline-light mb-4 mt-2" data-bs-toggle="modal" data-bs-target="#addProductModal" disabled={isFormDisable}>Agregar Producto</button>
+                <ViewProductsDetailOrderPurchase products={products} onRemoveProduct={onRemoveProduct} isFormDisable={isFormDisable} />
               </div>
 
               <div className='d-flex flex-row justify-content-end border-top mt-3'>
-                <button type="submit" className="btn btn-light mt-3">Enviar factura</button>
+                <button type="submit" className="btn btn-light mt-3">{labelSubmitButton}</button>
               </div>
             </div>
 

@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { fetchOrderPurchaseByRange, fetchAppendOrderPurchase, fetchUpdateOrderPurchase } from "network/purchase-api";
+import {
+  fetchOrderPurchaseByRange,
+  fetchAppendOrderPurchase,
+  fetchUpdateOrderPurchase,
+  fetchApproveOrderPurchase
+} from "network/purchase-api";
+import { storageConfig, getJsonItem } from "util/storage-util"
 
 export const useDetailOrderPurchase = (spreadsheetId) => {
   const [description, setDescription] = useState('');
@@ -21,11 +27,23 @@ export const useDetailOrderPurchase = (spreadsheetId) => {
     return fetchUpdateOrderPurchase(spreadsheetId, payload);
   }
 
+  function approveOrderPurchase(start, end) {
+    const userSession = getJsonItem(storageConfig.userDataKey);
+
+    const payload = {
+      startPosition: start,
+      endPosition: end,
+      email: userSession.email
+    }
+    return fetchApproveOrderPurchase(spreadsheetId, payload);
+  }
+
   return {
     description,
     setDescription,
     appendOrderPurchase,
     getOrderPurchaseByRange,
-    updateOrderPurchase
+    updateOrderPurchase,
+    approveOrderPurchase
   };
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ViewProductsDetailOrderPurchase({ products, onRemoveProduct }) {
+export default function ViewProductsDetailOrderPurchase({ products, onRemoveProduct, isFormDisable }) {
   const items = products.map((item, index) => {
     return <div className='container-fluid d-flex flex-column p-3 mb-2 bg-secondary-subtle' key={index + 1}>
       <div className='container-fluid p-0 d-flex flex-column'>
@@ -19,7 +19,12 @@ export default function ViewProductsDetailOrderPurchase({ products, onRemoveProd
       </div>
 
       <div className='d-flex flex-row justify-content-end border-top mt-3'>
-        <button type="button" className="btn btn-outline-light mt-3" onClick={(e) => onRemoveProduct(index)}><i className="bi bi-x-lg"></i> Eliminar</button>
+        {!isFormDisable ? (
+          <button type="button" className="btn btn-outline-light mt-3" onClick={(e) => onRemoveProduct(index)}><i className="bi bi-x-lg"></i> Eliminar</button>
+        ) : (
+          <div></div>
+        )}
+        
       </div>
     </div>
   });

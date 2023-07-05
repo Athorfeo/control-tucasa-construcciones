@@ -59,3 +59,20 @@ export function fetchUpdateOrderPurchase(spreadsheetId, payload) {
     }
   );
 }
+
+export function fetchApproveOrderPurchase(spreadsheetId, payload) {
+  const url = networkConfig.url + networkConfig.purchase.order.approve;
+  const body = JSON.stringify({data: payload});
+  console.log('Body: ' + body);
+  return fetchExecutor(
+    url,
+    {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}

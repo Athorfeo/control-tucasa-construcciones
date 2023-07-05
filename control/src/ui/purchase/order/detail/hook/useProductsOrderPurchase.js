@@ -20,7 +20,7 @@ export const useProductsOrderPurchase = () => {
       return {
         productName: item[4],
         productQuantity: item[5],
-        chapterName: item[5]
+        chapterName: item[6]
       }
     });
     setProducts(temp);
