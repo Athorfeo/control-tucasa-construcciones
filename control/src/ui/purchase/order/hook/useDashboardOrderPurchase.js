@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { fetchAllOrderPurchase } from "network/purchase-api"
-import { storageConfig, getJsonItem } from "util/storage-util"
+import { downloadPDFOrderPurchase } from "util/pdfUtil"
 
 export const useDashboardOrderPurchase = (spreadsheetId) => {
   const offset = 2;
@@ -74,8 +74,8 @@ export const useDashboardOrderPurchase = (spreadsheetId) => {
       });
   }
 
-  function downloadPDF(orderPurchase) {
-    console.log(orderPurchase);
+  function downloadPDF(data) {
+    downloadPDFOrderPurchase(data);
   }
 
   return {
