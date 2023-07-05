@@ -132,7 +132,7 @@ function DetailPurchaseOrder() {
   // Append
   async function handleAppendOrderPurchase(orderPurchase) {
     setIsLoading(true);
-    appendOrderPurchase(start, end, orderPurchase)
+    appendOrderPurchase(orderPurchase)
       .then((response) => {
         showFinishDialog({
           title: 'Agregado correctamente',

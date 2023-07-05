@@ -78,5 +78,5 @@ export async function downloadPDFOrderPurchase(data) {
 
   pdf.table(10, 120, items, headersOrderPurchase(), { autoSize: false });
 
-  pdf.save("orden-de-compra-"+ data[0][0] +".pdf");
+  pdf.save(data[0][0] +"-orden-de-compra.pdf");
 }
