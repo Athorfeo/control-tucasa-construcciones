@@ -14,6 +14,14 @@ export const networkConfig = {
       update: "/purchase/order/update",
       approve: "/purchase/order/approve",
     }
+  },
+  service: {
+    minute: {
+      root: "/service/minute",
+      getByRange: "/service/minute/range",
+      update: "/service/minute/update",
+      approve: "/service/minute/approve",
+    }
   }
 };
 

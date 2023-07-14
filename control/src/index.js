@@ -10,6 +10,8 @@ import Dashboard from './ui/dashboard/dashboard';
 import DashboardPurchaseOrder from './ui/purchase/order/dashboard-purchase-order';
 import DetailPurchaseOrder from './ui/purchase/order/detail/detail-purchase-order';
 import DashboardFeature from './ui/feature/dashboard-feature';
+import DashboardMinuteService from 'ui/service/minute/DashboardMinuteService';
+import DetailMinuteService from 'ui/service/minute/detail/DetailMinuteService';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,11 @@ const router = createBrowserRouter([
         element: <Dashboard />
       },
       {
+        path: "feature",
+        element: <DashboardFeature />
+      },
+      // Purchase
+      {
         path: "/purchase/order/:spreadsheetId",
         element: <DashboardPurchaseOrder />
       },
@@ -36,11 +43,19 @@ const router = createBrowserRouter([
         path: "/purchase/order/:spreadsheetId/:action/start/:start/end/:end",
         element: <DetailPurchaseOrder />
       },
-      
+      // Service
       {
-        path: "feature",
-        element: <DashboardFeature />
-      }
+        path: "/service/minute/:spreadsheetId",
+        element: <DashboardMinuteService />
+      },
+      {
+        path: "/service/minute/:spreadsheetId/:action",
+        element: <DetailMinuteService />
+      },
+      {
+        path: "/service/minute/:spreadsheetId/:action/start/:start/end/:end",
+        element: <DetailMinuteService />
+      },
     ],
   },
 ]);

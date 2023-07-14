@@ -6,13 +6,13 @@ import { Link, useParams } from "react-router-dom";
 import { storageConfig, getJsonItem } from "util/storage-util"
 
 import { useDashboardOrderPurchase } from "./hook/useDashboardOrderPurchase"
-import ViewSuppliersDetailOrderPurchase from "./view/ViewItemOrderPurchase";
+import ViewItemOrderPurchase from "./view/ViewItemOrderPurchase";
 
 
 function DashboardPurchaseOrder() {
   let { spreadsheetId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [userRol, setUserRol] = useState(-1);
+  const [userRol, setUserRol] = useState(null);
   const { pendingPurchases, closedPurchases, getAllOrderPurchase, downloadPDF } = useDashboardOrderPurchase(spreadsheetId);
 
   useDashboardOrderPurchase()
@@ -24,52 +24,12 @@ function DashboardPurchaseOrder() {
   }, []);
 
   useEffect(() => {
-    if (userRol > 0) {
+    if (userRol != null) {
       getAllOrderPurchase().then(() => {
         setIsLoading(false);
       });
     }
   }, [userRol]);
-
-  const purchaseToPurchaseView = (purchase, userRol) => {
-    var view = (
-      <div className='container-fluid d-flex flex-column p-3 mb-2 bg-body-tertiary' key={purchase.item[0]}>
-        <div className='container-fluid p-0 d-flex flex-column'>
-          <div className='d-flex flex-row'>
-            <div className='fw-bold'>#{purchase.item[0]}</div>
-            <div className='fw-light ms-2'>{purchase.item[3]}</div>
-          </div>
-
-          <div className='fw-light mt-2'>{purchase.item[2]}</div>
-        </div>
-
-        <div className='d-flex flex-row justify-content-end border-top mt-3'>
-          {purchase.isPending ? (
-            <div>
-              {(userRol === 0 || userRol === 1) ? (
-                <Link className="gap-2 text-light text-decoration-none" to={'/purchase/order/' + spreadsheetId + '/update' + '/start/' + purchase.startPosition + '/end/' + purchase.endPosition}>
-                  <button type="button" className="btn btn-outline-light mt-3">Modificar</button>
-                </Link>
-              ) : (null)}
-              {(userRol > 0) ? (
-                <Link className="gap-2 text-light text-decoration-none" to={'/purchase/order/' + spreadsheetId + '/approve' + '/start/' + purchase.startPosition + '/end/' + purchase.endPosition}>
-                  <button type="button" className="btn btn-outline-light mt-3 ms-3">Aprobar</button>
-                </Link>
-              ) : (null)}
-            </div>
-          ) : (
-            <div>{(userRol > 0) ? (
-              <Link className="gap-2 text-light text-decoration-none" to="/purchase-order/detail">
-                <button type="button" className="btn btn-outline-light mt-3">Descargar PDF</button>
-              </Link>
-            ) : (null)}</div>
-          )}
-        </div>
-      </div>
-    );
-
-    return view;
-  }
 
   return (
     <div>
@@ -98,12 +58,12 @@ function DashboardPurchaseOrder() {
           <div className='mt-4'>
             <p className='fw-light text-uppercase mt-4 mb-2'>Ordenes Pendientes</p>
           </div>
-          <ViewSuppliersDetailOrderPurchase spreadsheetId={spreadsheetId} ordersPurchase={pendingPurchases} userRol={userRol} />
+          <ViewItemOrderPurchase spreadsheetId={spreadsheetId} ordersPurchase={pendingPurchases} userRol={userRol} />
 
           <div className='mt-4'>
             <p className='fw-light text-uppercase mt-4 mb-2'>Ordenes Aprobadas</p>
           </div>
-          <ViewSuppliersDetailOrderPurchase spreadsheetId={spreadsheetId} ordersPurchase={closedPurchases} userRol={userRol} downloadPDF={downloadPDF} />
+          <ViewItemOrderPurchase spreadsheetId={spreadsheetId} ordersPurchase={closedPurchases} userRol={userRol} downloadPDF={downloadPDF} />
         </div>
       )}
     </div>

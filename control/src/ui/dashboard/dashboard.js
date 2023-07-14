@@ -54,9 +54,7 @@ function Dashboard() {
   }
 
   function setProjectAndNavigate(index) {
-    const rawProject = projects[index];
-    const project = new Project(rawProject[0], rawProject[1], rawProject[2], rawProject[3]);
-    
+    const project = projects[index];
     setJsonItem(storageConfig.selectedProjectDataKey, project);
     console.log("Project data session saved!");
 
@@ -67,10 +65,10 @@ function Dashboard() {
     return (
       <div
         className='text-decoration-none text-reset container-fluid p-3 d-flex flex-row align-items-center bg-body-tertiary mb-2'
-        key={project[0]}
+        key={project.id}
         onClick={() => { setProjectAndNavigate(index) }}>
         <div className='container-fluid p-0 d-flex flex-column'>
-          <div className='fw-bold'>{project[1]}</div>
+          <div className='fw-bold'>{project.name}</div>
           <div className='fw-light'>Ver opciones del proyecto</div>
         </div>
         <i className="fs-3 bi bi-arrow-right"></i>

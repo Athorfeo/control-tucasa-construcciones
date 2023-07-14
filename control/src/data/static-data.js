@@ -22,4 +22,10 @@ export const staticData = {
     {id: 20, name: "TERRENO, LICENCIA Y TRAMITES NOTARIALES"},
     {id: 21, name: "ADMINISTRATIVOS"}
   ],
+  units: [
+    {id: 1, name: "m", detail: "Metro"},
+    {id: 2, name: 'm2', detail: "Metro cuadrado"},
+    {id: 2, name: 'm3', detail: "Metro cubico"},
+    {id: 3, name: "Global", detail: "Global"},
+  ],
 };

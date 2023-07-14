@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import Loading from "../components/loading";
 import Navigator from "../components/navigator";
-import { isSessionReady } from "../../util/session-util";
+import { isSessionReady, isAdminRol, isSuperAdminRol } from "util/session-util";
 import { useNavigate } from "react-router-dom";
 import ItemDashboardFeature from "./item-dashboard-feature";
 import LabelSectionDashboardFeature from "./label-section-dashboard-feature copy";
@@ -25,15 +25,17 @@ function DashboardFeature() {
       setIsLoading(true);
       if (isSessionReady()) {
         const userSession = getJsonItem(storageConfig.userDataKey);
+        console.log(userSession);
+        const rol = parseInt(userSession.rol);
         const selectedProject = getJsonItem(storageConfig.selectedProjectDataKey);
 
-        loadPurchaseFeatures(userSession, selectedProject);
-        loadServicesFeatures(userSession, selectedProject);
-        loadClientsFeatures(userSession, selectedProject);
-        loadPatnersFeatures(userSession, selectedProject);
-        loadStatementsFeatures(userSession, selectedProject);
-        loadSuppliersFeatures(userSession, selectedProject);
-        loadAftersalesFeatures(userSession, selectedProject);
+        loadPurchaseFeatures(rol, selectedProject);
+        loadServicesFeatures(rol, selectedProject);
+        loadClientsFeatures(rol, selectedProject);
+        loadPatnersFeatures(rol, selectedProject);
+        loadStatementsFeatures(rol, selectedProject);
+        loadSuppliersFeatures(rol, selectedProject);
+        loadAftersalesFeatures(rol, selectedProject);
       }
       setIsLoading(false);
     };
@@ -41,149 +43,108 @@ function DashboardFeature() {
     task();
   }, []);
 
-  function loadPurchaseFeatures(userSession, selectedProject) {
-    console.log(userSession);
+  function loadPurchaseFeatures(rol, selectedProject) {
     const features = [];
+
     const titleKey = 'purchases';
     features.push(<LabelSectionDashboardFeature title='Compras' key={titleKey + (features.length + 1)} />);
 
-    const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchaseOrder;
-
-    switch (userSession.rol) {
-      case '0':
-        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
-        break;
-      case '1':
-        features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}/>);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Facturas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}/>);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion'isEnable={false}  key={titleKey + (features.length + 1)}/>);
-        features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)}/>);
-        break;
-      default:
-        console.log("No default handle!");
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route='/dashboard' title='Facturas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
     }
+
+    const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchase.order;
+    features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
+
 
     setPuchasesSection(features);
   }
 
-  function loadServicesFeatures(userSession, selectedProject) {
+  function loadServicesFeatures(rol, selectedProject) {
     const features = [];
+
     const titleKey = 'services';
+    features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)} />);
 
-    features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)}/>);
+    const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
+    features.push(<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
 
-    switch (userSession.rol) {
-      case '0':
-        features.push(<ItemDashboardFeature route='/dashboard' title='Actas de avance de obra' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}/>);
-        break;
-      case '1':
-        features.push(<ItemDashboardFeature route='/dashboard' title='Actas de avance de obra' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Pagos a contratistas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-        break;
-      default:
-        console.log("No default handle!");
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      features.push(<ItemDashboardFeature route='/dashboard' title='Pagos a contratistas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
     }
 
     setServicesSection(features);
   }
 
-  function loadClientsFeatures(userSession, selectedProject) {
-    const features = [];
-    const titleKey = 'clients';
+  function loadClientsFeatures(rol, selectedProject) {
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const features = [];
 
-    switch (userSession.rol) {
-      case '0':
-        console.log("No rol 0 handle!");
-        break;
-      case '1':
-        features.push(<LabelSectionDashboardFeature title='Clientes' key={titleKey + (features.length + 1)} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Abonos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Clientes' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-        break;
-      default:
-        console.log("No default handle!");
+      const titleKey = 'clients';
+      features.push(<LabelSectionDashboardFeature title='Clientes' key={titleKey + (features.length + 1)} />);
+
+      features.push(<ItemDashboardFeature route='/dashboard' title='Abonos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route='/dashboard' title='Clientes' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+
+      setClientsSection(features);
     }
-
-    setClientsSection(features);
   }
 
-  function loadPatnersFeatures(userSession, selectedProject) {
-    const features = [];
-    const titleKey = 'patners';
+  function loadPatnersFeatures(rol, selectedProject) {
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const features = [];
 
-    switch (userSession.rol) {
-      case '0':
-        console.log("No rol 0 handle!");
-        break;
-      case '1':
-        features.push(<LabelSectionDashboardFeature title='Socios' key={titleKey + (features.length + 1)} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Aportes' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Socios' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Prestamos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-        break;
-      default:
-        console.log("No default handle!");
+      const titleKey = 'patners';
+      features.push(<LabelSectionDashboardFeature title='Socios' key={titleKey + (features.length + 1)} />);
+
+      features.push(<ItemDashboardFeature route='/dashboard' title='Aportes' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route='/dashboard' title='Socios' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route='/dashboard' title='Prestamos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+
+      setPartnersSection(features);
     }
-
-    setPartnersSection(features);
   }
 
-  function loadStatementsFeatures(userSession, selectedProject) {
-    const features = [];
-    const titleKey = 'statements';
+  function loadStatementsFeatures(rol, selectedProject) {
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const features = [];
 
-    switch (userSession.rol) {
-      case '0':
-        console.log("No rol 0 handle!");
-        break;
-      case '1':
-        features.push(<LabelSectionDashboardFeature title='Extractos' key={titleKey + (features.length + 1)} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Extractos mensuales bancos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Movimientos semanales bancos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-        break;
-      default:
-        console.log("No default handle!");
+      const titleKey = 'statements';
+      features.push(<LabelSectionDashboardFeature title='Extractos' key={titleKey + (features.length + 1)} />);
+
+      features.push(<ItemDashboardFeature route='/dashboard' title='Extractos mensuales bancos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route='/dashboard' title='Movimientos semanales bancos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+
+      setStatementsSection(features);
     }
-
-    setStatementsSection(features);
   }
 
-  function loadSuppliersFeatures(userSession, selectedProject) {
-    const features = [];
-    const titleKey = 'suppliers';
+  function loadSuppliersFeatures(rol, selectedProject) {
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const features = [];
 
-    switch (userSession.rol) {
-      case '0':
-        console.log("No rol 0 handle!");
-        break;
-      case '1':
-        features.push(<LabelSectionDashboardFeature title='Proveedores' key={titleKey + (features.length + 1)} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Dashboard Proveedores' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
-        break;
-      default:
-        console.log("No default handle!");
+      const titleKey = 'suppliers';
+      features.push(<LabelSectionDashboardFeature title='Proveedores' key={titleKey + (features.length + 1)} />);
+
+      features.push(<ItemDashboardFeature route='/dashboard' title='Dashboard Proveedores' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+
+      setSuppliersSection(features);
     }
-
-    setSuppliersSection(features);
   }
 
-  function loadAftersalesFeatures(userSession, selectedProject) {
-    const features = [];
-    const titleKey = 'suppliers';
+  function loadAftersalesFeatures(rol, selectedProject) {
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const features = [];
 
-    switch (userSession.rol) {
-      case '0':
-        console.log("No rol 0 handle!");
-        break;
-      case '1':
-        features.push(<LabelSectionDashboardFeature title='Postventa' key={titleKey + (features.length + 1)} />);
-        features.push(<ItemDashboardFeature route='/dashboard' title='Dashboard Postventa' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)}  />);
-        break;
-      default:
-        console.log("No default handle!");
+      const titleKey = 'suppliers';
+      features.push(<LabelSectionDashboardFeature title='Postventa' key={titleKey + (features.length + 1)} />);
+
+      features.push(<ItemDashboardFeature route='/dashboard' title='Dashboard Postventa' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      
+      setAftersalesSection(features);
     }
-
-    setAftersalesSection(features);
   }
 
   return (

@@ -15,7 +15,7 @@ function ItemDashboardFeature(props) {
 
     const view = (
       <div className='container-fluid d-flex flex-row align-items-center p-3 mb-2 text-decoration-none text-reset bg-body-tertiary' onClick={callback}>
-        <div className='container-fluid p-0 d-flex flex-column'>
+        <div className='flex-fill p-0 d-flex flex-column'>
           <div className='fw-bold'>{props.title}</div>
           <div className='fw-light'>{props.description}</div>
         </div>
@@ -24,7 +24,7 @@ function ItemDashboardFeature(props) {
         ) : (
           <div className='d-flex flex-row text-info'>
             <i className="bi bi-exclamation-diamond-fill me-2"></i>
-            Disable
+            No disponible
           </div>
         )}
       </div>

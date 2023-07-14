@@ -10,3 +10,27 @@ export function isSessionReady() {
         return true;
     }
 }
+
+export function isDefaultRol(rol) {
+    if(rol === 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export function isAdminRol(rol) {
+    if(rol > 0 || isSuperAdminRol(rol)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export function isSuperAdminRol(rol) {
+    if(rol === -1) {
+        return true;
+    } else {
+        return false;
+    }
+}
