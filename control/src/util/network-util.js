@@ -1,5 +1,4 @@
 export const networkConfig = {
-  url: "http://127.0.0.1:5001/tcc-control-system/us-central1/api",
   data: {
     suppliers: {
       getAll: "/data/suppliers",
@@ -24,6 +23,10 @@ export const networkConfig = {
     }
   }
 };
+
+export function getUrlBase() {
+  return process.env.REACT_APP_URL_BASE;
+}
 
 export async function fetchExecutor(url, options) {
   return fetch(url, options)

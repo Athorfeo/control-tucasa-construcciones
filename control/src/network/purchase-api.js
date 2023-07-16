@@ -1,7 +1,7 @@
-import { networkConfig, fetchExecutor } from "../util/network-util";
+import { networkConfig, getUrlBase, fetchExecutor } from "../util/network-util";
 
 export async function fetchAllOrderPurchase(spreadsheetId) {
-  const url = networkConfig.url + networkConfig.purchase.order.root;
+  const url = getUrlBase() + networkConfig.purchase.order.root;
   return fetchExecutor(
     url,
     {
@@ -14,7 +14,7 @@ export async function fetchAllOrderPurchase(spreadsheetId) {
 }
 
 export async function fetchOrderPurchaseByRange(spreadsheetId, startPosition, endPosition) {
-  const url = networkConfig.url + networkConfig.purchase.order.getByRange + '?start=' + startPosition + '&end=' + endPosition;
+  const url = getUrlBase() + networkConfig.purchase.order.getByRange + '?start=' + startPosition + '&end=' + endPosition;
   return fetchExecutor(
     url,
     {
@@ -27,7 +27,7 @@ export async function fetchOrderPurchaseByRange(spreadsheetId, startPosition, en
 }
 
 export async function fetchAppendOrderPurchase(spreadsheetId, orderPurchase) {
-  const url = networkConfig.url + networkConfig.purchase.order.root;
+  const url = getUrlBase() + networkConfig.purchase.order.root;
   const body = JSON.stringify({data: orderPurchase});
   console.log('Body: ' + body);
   return fetchExecutor(
@@ -44,7 +44,7 @@ export async function fetchAppendOrderPurchase(spreadsheetId, orderPurchase) {
 }
 
 export function fetchUpdateOrderPurchase(spreadsheetId, payload) {
-  const url = networkConfig.url + networkConfig.purchase.order.update;
+  const url = getUrlBase() + networkConfig.purchase.order.update;
   const body = JSON.stringify({data: payload});
   console.log('Body: ' + body);
   return fetchExecutor(
@@ -61,7 +61,7 @@ export function fetchUpdateOrderPurchase(spreadsheetId, payload) {
 }
 
 export function fetchApproveOrderPurchase(spreadsheetId, payload) {
-  const url = networkConfig.url + networkConfig.purchase.order.approve;
+  const url = getUrlBase() + networkConfig.purchase.order.approve;
   const body = JSON.stringify({data: payload});
   console.log('Body: ' + body);
   return fetchExecutor(

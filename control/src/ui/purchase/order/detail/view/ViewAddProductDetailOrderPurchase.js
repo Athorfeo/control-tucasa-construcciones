@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import * as bootstrap from 'bootstrap';
 import { staticData } from "data/static-data";
 import { useAddProductDetailOrderPurchase } from "../hook/useAddProductDetailOrderPurchase";
 

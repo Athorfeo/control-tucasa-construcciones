@@ -1,7 +1,7 @@
-import { networkConfig, fetchExecutor } from "../util/network-util";
+import { networkConfig, getUrlBase, fetchExecutor } from "../util/network-util";
 
 export async function fetchAll(spreadsheetId) {
-  const url = networkConfig.url + networkConfig.service.minute.root;
+  const url = getUrlBase() + networkConfig.service.minute.root;
   return fetchExecutor(
     url,
     {
@@ -14,7 +14,7 @@ export async function fetchAll(spreadsheetId) {
 }
 
 export async function fetchByRange(spreadsheetId, startPosition, endPosition) {
-  const url = networkConfig.url + networkConfig.service.minute.getByRange + '?start=' + startPosition + '&end=' + endPosition;
+  const url = getUrlBase() + networkConfig.service.minute.getByRange + '?start=' + startPosition + '&end=' + endPosition;
   return fetchExecutor(
     url,
     {
@@ -27,7 +27,7 @@ export async function fetchByRange(spreadsheetId, startPosition, endPosition) {
 }
 
 export async function fetchAppend(spreadsheetId, orderPurchase) {
-  const url = networkConfig.url + networkConfig.service.minute.root;
+  const url = getUrlBase() + networkConfig.service.minute.root;
   const body = JSON.stringify({data: orderPurchase});
   console.log('Body: ' + body);
   return fetchExecutor(
@@ -44,7 +44,7 @@ export async function fetchAppend(spreadsheetId, orderPurchase) {
 }
 
 export function fetchUpdate(spreadsheetId, payload) {
-  const url = networkConfig.url + networkConfig.service.minute.update;
+  const url = getUrlBase() + networkConfig.service.minute.update;
   const body = JSON.stringify({data: payload});
   console.log('Body: ' + body);
   return fetchExecutor(
@@ -61,7 +61,7 @@ export function fetchUpdate(spreadsheetId, payload) {
 }
 
 export function fetchApprove(spreadsheetId, payload) {
-  const url = networkConfig.url + networkConfig.service.minute.approve;
+  const url = getUrlBase() + networkConfig.service.minute.approve;
   const body = JSON.stringify({data: payload});
   console.log('Body: ' + body);
   return fetchExecutor(

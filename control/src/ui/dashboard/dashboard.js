@@ -88,7 +88,7 @@ function Dashboard() {
     } else {
       view = (
         projects.length > 0 ? (
-          projects.map((item, index) => {
+          projects.sort((a, b) => a[0] - b[0]).map((item, index) => {
             return projectToView(item, index);
           })
         ) : (
