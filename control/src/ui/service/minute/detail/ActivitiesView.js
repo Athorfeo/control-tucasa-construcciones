@@ -1,7 +1,7 @@
 import React from 'react';
 import { isDefaultRol, isAdminRol, isSuperAdminRol } from "util/session-util"
 
-export default function ActivitiesView({ data, onRemoveProduct, isFormDisable, userRol, onSelectActivityForExecutedQuantity }) {
+function ActivitiesView({ data, onRemoveProduct, isFormDisable, userRol, onSelectActivityForExecutedQuantity }) {
   const items = data.map((item, index) => {
     return <div className='container-fluid d-flex flex-column p-3 mb-2 bg-secondary-subtle' key={index + 1}>
       <div className='container-fluid p-0 d-flex flex-column'>
@@ -55,3 +55,5 @@ export default function ActivitiesView({ data, onRemoveProduct, isFormDisable, u
 
   return view;
 };
+
+export default ActivitiesView;

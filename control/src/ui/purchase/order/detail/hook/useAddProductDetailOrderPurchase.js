@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { staticData } from "data/static-data";
 
 export const useAddProductDetailOrderPurchase = ({onAddProductCallback}) => {

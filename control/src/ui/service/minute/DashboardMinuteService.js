@@ -12,7 +12,7 @@ import Navigator from 'ui/components/navigator';
 import Loading from "ui/components/loading";
 import ItemView from "./ItemView";
 
-export default function DashboardMinuteService() {
+function DashboardMinuteService() {
   const navigate = useNavigate();
   let { spreadsheetId } = useParams();
 
@@ -94,3 +94,5 @@ export default function DashboardMinuteService() {
     </div>
   );
 }
+
+export default DashboardMinuteService;

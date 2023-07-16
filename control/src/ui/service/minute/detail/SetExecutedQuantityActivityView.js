@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function SetExecutedQuantityActivityView({ onSetExecutedQuantity  }) {
+function SetExecutedQuantityActivityView({ onSetExecutedQuantity  }) {
   const [executedQuantity, setExecutedQuantity] = useState('');
 
   const isSubmitDisabled = () => {
@@ -47,3 +47,5 @@ export default function SetExecutedQuantityActivityView({ onSetExecutedQuantity 
     </div>
   );
 };
+
+export default SetExecutedQuantityActivityView;

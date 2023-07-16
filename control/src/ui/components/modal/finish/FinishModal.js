@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export default function FinishModal({data}) {
+function FinishModal({data}) {
   return (
     <div className="modal fade" id="noCancelableModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby='noCancelableModallabel' aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -25,3 +25,5 @@ export default function FinishModal({data}) {
     </div>
   );
 };
+
+export default FinishModal;

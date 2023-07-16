@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { staticData } from "data/static-data";
 import { useAddProductDetailOrderPurchase } from "../hook/useAddProductDetailOrderPurchase";
 
-export default function ViewAddProductDetailOrderPurchase({ onAddProduct }) {
+function ViewAddProductDetailOrderPurchase({ onAddProduct }) {
   const { 
     productName, setProductName,
     quantity, setQuantity, 
@@ -67,3 +67,5 @@ export default function ViewAddProductDetailOrderPurchase({ onAddProduct }) {
     </div>
   );
 };
+
+export default ViewAddProductDetailOrderPurchase;

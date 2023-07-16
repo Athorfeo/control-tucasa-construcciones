@@ -1,8 +1,7 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { firebaseAuth } from '../util/firebase/firebase-util';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js';
-
+import { onAuthStateChanged } from "@firebase/auth";
 import './App.css';
 
 function App() {

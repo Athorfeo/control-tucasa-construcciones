@@ -5,11 +5,9 @@ function ItemDashboardFeature(props) {
   const navigate = useNavigate();
 
   function render() {
-    let background = null;
     let callback = null;
 
     if (props.isEnable) {
-      background = 'bg-body-tertiary';
       callback = () => { navigate(props.route); }
     }
 

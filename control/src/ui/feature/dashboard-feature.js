@@ -3,13 +3,11 @@ import Navbar from '../components/navbar';
 import Loading from "../components/loading";
 import Navigator from "../components/navigator";
 import { isSessionReady, isAdminRol, isSuperAdminRol } from "util/session-util";
-import { useNavigate } from "react-router-dom";
 import ItemDashboardFeature from "./item-dashboard-feature";
-import LabelSectionDashboardFeature from "./label-section-dashboard-feature copy";
-import { storageConfig, getJsonItem } from "../../util/storage-util";
+import LabelSectionDashboardFeature from "./label-section-dashboard-feature";
+import { storageConfig, getJsonItem } from "util/storage-util";
 
 function DashboardFeature() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const [purchasesSection, setPuchasesSection] = useState([]);

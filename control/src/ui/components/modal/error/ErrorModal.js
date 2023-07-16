@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ErrorModal({data}) {
+function ErrorModal({data}) {
   return (
     <div className="modal fade" id="errorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby='errorModallabel' aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -25,3 +25,5 @@ export default function ErrorModal({data}) {
     </div>
   );
 };
+
+export default ErrorModal;

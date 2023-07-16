@@ -18,7 +18,7 @@ import SetExecutedQuantityActivityView from "./SetExecutedQuantityActivityView";
 import { useDetailMinuteServiceController } from "./useDetailMinuteServiceController";
 import { useActivities } from "./useActivities";
 
-export default function DetailMinuteService() {
+function DetailMinuteService() {
   let { spreadsheetId, action, start, end } = useParams();
   const userRol = parseInt(getJsonItem(storageConfig.userDataKey).rol);
   const navigate = useNavigate();
@@ -257,3 +257,5 @@ export default function DetailMinuteService() {
     </div>
   );
 }
+
+export default DetailMinuteService;

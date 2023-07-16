@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "util/dateUtil"
 import { isDefaultRol, isAdminRol, isSuperAdminRol } from "util/session-util"
 
-export default function ItemView({ spreadsheetId, ordersPurchase, userRol }) {
+function ItemView({ spreadsheetId, ordersPurchase, userRol }) {
   return ordersPurchase.map((purchase, index) => {
     return (
       <div className='container-fluid d-flex flex-column p-3 mb-2 bg-body-tertiary' key={purchase.items[0][0]}>
@@ -38,3 +38,5 @@ export default function ItemView({ spreadsheetId, ordersPurchase, userRol }) {
     );
   });
 };
+
+export default ItemView;

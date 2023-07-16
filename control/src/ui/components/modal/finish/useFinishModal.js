@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as bootstrap from 'bootstrap';
+import * as bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 export const useFinishModal = () => {
   const [finishModalData, setFinishModalData] = useState({

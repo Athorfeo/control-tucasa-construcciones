@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ViewSuppliersDetailOrderPurchase({ suppliers, positionSelectedSupplier, setPositionSelectedSupplier, isFormDisable }) {
+function ViewSuppliersDetailOrderPurchase({ suppliers, positionSelectedSupplier, setPositionSelectedSupplier, isFormDisable }) {
   const options = suppliers.map((item, index) => {
     return (<option value={index} key={index}>{item[1] + ' ' + item[2] + ' - ' + item[4]}</option>);
   });
@@ -14,3 +14,5 @@ export default function ViewSuppliersDetailOrderPurchase({ suppliers, positionSe
     </div>
   );;
 };
+
+export default ViewSuppliersDetailOrderPurchase

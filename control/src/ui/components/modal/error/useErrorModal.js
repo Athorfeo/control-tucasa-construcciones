@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import * as bootstrap from 'bootstrap';
+import { useState } from 'react';
+import * as bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 export const useErrorModal = (defaultDismissAction) => {
   const [errorModalData, setErrorModalData] = useState({
@@ -25,7 +25,7 @@ export const useErrorModal = (defaultDismissAction) => {
     console.error("Error:", error);
     let _onDismissAction = defaultDismissAction
 
-    if (onDismissAction != undefined || onDismissAction != null) {
+    if (onDismissAction !== undefined || onDismissAction !== null) {
       _onDismissAction = onDismissAction
     }
 

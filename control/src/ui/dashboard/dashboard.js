@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { firebaseAuth } from '../../util/firebase/firebase-util';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js';
+import { onAuthStateChanged } from "@firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Navbar from '../components/navbar';
 import { fetchUserById } from "../../network/user-api";
@@ -8,7 +8,6 @@ import { fetchAllProjects } from "../../network/project-api";
 import { storageConfig, setJsonItem } from "../../util/storage-util";
 import Loading from "../components/loading"
 import RetryAlert from "../components/retry-alert"
-import { Project } from "../../model/Project"
 
 function Dashboard() {
   const navigate = useNavigate();

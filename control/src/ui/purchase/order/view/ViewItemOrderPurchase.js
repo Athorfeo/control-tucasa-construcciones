@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { isDefaultRol, isAdminRol, isSuperAdminRol } from "util/session-util";
 
-export default function ViewItemOrderPurchase({ spreadsheetId, ordersPurchase, userRol, downloadPDF }) {
+function ViewItemOrderPurchase({ spreadsheetId, ordersPurchase, userRol, downloadPDF }) {
   return ordersPurchase.map((purchase, index) => {
     return (
       <div className='container-fluid d-flex flex-column p-3 mb-2 bg-body-tertiary' key={purchase.items[0][0]}>
@@ -39,3 +39,5 @@ export default function ViewItemOrderPurchase({ spreadsheetId, ordersPurchase, u
     );
   });
 };
+
+export default ViewItemOrderPurchase;

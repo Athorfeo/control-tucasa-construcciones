@@ -2,7 +2,7 @@ import React from 'react';
 import { staticData } from "data/static-data";
 import { useAddActivity } from "./useAddActivity";
 
-export default function AddActivityView({ onAdd }) {
+function AddActivityView({ onAdd }) {
   const {
     activityName, setActivityName,
     positionSelectedUnit, setPositionSelectedUnit,
@@ -74,3 +74,6 @@ export default function AddActivityView({ onAdd }) {
     </div>
   );
 };
+
+
+export default AddActivityView;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { firebaseAuth } from '../../util/firebase/firebase-util';
-import { signInWithEmailAndPassword, signOut as signOutFirebase } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js';
+import { signInWithEmailAndPassword } from "@firebase/auth";
 import logo from '../../resource/drawables/logo.svg';
 
 function Login() {
