@@ -1,4 +1,4 @@
-import { networkConfig, getUrlBase, fetchExecutor } from "../util/network-util";
+import { networkConfig, getUrlBase, fetchExecutor } from "./network-util";
 
 export async function fetchAll(spreadsheetId) {
   const url = getUrlBase() + networkConfig.service.minute.root;

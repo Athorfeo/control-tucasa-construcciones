@@ -30,6 +30,7 @@ function Dashboard() {
       await fetchUserById(email)
         .then((response) => {
           setJsonItem(storageConfig.userDataKey, response.data);
+          console.log(response.data);
           console.log("User data session saved!");
         });
     } catch (error) {
@@ -55,6 +56,7 @@ function Dashboard() {
   function setProjectAndNavigate(index) {
     const project = projects[index];
     setJsonItem(storageConfig.selectedProjectDataKey, project);
+    console.log(project);
     console.log("Project data session saved!");
 
     navigate('/feature');

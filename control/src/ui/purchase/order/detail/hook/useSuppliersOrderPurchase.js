@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fetchAllSuppliers } from "network/data-api";
+import { fetchAllSuppliers } from "network/api/data-api";
 
 export const useSuppliersOrderPurchase = ({spreadsheetId}) => {
   const [suppliers, setSuppliers] = useState([]);

@@ -2,7 +2,10 @@ export const networkConfig = {
   data: {
     suppliers: {
       getAll: "/data/suppliers",
-    }
+    },
+    contractors: {
+      getAll: "/data/contractors",
+    },
   },
   user: "/user",
   project: "/project",
@@ -31,7 +34,7 @@ export function getUrlBase() {
 export async function fetchExecutor(url, options) {
   return fetch(url, options)
     .then((response) => {
-      console.log(response);
+      //console.log(response);
       if (!response.ok) {
         throw new Error("Response not ok!");
       }

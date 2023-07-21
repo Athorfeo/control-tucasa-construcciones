@@ -28,4 +28,18 @@ export const staticData = {
     {id: 2, name: 'm3', detail: "Metro cubico"},
     {id: 3, name: "Global", detail: "Global"},
   ],
+  uiActions: {
+    add: "add",
+    update: "update",
+    approve: "approve",
+  },
+  typeInvoice: {
+    suppliers: {id: 1, name: "Proveedor"},
+    contractors: {id: 2, name: "Contratista"}
+  },
 };
+
+export const getTypeInvoices = [
+  staticData.typeInvoice.suppliers,
+  staticData.typeInvoice.contractors,
+];

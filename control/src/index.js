@@ -10,6 +10,8 @@ import App from './ui/App';
 import Login from './ui/login/login';
 import Dashboard from './ui/dashboard/dashboard';
 import DashboardPurchaseOrder from './ui/purchase/order/dashboard-purchase-order';
+import DashboardInvoicePurchase from './ui/purchase/invoice/DashboardInvoicePurchase';
+import DetailInvoicePurchase from './ui/purchase/invoice/detail/DetailInvoicePurchase';
 import DetailPurchaseOrder from './ui/purchase/order/detail/detail-purchase-order';
 import DashboardFeature from './ui/feature/dashboard-feature';
 import DashboardMinuteService from 'ui/service/minute/DashboardMinuteService';
@@ -32,7 +34,7 @@ const router = createBrowserRouter([
         path: "feature",
         element: <DashboardFeature />
       },
-      // Purchase
+      // Order [Purchase]
       {
         path: "/purchase/order/:spreadsheetId",
         element: <DashboardPurchaseOrder />
@@ -44,6 +46,19 @@ const router = createBrowserRouter([
       {
         path: "/purchase/order/:spreadsheetId/:action/start/:start/end/:end",
         element: <DetailPurchaseOrder />
+      },
+      // Invoice [Purchase]
+      {
+        path: "/purchase/invoice/:spreadsheetId",
+        element: <DashboardInvoicePurchase />
+      },
+      {
+        path: "/purchase/invoice/:spreadsheetId/:action",
+        element: <DetailInvoicePurchase />
+      },
+      {
+        path: "/purchase/invoice/:spreadsheetId/:action/start/:start/end/:end",
+        element: <DetailInvoicePurchase />
       },
       // Service
       {
