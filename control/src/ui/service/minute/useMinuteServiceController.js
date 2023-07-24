@@ -45,8 +45,10 @@ export const useMinuteServiceController = (spreadsheetId) => {
           items: _items,
           isPending: (parseInt(item[9]) === 0) ? true : false,
           startPosition: startPositionInSheet,
-          endPosition: endPositionInSheet,
+          endPosition: startPositionInSheet,
         });
+
+        endPositionInSheet = startPositionInSheet;
       } else {
         //Actualizo la ultima posicion
         endPositionInSheet = (index + (1 + offset));

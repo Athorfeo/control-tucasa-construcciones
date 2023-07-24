@@ -45,8 +45,10 @@ export const useDashboardOrderPurchase = (spreadsheetId) => {
           items: _items,
           isPending: (parseInt(item[7]) === 0) ? true : false,
           startPosition: startPositionInSheet,
-          endPosition: endPositionInSheet,
+          endPosition: startPositionInSheet,
         });
+
+        endPositionInSheet = startPositionInSheet;
       } else {
         //Actualizo la ultima posicion
         endPositionInSheet = (index + (1 + offset));

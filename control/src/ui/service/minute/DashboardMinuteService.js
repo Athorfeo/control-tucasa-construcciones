@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { storageConfig, getJsonItem } from "util/storage-util";
+import { isDefaultRol, isSuperAdminRol } from "util/session-util"
 
 import ErrorModal from "ui/components/modal/error/ErrorModal";
 import { useErrorModal } from "ui/components/modal/error/useErrorModal";
@@ -55,6 +56,22 @@ function DashboardMinuteService() {
     }
   }, [userRol]);
 
+  function optionsView() {
+    if (isDefaultRol(userRol) || isSuperAdminRol(userRol)) {
+      return (
+        <div className="d-flex flex-column bg-body-tertiary p-3">
+          <div className='fs-6 fw-bold'>Opciones</div>
+          <hr></hr>
+          <Link className="d-grid gap-2 text-light text-decoration-none" to={'/service/minute/' + spreadsheetId + '/add'}>
+            <button className="btn btn-outline-light text-start">Nueva Acta de Avance de Obra</button>
+          </Link>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
   return (
     <div>
       <ErrorModal data={errorModalData} />
@@ -72,21 +89,15 @@ function DashboardMinuteService() {
             <p>Modulo que maneja las actas de avance de obra.</p>
           </div>
 
-          <div className="d-flex flex-column bg-body-tertiary p-3">
-            <div className='fs-6 fw-bold'>Opciones</div>
-            <hr></hr>
-            <Link className="d-grid gap-2 text-light text-decoration-none" to={'/service/minute/' + spreadsheetId + '/add'}>
-              <button className="btn btn-outline-light text-start">Nueva Acta de Avance de Obra</button>
-            </Link>
-          </div>
+          {optionsView()}
 
           <div className='mt-4'>
-            <p className='fw-light text-uppercase mt-4 mb-2'>Actas Pendientes</p>
+            <p className='fw-bold text-uppercase mt-4 mb-2'>Actas Pendientes</p>
           </div>
           <ItemView spreadsheetId={spreadsheetId} ordersPurchase={pendingPurchases} userRol={userRol} />
 
           <div className='mt-4'>
-            <p className='fw-light text-uppercase mt-4 mb-2'>Actas Aprobadas</p>
+            <p className='fw-bold text-uppercase mt-4 mb-2'>Actas Aprobadas</p>
           </div>
           <ItemView spreadsheetId={spreadsheetId} ordersPurchase={closedPurchases} userRol={userRol} />
         </div>
