@@ -26,8 +26,9 @@ export const staticData = {
   units: [
     {id: 1, name: "m", detail: "Metro"},
     {id: 2, name: 'm2', detail: "Metro cuadrado"},
-    {id: 2, name: 'm3', detail: "Metro cubico"},
-    {id: 3, name: "Global", detail: "Global"},
+    {id: 3, name: 'm3', detail: "Metro cubico"},
+    {id: 4, name: "u", detail: "Unidad"},
+    {id: 5, name: "Global", detail: "Global"},
   ],
   uiActions: {
     add: "add",
