@@ -4,7 +4,7 @@ import {
   fetchAppend,
   fetchUpdate,
   fetchApprove
-} from "network/minuteServiceApi";
+} from "network/api/minuteServiceApi";
 import { storageConfig, getJsonItem } from "util/storage-util";
 import { getCurrentDateFormatted } from "util/dateUtil"
 

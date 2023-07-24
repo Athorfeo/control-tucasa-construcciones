@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { firebaseAuth } from '../../util/firebase/firebase-util';
+import { firebaseAuth } from 'util/firebase/firebase-util';
 import { onAuthStateChanged } from "@firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Navbar from '../components/navbar';
-import { fetchUserById } from "../../network/user-api";
-import { fetchAllProjects } from "../../network/project-api";
-import { storageConfig, setJsonItem } from "../../util/storage-util";
-import Loading from "../components/loading"
-import RetryAlert from "../components/retry-alert"
+import { fetchUserById } from "network/api/user-api";
+import { fetchAllProjects } from "network/api/project-api";
+import { storageConfig, setJsonItem } from "util/storage-util";
+import Loading from "ui/components/loading"
+import RetryAlert from "ui/components/retry-alert"
 
 function Dashboard() {
   const navigate = useNavigate();

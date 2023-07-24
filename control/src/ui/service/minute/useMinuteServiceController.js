@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fetchAll } from "network/minuteServiceApi"
+import { fetchAll } from "network/api/minuteServiceApi"
 
 export const useMinuteServiceController = (spreadsheetId) => {
   const offset = 2;

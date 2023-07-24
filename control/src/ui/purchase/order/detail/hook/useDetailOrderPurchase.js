@@ -4,7 +4,7 @@ import {
   fetchAppendOrderPurchase,
   fetchUpdateOrderPurchase,
   fetchApproveOrderPurchase
-} from "network/purchase-api";
+} from "network/api/purchase-api";
 import { storageConfig, getJsonItem } from "util/storage-util"
 
 export const useDetailOrderPurchase = (spreadsheetId) => {

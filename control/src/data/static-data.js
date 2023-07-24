@@ -20,7 +20,8 @@ export const staticData = {
     {id: 18, name: "CARPINTERIA METALICA"},
     {id: 19, name: "OBRAS EXTERIORES"},
     {id: 20, name: "TERRENO, LICENCIA Y TRAMITES NOTARIALES"},
-    {id: 21, name: "ADMINISTRATIVOS"}
+    {id: 21, name: "ADMINISTRATIVOS"},
+    {id: 22, name: "POSTVENTA"}
   ],
   units: [
     {id: 1, name: "m", detail: "Metro"},

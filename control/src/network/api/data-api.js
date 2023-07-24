@@ -1,4 +1,4 @@
-import { networkConfig, getUrlBase, fetchExecutor } from "../network-util";
+import { networkConfig, getUrlBase, fetchExecutor } from "network/network-util";
 
 export async function fetchAllSuppliers() {
   const url = getUrlBase() + networkConfig.data.suppliers.getAll;
