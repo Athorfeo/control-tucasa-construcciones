@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { storageConfig, getJsonItem } from "util/storage-util"
-import { staticData, getTypeInvoices } from "data/static-data";
+import { staticData } from "data/static-data";
 
 import Navbar from 'ui/components/navbar';
 import Navigator from 'ui/components/navigator';
 import Loading from "ui/components/loading";
 import ViewSuppliersSelect from "ui/components/suppliers/ViewSuppliersSelect";
 import ViewContractorsSelect from "ui/components/contractors/ViewContractorsSelect";
+import ViewPaymentTypeSelect from "ui/components/paymentType/ViewPaymentTypeSelect";
+import ViewChaptersSelect from "ui/components/chapters/ViewChaptersSelect";
 
 import { useDetailInvoicePurchaseController } from "./useDetailInvoicePurchaseController";
 import ViewTypeInvoice from "./ViewTypeInvoice";
@@ -29,14 +31,23 @@ export default function DetailInvoicePurchase() {
     formState,
     onUpdateObservations,
     onSelectTypeInvoice,
+    onSelectPaymentType,
     onSelectSupplier,
     onSelectContactor,
+    onUpdateInvoiceNumber,
+    onUpdateActivityMaterial,
+    onUpdatePrice,
+    onUpdateQuantity,
+    onSelectChapter,
+    onUpdateWithholdingTax,
+    onUpdateIva,
     handleSubmit
   } = useDetailInvoicePurchaseController(spreadsheetId, action, start, end);
 
+  // Type Provider
   function typeProviderView() {
     var typeProvider = null;
-    
+
     switch (dataState.typeInvoices[formState.positionSelectedTypeInvoice].id) {
       case staticData.typeInvoice.suppliers.id:
         typeProvider = (<ViewSuppliersSelect data={dataState.suppliers} positionSelected={formState.positionSelectedSupplier} setPositionSelected={onSelectSupplier} />);
@@ -51,6 +62,7 @@ export default function DetailInvoicePurchase() {
     return typeProvider;
   }
 
+  // Content
   function contentView() {
     var content = null;
 
@@ -81,6 +93,54 @@ export default function DetailInvoicePurchase() {
                 <ViewTypeInvoice data={dataState.typeInvoices} positionSelected={formState.positionSelectedTypeInvoice} setPositionSelected={onSelectTypeInvoice} />
 
                 {typeProviderView()}
+
+                <ViewPaymentTypeSelect data={dataState.paymentType} positionSelected={formState.positionSelectedPaymentType} setPositionSelected={onSelectPaymentType} />
+
+                <div className="mb-3">
+                  <label htmlFor="inputInvoiceNumber" className="form-label">Numero de factura</label>
+                  <input type="text" className="form-control" id="inputInvoiceNumber" aria-describedby="invoiceNumberHelp" required value={formState.invoiceNumber} onChange={(e) => onUpdateInvoiceNumber(e.target.value)}></input>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="inputActivityMaterial" className="form-label">{uiState.activityMaterialLabel}</label>
+                  <input type="text" className="form-control" id="inputActivityMaterial" aria-describedby="activityMaterialHelp" required value={formState.activityMaterial} onChange={(e) => onUpdateActivityMaterial(e.target.value)}></input>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="inputPrice" className="form-label">Precio</label>
+                  <input type="number" min="1" max="9999" className="form-control" id="inputPrice" aria-describedby="priceHelp" required value={formState.price} onChange={(e) => onUpdatePrice(e.target.value)} ></input>
+                  <div id="priceHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="inputPrice" className="form-label">Cantidad</label>
+                  <input type="number" min="1" max="9999" className="form-control" id="inputPrice" aria-describedby="priceHelp" required value={formState.quantity} onChange={(e) => onUpdateQuantity(e.target.value)} ></input>
+                  <div id="priceHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
+                </div>
+
+                <ViewChaptersSelect data={dataState.chapters} positionSelected={formState.positionSelectedChapter} setPositionSelected={onSelectChapter} />
+
+                <div className="mb-3">
+                  <label htmlFor="inputInvoicePhoto" className="form-label">Foto factura</label>
+                  <input type="file" className="form-control" id="inputInvoicePhoto" required></input>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="inputWithholdingTax" className="form-label">Retencion</label>
+                  <input type="number" min="1" max="9999" className="form-control" id="inputWithholdingTax" aria-describedby="withholdingTaxHelp" required value={formState.withholdingTax} onChange={(e) => onUpdateWithholdingTax(e.target.value)} ></input>
+                  <div id="withholdingTaxHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="inputIva" className="form-label">IVA</label>
+                  <input type="number" min="1" max="9999" className="form-control" id="inputIva" aria-describedby="ivaHelp" required value={formState.iva} onChange={(e) => onUpdateIva(e.target.value)} ></input>
+                  <div id="ivaHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="inputInvoicePhoto" className="form-label">Foto Soporte Contable</label>
+                  <input type="file" className="form-control" id="inputInvoicePhoto" required></input>
+                </div>
 
               </div>
 

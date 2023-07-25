@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { staticData, getTypeInvoices } from "data/static-data";
+import { staticData, getTypeInvoices, getPaymentType } from "data/static-data";
 import { useSuppliersRepository } from "data/repository/useSuppliersRepository";
 import { useContractorsRepository } from "data/repository/useContractorsRepository";
 
@@ -12,22 +12,48 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     error: null
   });
 
+  var _titleAction = "";
+  var _labelSubmitButton = "";
+
+  switch (action) {
+    case staticData.uiActions.add:
+      _titleAction = "Nuevo";
+      _labelSubmitButton = "Agregar Factura";
+      break;
+    case staticData.uiActions.update:
+      _titleAction = "Modificar";
+      _labelSubmitButton = "Modificar Factura";
+      break;
+    default:
+  }
+
   const [uiState, setUiState] = useState({
-    titleAction: "",
-    labelSubmitButton: ""
+    titleAction: _titleAction,
+    labelSubmitButton: _labelSubmitButton,
+    activityMaterialLabel: "",
   });
 
   const [dataState, setDataState] = useState({
     typeInvoices: getTypeInvoices,
+    paymentType: getPaymentType,
     suppliers: [],
     contractors: [],
+    chapters: staticData.chapters,
   });
 
   const [formState, setFormState] = useState({
     isFormDisable: false,
     observations: "",
     positionSelectedTypeInvoice: 0,
+    positionSelectedPaymentType: 0,
     positionSelectedContractor: 0,
+    invoiceNumber: "",
+    activityMaterial: "",
+    price: "",
+    quantity: "",
+    positionSelectedChapter: 0,
+    withholdingTax: "",
+    iva: "",
   });
 
   const { suppliers, fetchSuppliers } = useSuppliersRepository(spreadsheetId);
@@ -93,6 +119,13 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     }
   }
 
+  function onSelectPaymentType(value) {
+    setFormState({
+      ...formState,
+      positionSelectedPaymentType: value
+    });
+  }
+
   function onSelectSupplier(value) {
     setFormState({
       ...formState,
@@ -104,6 +137,55 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     setFormState({
       ...formState,
       positionSelectedContractor: value
+    });
+  }
+
+  function onUpdateInvoiceNumber(value) {
+    setFormState({
+      ...formState,
+      invoiceNumber: value
+    });
+  }
+
+  function onUpdateActivityMaterial(value) {
+    setFormState({
+      ...formState,
+      activityMaterial: value
+    });
+  }
+
+  function onUpdatePrice(value) {
+    setFormState({
+      ...formState,
+      price: value
+    });
+  }
+
+  function onUpdateQuantity(value) {
+    setFormState({
+      ...formState,
+      quantity: value
+    });
+  }
+
+  function onSelectChapter(value) {
+    setFormState({
+      ...formState,
+      positionSelectedChapter: value
+    });
+  }
+
+  function onUpdateWithholdingTax(value) {
+    setFormState({
+      ...formState,
+      withholdingTax: value
+    });
+  }
+
+  function onUpdateIva(value) {
+    setFormState({
+      ...formState,
+      withholdingTax: value
     });
   }
 
@@ -124,6 +206,26 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     }
   }, []);
 
+  useEffect(() => {
+    switch (dataState.typeInvoices[formState.positionSelectedTypeInvoice].id) {
+      case staticData.typeInvoice.suppliers.id:
+        setUiState({
+          ...uiState,
+          activityMaterialLabel: "Actividad",
+        });
+        break;
+
+      case staticData.typeInvoice.contractors.id:
+        setUiState({
+          ...uiState,
+          activityMaterialLabel: "Material",
+        });
+        break;
+      default:
+        break;
+    }
+  }, [formState]);
+
   // Set UI action
   useEffect(() => {
     setDataState({
@@ -140,8 +242,16 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     formState,
     onUpdateObservations,
     onSelectTypeInvoice,
+    onSelectPaymentType,
     onSelectSupplier,
     onSelectContactor,
+    onUpdateInvoiceNumber,
+    onUpdateActivityMaterial,
+    onUpdatePrice,
+    onUpdateQuantity,
+    onSelectChapter,
+    onUpdateWithholdingTax,
+    onUpdateIva,
     handleSubmit
   };
 }
