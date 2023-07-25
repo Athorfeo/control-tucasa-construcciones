@@ -50,7 +50,7 @@ function DashboardFeature() {
       features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
       
       const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
-      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
       
       features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
     }
