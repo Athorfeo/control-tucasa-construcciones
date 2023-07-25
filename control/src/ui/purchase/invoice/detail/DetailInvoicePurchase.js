@@ -138,8 +138,8 @@ export default function DetailInvoicePurchase() {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="inputInvoicePhoto" className="form-label">Foto Soporte Contable</label>
-                  <input type="file" className="form-control" id="inputInvoicePhoto" required></input>
+                  <label htmlFor="inputPhotoAccountingSupport" className="form-label">Foto Soporte Contable</label>
+                  <input type="file" className="form-control" id="inputPhotoAccountingSupport" required></input>
                 </div>
 
               </div>

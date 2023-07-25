@@ -185,7 +185,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
   function onUpdateIva(value) {
     setFormState({
       ...formState,
-      withholdingTax: value
+      iva: value
     });
   }
 
