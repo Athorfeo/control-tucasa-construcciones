@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import Loading from "../components/loading";
 import Navigator from "../components/navigator";
-import { isSessionReady, isAdminRol, isSuperAdminRol } from "util/session-util";
+import { isSessionReady, isDefaultRol, isAdminRol, isSuperAdminRol, isAssistantRol } from "util/session-util";
 import ItemDashboardFeature from "./item-dashboard-feature";
 import LabelSectionDashboardFeature from "./label-section-dashboard-feature";
 import { storageConfig, getJsonItem } from "util/storage-util";
@@ -48,16 +48,25 @@ function DashboardFeature() {
 
     if (isSuperAdminRol(rol) || isAdminRol(rol)) {
       features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-      
+
       const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
       features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
-      
+
       features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+
+      const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchase.order;
+      features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
     }
 
-    const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchase.order;
-    features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
+    if (isAssistantRol(rol)) {
+      const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
+      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+    }
 
+    if (isDefaultRol(rol)) {
+      const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchase.order;
+      features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
+    }
 
     setPuchasesSection(features);
   }
@@ -65,13 +74,21 @@ function DashboardFeature() {
   function loadServicesFeatures(rol, selectedProject) {
     const features = [];
 
-    const titleKey = 'services';
-    features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)} />);
+    if (isDefaultRol(rol)) {
+      const titleKey = 'services';
+      features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)} />);
 
-    const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
-    features.push(<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+      const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
+      features.push(<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+    }
 
     if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const titleKey = 'services';
+      features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)} />);
+
+      const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
+      features.push(<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+
       features.push(<ItemDashboardFeature route='/dashboard' title='Pagos a contratistas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
     }
 
@@ -142,7 +159,7 @@ function DashboardFeature() {
       features.push(<LabelSectionDashboardFeature title='Postventa' key={titleKey + (features.length + 1)} />);
 
       features.push(<ItemDashboardFeature route='/dashboard' title='Dashboard Postventa' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-      
+
       setAftersalesSection(features);
     }
   }

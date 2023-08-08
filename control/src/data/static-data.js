@@ -34,6 +34,7 @@ export const staticData = {
     add: "add",
     update: "update",
     approve: "approve",
+    accountingSupport: "accountingsupport",
   },
   typeInvoice: {
     suppliers: {id: 1, name: "Proveedor"},

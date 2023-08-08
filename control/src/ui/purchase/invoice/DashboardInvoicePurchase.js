@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { storageConfig, getJsonItem } from "util/storage-util";
 
-import { isDefaultRol, isAdminRol, isSuperAdminRol } from "util/session-util";
+import { isAdminRol, isSuperAdminRol, isAssistantRol } from "util/session-util";
 
 import ErrorModal from "ui/components/modal/error/ErrorModal";
 import { useErrorModal } from "ui/components/modal/error/useErrorModal";
@@ -11,6 +11,9 @@ import Navbar from 'ui/components/navbar';
 import Navigator from 'ui/components/navigator';
 import Loading from "ui/components/loading";
 
+import { useDashboardInvoicePurchaseController } from "./useDashboardInvoicePurchaseController";
+import ViewItemInvoice from "./ViewItemInvoice";
+
 export default function DashboardInvoicePurchase() {
   const userSession = getJsonItem(storageConfig.userDataKey);
   const userRol = parseInt(userSession.rol);
@@ -18,27 +21,24 @@ export default function DashboardInvoicePurchase() {
   let { spreadsheetId } = useParams();
 
   // Error
-  const [isLoading, setIsLoading] = useState(false);
   const { errorModalData, showErrorModal } = useErrorModal(defaultDismissAction);
 
+  const { uiLogicState, dataState } = useDashboardInvoicePurchaseController(spreadsheetId);
+
   function defaultDismissAction() {
-    setIsLoading(false);
+    //setIsLoading(false);
   }
 
   function navigateUp() {
     navigate('/feature');
   }
 
-  useEffect(() => {
-
-  }, []);
-
   return (
     <div>
       <ErrorModal data={errorModalData} />
       <Navbar />
 
-      {isLoading ? (
+      {uiLogicState.isLoading ? (
         <Loading />
       ) : (
         <div className='container d-flex flex-column'>
@@ -50,7 +50,7 @@ export default function DashboardInvoicePurchase() {
             <p>Modulo que maneja las facturas.</p>
           </div>
 
-          {(isDefaultRol(userRol) || isSuperAdminRol(userRol)) ? (
+          {(isAssistantRol(userRol) || isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
             <div className="d-flex flex-column bg-body-tertiary p-3">
               <div className='fs-6 fw-bold'>Opciones</div>
               <hr></hr>
@@ -62,6 +62,7 @@ export default function DashboardInvoicePurchase() {
 
           <div className='mt-4'>
             <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de facturas</p>
+            <ViewItemInvoice spreadsheetId={spreadsheetId} userRol={userRol} invoices={dataState.invoices}  />
           </div>
         </div>
       )}

@@ -24,7 +24,6 @@ function ViewProductsDetailOrderPurchase({ products, onRemoveProduct, isFormDisa
         ) : (
           <div></div>
         )}
-        
       </div>
     </div>
   });

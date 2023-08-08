@@ -10,6 +10,7 @@ export const useSuppliersRepository = ({spreadsheetId}) => {
       console.log("Suppliers | SuppliersRepository");
       console.log(response);
       setSuppliers(response.data.suppliers);
+      return response.data.suppliers;
     });
   }
 

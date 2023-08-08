@@ -15,6 +15,10 @@ export const networkConfig = {
       getByRange: "/purchase/order/range",
       update: "/purchase/order/update",
       approve: "/purchase/order/approve",
+    },
+    invoice: {
+      root: "/purchase/invoice",
+      getByRange: "/purchase/invoice/range",
     }
   },
   service: {
