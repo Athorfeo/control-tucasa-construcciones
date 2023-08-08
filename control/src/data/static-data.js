@@ -34,14 +34,36 @@ export const staticData = {
     add: "add",
     update: "update",
     approve: "approve",
+    accountingSupport: "accountingsupport",
   },
   typeInvoice: {
     suppliers: {id: 1, name: "Proveedor"},
     contractors: {id: 2, name: "Contratista"}
+  },
+  paymentType: {
+    transferencia: {id: 1, name: "TRANSFERENCIA"},
+    efectivo: {id: 2, name: "EFECTIVO"},
+    tarjeta: {id: 3, name: "TARJETA"},
+    consignacion: {id: 4, name: "CONSIGNACION"},
+    cheque: {id: 5, name: "CHEQUE"},
+    pendiente: {id: 6, name: "PENDIENTE"},
+    pse: {id: 7, name: "PSE"},
+    efectivo: {id: 8, name: "EFECTIVO(E)"},
   },
 };
 
 export const getTypeInvoices = [
   staticData.typeInvoice.suppliers,
   staticData.typeInvoice.contractors,
+];
+
+export const getPaymentType = [
+  staticData.paymentType.transferencia,
+  staticData.paymentType.efectivo,
+  staticData.paymentType.tarjeta,
+  staticData.paymentType.consignacion,
+  staticData.paymentType.cheque,
+  staticData.paymentType.pendiente,
+  staticData.paymentType.pse,
+  staticData.paymentType.efectivo,
 ];

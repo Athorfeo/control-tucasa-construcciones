@@ -10,6 +10,7 @@ export const useContractorsRepository = ({spreadsheetId}) => {
       console.log("Contractors | ContractorsRepository");
       console.log(response);
       setContractors(response.data.contractors);
+      return response.data.contractors;
     });
   }
 
