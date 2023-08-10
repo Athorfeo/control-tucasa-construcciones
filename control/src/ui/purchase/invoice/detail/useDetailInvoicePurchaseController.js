@@ -285,6 +285,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     var _positionSelectedPaymentType = -1;
     var _positionSelectedSupplier = 0;
     var _positionSelectedContractor = 0;
+    var _isInvoiceNumberRequired = false;
 
     dataState.typeInvoices.forEach((item, index) => {
       if (item.name === payload.typeInvoice) {
@@ -299,6 +300,17 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     });
 
     onSelectTypeInvoice(_positionSelectedTypeInvoice);
+    switch (dataState.typeInvoices[_positionSelectedTypeInvoice].id) {
+      case staticData.typeInvoice.suppliers.id:
+        _isInvoiceNumberRequired = true;
+        break;
+
+      case staticData.typeInvoice.contractors.id:
+        _isInvoiceNumberRequired = false;
+        break;
+      default:
+        break;
+    }
 
     const suppliers = await fetchSuppliers();
     const contractors = await fetchContractors();
@@ -331,7 +343,8 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
       positionSelectedTypeInvoice: _positionSelectedTypeInvoice,
       positionSelectedPaymentType: _positionSelectedPaymentType,
       positionSelectedSupplier: _positionSelectedSupplier,
-      positionSelectedContractor: _positionSelectedContractor
+      positionSelectedContractor: _positionSelectedContractor,
+      isInvoiceNumberRequired: _isInvoiceNumberRequired
     });
 
     setIsLoading(false);
