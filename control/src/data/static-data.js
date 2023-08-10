@@ -41,14 +41,17 @@ export const staticData = {
     contractors: {id: 2, name: "Contratista"}
   },
   paymentType: {
-    transferencia: {id: 1, name: "TRANSFERENCIA"},
-    efectivo: {id: 2, name: "EFECTIVO"},
-    tarjeta: {id: 3, name: "TARJETA"},
-    consignacion: {id: 4, name: "CONSIGNACION"},
-    cheque: {id: 5, name: "CHEQUE"},
-    pendiente: {id: 6, name: "PENDIENTE"},
-    pse: {id: 7, name: "PSE"},
-    efectivo: {id: 8, name: "EFECTIVO(E)"},
+    transferenciaBancolombia: {id: 1, name: "TRANSFERENCIA (BANCOLOMBIA)"},
+    transferenciaDavivienda: {id: 2, name: "TRANSFERENCIA (DAVIVIENDA)"},
+    efectivo: {id: 3, name: "EFECTIVO"},
+    tarjetaBancolombia: {id: 4, name: "TARJETA (BANCOLOMBIA)"},
+    tarjetaDavivienda: {id: 5, name: "TARJETA (DAVIVIENDA)"},
+    consignacion: {id: 6, name: "CONSIGNACION"},
+    cheque: {id: 7, name: "CHEQUE"},
+    pendiente: {id: 8, name: "PENDIENTE"},
+    pseBancolombia: {id: 9, name: "PSE (BANCOLOMBIA)"},
+    pseDavivienda: {id: 10, name: "PSE (DAVIVIENDA)"},
+    efectivo: {id: 11, name: "EFECTIVO(E)"},
   },
 };
 
@@ -58,12 +61,15 @@ export const getTypeInvoices = [
 ];
 
 export const getPaymentType = [
-  staticData.paymentType.transferencia,
+  staticData.paymentType.transferenciaBancolombia,
+  staticData.paymentType.transferenciaDavivienda,
   staticData.paymentType.efectivo,
-  staticData.paymentType.tarjeta,
+  staticData.paymentType.tarjetaBancolombia,
+  staticData.paymentType.tarjetaDavivienda,
   staticData.paymentType.consignacion,
   staticData.paymentType.cheque,
   staticData.paymentType.pendiente,
-  staticData.paymentType.pse,
+  staticData.paymentType.pseBancolombia,
+  staticData.paymentType.pseDavivienda,
   staticData.paymentType.efectivo,
 ];
