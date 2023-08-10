@@ -135,7 +135,7 @@ export default function DetailInvoicePurchase() {
 
                 <div className="mb-3">
                   <label htmlFor="inputInvoiceNumber" className="form-label">Numero de factura</label>
-                  <input type="text" className="form-control" id="inputInvoiceNumber" aria-describedby="invoiceNumberHelp" required value={formState.invoiceNumber} onChange={(e) => onUpdateInvoiceNumber(e.target.value)} disabled={formState.isFormDisable}></input>
+                  <input type="text" className="form-control" id="inputInvoiceNumber" aria-describedby="invoiceNumberHelp" required={formState.isInvoiceNumberRequired} value={formState.invoiceNumber} onChange={(e) => onUpdateInvoiceNumber(e.target.value)} disabled={formState.isFormDisable}></input>
                 </div>
 
                 <div className="mb-3">
@@ -145,19 +145,19 @@ export default function DetailInvoicePurchase() {
 
                 <div className="mb-3">
                   <label htmlFor="inputWithholdingTax" className="form-label">Retencion</label>
-                  <input type="number" min="1" max="9999" step="any" className="form-control" id="inputWithholdingTax" aria-describedby="withholdingTaxHelp" required value={formState.withholdingTax} onChange={(e) => onUpdateWithholdingTax(e.target.value)} disabled={formState.isFormDisable}></input>
+                  <input type="number" min="0" max="999999999" step="any" className="form-control" id="inputWithholdingTax" aria-describedby="withholdingTaxHelp" required value={formState.withholdingTax} onChange={(e) => onUpdateWithholdingTax(e.target.value)} disabled={formState.isFormDisable}></input>
                   <div id="withholdingTaxHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="inputIva" className="form-label">IVA</label>
-                  <input type="number" min="1" max="9999" step="any" className="form-control" id="inputIva" aria-describedby="ivaHelp" required value={formState.iva} onChange={(e) => onUpdateIva(e.target.value)} disabled={formState.isFormDisable}></input>
+                  <input type="number" min="0" max="999999999" step="any" className="form-control" id="inputIva" aria-describedby="ivaHelp" required value={formState.iva} onChange={(e) => onUpdateIva(e.target.value)} disabled={formState.isFormDisable}></input>
                   <div id="ivaHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="labelDescription" className="form-label">Observaciones</label>
-                  <textarea className="form-control" id="inputDescription" rows="3" value={formState.observations} onChange={(e) => onUpdateObservations(e.target.value)} required disabled={formState.isFormDisable}></textarea>
+                  <textarea className="form-control" id="inputDescription" rows="3" value={formState.observations} onChange={(e) => onUpdateObservations(e.target.value)} disabled={formState.isFormDisable}></textarea>
                 </div>
 
                 <div className='d-flex flex-column'>
