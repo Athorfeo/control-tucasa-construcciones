@@ -243,7 +243,7 @@ function DetailMinuteService() {
                 <p className='mt-2 mb-2'>Actividades</p>
 
                 <button type="button" className="btn btn-outline-light mb-4 mt-2" data-bs-toggle="modal" data-bs-target="#addProductModal" disabled={isFormDisable}>Agregar Actividad</button>
-                <ActivitiesView data={activities} onRemoveActivity={onRemoveActivity} isFormDisable={isFormDisable} userRol={userRol} onSelectActivityForExecutedQuantity={onSelectActivityForExecutedQuantity} />
+                <ActivitiesView data={activities} onRemove={onRemoveActivity} isFormDisable={isFormDisable} userRol={userRol} onSelectActivityForExecutedQuantity={onSelectActivityForExecutedQuantity} />
               </div>
 
               <div className='d-flex flex-row justify-content-end border-top mt-3'>

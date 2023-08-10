@@ -51,14 +51,14 @@ function ViewAddItem({
 
               <div className="mb-3">
                 <label htmlFor="inputPrice" className="form-label">Precio</label>
-                <input type="number" min="1" max="9999" className="form-control" id="inputPrice" aria-describedby="priceHelp" required value={price} onChange={(e) => setPrice(e.target.value)} ></input>
+                <input type="number" min="0" max="999999999" step="any" className="form-control" id="inputPrice" aria-describedby="priceHelp" required value={price} onChange={(e) => setPrice(e.target.value)} ></input>
                 <div id="priceHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
               </div>
 
               <div className="mb-3">
-                <label htmlFor="inputPrice" className="form-label">Cantidad</label>
-                <input type="number" min="1" max="9999" className="form-control" id="inputPrice" aria-describedby="priceHelp" required value={quantity} onChange={(e) => setQuantity(e.target.value)} ></input>
-                <div id="priceHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
+                <label htmlFor="inputQuantity" className="form-label">Cantidad</label>
+                <input type="number" min="1" max="9999" className="form-control" id="inputQuantity" aria-describedby="quantityHelp" required value={quantity} onChange={(e) => setQuantity(e.target.value)} ></input>
+                <div id="quantityHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
               </div>
 
               <ViewChaptersSelect data={chapters} positionSelected={positionSelectedChapter} setPositionSelected={setPositionSelectedChapter} />

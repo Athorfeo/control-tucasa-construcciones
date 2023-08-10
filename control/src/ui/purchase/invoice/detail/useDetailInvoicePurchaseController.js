@@ -51,6 +51,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
 
   const [formState, setFormState] = useState({
     isFormDisable: false,
+    isInvoiceNumberRequired: true,
     invoiceDate: getCurrentDateFormatted(),
     observations: "",
     positionSelectedTypeInvoice: 0,
@@ -183,6 +184,10 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
 
     switch (dataState.typeInvoices[value].id) {
       case staticData.typeInvoice.suppliers.id:
+        setFormState({
+          ...formState,
+          isInvoiceNumberRequired: true
+        });
         if (dataState.suppliers.length > 0) {
           setIsLoading(false);
         } else {
@@ -199,6 +204,10 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
         break;
 
       case staticData.typeInvoice.contractors.id:
+        setFormState({
+          ...formState,
+          isInvoiceNumberRequired: false
+        });
         if (dataState.contractors.length > 0) {
           setIsLoading(false);
         } else {
