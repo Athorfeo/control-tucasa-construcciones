@@ -5,7 +5,6 @@ import { storageConfig, getJsonItem } from "util/storage-util";
 import { isAdminRol, isSuperAdminRol, isAssistantRol } from "util/session-util";
 
 import ErrorModal from "ui/components/modal/error/ErrorModal";
-import { useErrorModal } from "ui/components/modal/error/useErrorModal";
 
 import Navbar from 'ui/components/navbar';
 import Navigator from 'ui/components/navigator';
@@ -15,23 +14,16 @@ import { useDashboardInvoicePurchaseController } from "./useDashboardInvoicePurc
 import ViewItemInvoice from "./ViewItemInvoice";
 
 export default function DashboardInvoicePurchase() {
-  const userSession = getJsonItem(storageConfig.userDataKey);
-  const userRol = parseInt(userSession.rol);
   const navigate = useNavigate();
   let { spreadsheetId } = useParams();
 
-  // Error
-  const { errorModalData, showErrorModal } = useErrorModal(defaultDismissAction);
-
-  const { uiLogicState, dataState } = useDashboardInvoicePurchaseController(spreadsheetId);
-
-  function defaultDismissAction() {
-    //setIsLoading(false);
-  }
+  const userSession = getJsonItem(storageConfig.userDataKey);
+  const userRol = parseInt(userSession.rol);
 
   function navigateUp() {
     navigate('/feature');
   }
+  const { errorModalData, uiLogicState, dataState } = useDashboardInvoicePurchaseController(spreadsheetId, navigateUp);
 
   return (
     <div>

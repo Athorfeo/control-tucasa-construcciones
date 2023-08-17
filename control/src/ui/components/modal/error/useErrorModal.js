@@ -33,6 +33,7 @@ export const useErrorModal = (defaultDismissAction) => {
       exception: error,
       onDismissAction: _onDismissAction
     });
+    
     showModal();
   }
 

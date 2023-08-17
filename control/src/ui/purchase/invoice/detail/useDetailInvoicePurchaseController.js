@@ -16,29 +16,9 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     error: null
   });
 
-  var _titleAction = "";
-  var _labelSubmitButton = "";
-
-  switch (action) {
-    case staticData.uiActions.add:
-      _titleAction = "Nuevo";
-      _labelSubmitButton = "Agregar Factura";
-      break;
-    case staticData.uiActions.update:
-      _titleAction = "Modificar";
-      _labelSubmitButton = "Modificar Factura";
-      break;
-    case staticData.uiActions.accountingSupport:
-      _titleAction = "Soporte Contable";
-      _labelSubmitButton = "Modificar Factura";
-      break;
-    default:
-  }
-
   const [uiState, setUiState] = useState({
-    titleAction: _titleAction,
-    labelSubmitButton: _labelSubmitButton,
     activityMaterialLabel: "",
+    isInvoiceNumberRequired: true,
   });
 
   const [dataState, setDataState] = useState({
@@ -51,108 +31,162 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
 
   const [formState, setFormState] = useState({
     isFormDisable: false,
-    isInvoiceNumberRequired: true,
+    id: "",
+    date: "",
     invoiceDate: getCurrentDateFormatted(),
     observations: "",
     positionSelectedTypeInvoice: 0,
-    positionSelectedPaymentType: 0,
     positionSelectedSupplier: 0,
     positionSelectedContractor: 0,
+    positionSelectedPaymentType: 0,
+    photoInvoiceFileId: "",
     invoiceNumber: "",
     withholdingTax: "",
     iva: "",
     items: [],
-    id: "",
-    date: "",
-    photoInvoiceFileId: "",
     photoAccountingSupportFileId: "",
   });
 
-  const { suppliers, fetchSuppliers } = useSuppliersRepository(spreadsheetId);
-  const { contractors, fetchContractors } = useContractorsRepository(spreadsheetId);
+  const { fetchSuppliersData } = useSuppliersRepository(spreadsheetId);
+  const { fetchContractorsAsData } = useContractorsRepository(spreadsheetId);
   const { appendInvoiceService, getByIdInvoiceService, updateInvoiceService, addAccountingSupportInvoiceService } = useInvoicePurchaseRepository(spreadsheetId);
 
   const { finishModalData, showFinishDialog } = useFinishModal();
   const { errorModalData, showErrorModal } = useErrorModal();
 
   useEffect(() => {
-    switch (action) {
-      case staticData.uiActions.add:
-        updateUiLabels("Nuevo", "Agregar Factura");
-        onSelectTypeInvoice(0);
-        break;
-      case staticData.uiActions.update:
-        setIsLoading(true);
-        updateUiLabels("Modificar", "Modificar Factura");
-
-        getByIdInvoiceService(start, end).then((response) => {
-          console.log("getByIdInvoiceService");
-          console.log(response);
-          loadInvoiceFromService(response, false);
-        })
-          .catch((error) => {
-            showErrorModal({
-              error: error,
-              onDismissAction: () => { navigateUp(); }
-            });
-          });
-        break;
-      case staticData.uiActions.accountingSupport:
-        setIsLoading(true);
-        updateUiLabels("Soporte Contable", "Modificar Factura");
-
-        getByIdInvoiceService(start, end).then((response) => {
-          console.log("getByIdInvoiceService");
-          console.log(response);
-          loadInvoiceFromService(response, true);
-        })
-          .catch((error) => {
-            showErrorModal({
-              error: error,
-              onDismissAction: () => { navigateUp(); }
-            });
-          });
-        break;
-      default:
-    }
+    loadInitialData();
   }, []);
 
+  async function loadInitialData() {
+    setIsLoading(true);
+
+    try {
+      const suppliers = await fetchSuppliersData();
+      const contractors = await fetchContractorsAsData();
+
+      setDataState({
+        ...dataState,
+        suppliers: suppliers,
+        contractors: contractors
+      })
+
+      switch (action) {
+        case staticData.uiActions.add:
+          onSelectTypeInvoice(0);
+          setIsLoading(false);
+          break;
+        case staticData.uiActions.update:
+          loadInvoiceFromService(suppliers, contractors, false);
+          break;
+        case staticData.uiActions.accountingSupport:
+          loadInvoiceFromService(suppliers, contractors, true);
+          break;
+        default:
+      }
+    } catch (error) {
+      console.error(error);
+      showErrorModal({
+        error: error,
+        onDismissAction: () => { navigateUp(); }
+      });
+    }
+  }
+
+  async function loadInvoiceFromService(suppliers, contractors, isFormDisable) {
+    var _positionSelectedTypeInvoice = -1;
+    var _positionSelectedPaymentType = -1;
+    var _positionSelectedSupplier = 0;
+    var _positionSelectedContractor = 0;
+
+    getByIdInvoiceService(start, end).then((response) => {
+      console.log("getByIdInvoiceService");
+      console.log(response);
+
+      const payload = response.data;
+
+      // Load TypeInvoice
+      dataState.typeInvoices.forEach((item, index) => {
+        if (item.name === payload.typeInvoice) {
+          _positionSelectedTypeInvoice = index;
+        }
+      });
+
+      // Load PaymentType
+      dataState.paymentType.forEach((item, index) => {
+        if (item.name === payload.paymentType) {
+          _positionSelectedPaymentType = index;
+        }
+      });
+
+      // Load Supplier or Contractor
+      suppliers.forEach((item, index) => {
+        if (item[4] === payload.provider) {
+          _positionSelectedSupplier = index;
+        }
+      });
+
+      contractors.forEach((item, index) => {
+        if (item[4] === payload.provider) {
+          _positionSelectedContractor = index;
+        }
+      });
+
+      // Update State
+      setFormState({
+        ...formState,
+        isFormDisable: isFormDisable,
+        id: payload.id,
+        date: payload.date,
+        invoiceDate: payload.invoiceDate,
+        observations: payload.observations,
+        positionSelectedTypeInvoice: _positionSelectedTypeInvoice,
+        positionSelectedSupplier: _positionSelectedSupplier,
+        positionSelectedContractor: _positionSelectedContractor,
+        positionSelectedPaymentType: _positionSelectedPaymentType,
+        photoInvoiceFileId: payload.photoInvoice.fileId,
+        invoiceNumber: payload.invoiceNumber,
+        withholdingTax: payload.withholdingTax,
+        iva: payload.iva,
+        items: payload.items,
+        photoAccountingSupportFileId: payload.photoAccountingSupport.fileId,
+      });
+
+      setIsLoading(false);
+    }).catch((error) => {
+      showErrorModal({
+        error: error,
+        onDismissAction: () => { navigateUp(); }
+      });
+    });
+  }
+
   useEffect(() => {
+    let _isInvoiceNumberRequired = false;
+    let _activityMaterialLabel = "";
+
     switch (dataState.typeInvoices[formState.positionSelectedTypeInvoice].id) {
       case staticData.typeInvoice.suppliers.id:
-        setUiState({
-          ...uiState,
-          activityMaterialLabel: "Material",
-        });
+        _activityMaterialLabel = "Material";
+        _isInvoiceNumberRequired = true;
         break;
 
       case staticData.typeInvoice.contractors.id:
-        setUiState({
-          ...uiState,
-          activityMaterialLabel: "Actividad",
-        });
+        _activityMaterialLabel = "Actividad";
+        _isInvoiceNumberRequired = false;
         break;
       default:
         break;
     }
+
+    setUiState({
+      ...uiState,
+      activityMaterialLabel: _activityMaterialLabel,
+      isInvoiceNumberRequired: _isInvoiceNumberRequired,
+    });
   }, [formState]);
 
   // Set UI action
-  useEffect(() => {
-    setDataState({
-      ...dataState,
-      suppliers: suppliers,
-      contractors: contractors
-    })
-  }, [suppliers, contractors]);
-
-  function updateUiLabels(titleAction, labelSubmitButton) {
-    setUiState({
-      ...uiState,
-      titleAction: titleAction,
-      labelSubmitButton: labelSubmitButton,
-    });
-  }
 
   function setIsLoading(value) {
     setUiLogicState({
@@ -176,51 +210,9 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
   }
 
   function onSelectTypeInvoice(value) {
-    setIsLoading(true);
-    let _isInvoiceNumberRequired = false;
-    
-    switch (dataState.typeInvoices[value].id) {
-      case staticData.typeInvoice.suppliers.id:
-        _isInvoiceNumberRequired = true;
-        if (dataState.suppliers.length > 0) {
-          setIsLoading(false);
-        } else {
-          fetchSuppliers()
-            .then(() => {
-              setIsLoading(false);
-            })
-            .catch((error) => {
-              showErrorModal({
-                error: error
-              });
-            });
-        }
-        break;
-
-      case staticData.typeInvoice.contractors.id:
-        _isInvoiceNumberRequired = false;
-        if (dataState.contractors.length > 0) {
-          setIsLoading(false);
-        } else {
-          fetchContractors()
-            .then(() => {
-              setIsLoading(false);
-            })
-            .catch((error) => {
-              showErrorModal({
-                error: error
-              });
-            });
-        }
-        break;
-      default:
-        break;
-    }
-
     setFormState({
       ...formState,
-      positionSelectedTypeInvoice: value,
-      isInvoiceNumberRequired: _isInvoiceNumberRequired
+      positionSelectedTypeInvoice: value
     });
   }
 
@@ -282,78 +274,6 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
       ...formState,
       items: _temp
     });
-  }
-
-  async function loadInvoiceFromService(service, isFormDisable) {
-    const payload = service.data;
-
-    var _positionSelectedTypeInvoice = -1;
-    var _positionSelectedPaymentType = -1;
-    var _positionSelectedSupplier = 0;
-    var _positionSelectedContractor = 0;
-    var _isInvoiceNumberRequired = false;
-
-    dataState.typeInvoices.forEach((item, index) => {
-      if (item.name === payload.typeInvoice) {
-        _positionSelectedTypeInvoice = index;
-      }
-    });
-
-    dataState.paymentType.forEach((item, index) => {
-      if (item.name === payload.paymentType) {
-        _positionSelectedPaymentType = index;
-      }
-    });
-
-    onSelectTypeInvoice(_positionSelectedTypeInvoice);
-    switch (dataState.typeInvoices[_positionSelectedTypeInvoice].id) {
-      case staticData.typeInvoice.suppliers.id:
-        _isInvoiceNumberRequired = true;
-        break;
-
-      case staticData.typeInvoice.contractors.id:
-        _isInvoiceNumberRequired = false;
-        break;
-      default:
-        break;
-    }
-
-    const suppliers = await fetchSuppliers();
-    const contractors = await fetchContractors();
-
-    suppliers.forEach((item, index) => {
-      if (item[4] === payload.provider) {
-        _positionSelectedSupplier = index;
-      }
-    });
-
-    contractors.forEach((item, index) => {
-      if (item[4] === payload.provider) {
-        _positionSelectedContractor = index;
-      }
-    });
-
-    setFormState({
-      ...formState,
-      isFormDisable: isFormDisable,
-      id: payload.id,
-      date: payload.date,
-      invoiceDate: payload.invoiceDate,
-      observations: payload.observations,
-      invoiceNumber: payload.invoiceNumber,
-      withholdingTax: payload.withholdingTax,
-      iva: payload.iva,
-      photoInvoiceFileId: payload.photoInvoice.fileId,
-      photoAccountingSupportFileId: payload.photoAccountingSupport.fileId,
-      items: payload.items,
-      positionSelectedTypeInvoice: _positionSelectedTypeInvoice,
-      positionSelectedPaymentType: _positionSelectedPaymentType,
-      positionSelectedSupplier: _positionSelectedSupplier,
-      positionSelectedContractor: _positionSelectedContractor,
-      isInvoiceNumberRequired: _isInvoiceNumberRequired
-    });
-
-    setIsLoading(false);
   }
 
   function getFormData() {
@@ -448,7 +368,6 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
 
   function handleAccountingSupportSubmit(e) {
     e.preventDefault();
-
     addAccountingSupportInvoice();
   };
 

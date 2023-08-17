@@ -14,8 +14,18 @@ export const useSuppliersRepository = ({spreadsheetId}) => {
     });
   }
 
+  async function fetchSuppliersData() {
+    console.log("Fetching suppliers...");
+    return fetchAllSuppliers(spreadsheetId).then((response) => {
+      console.log("Suppliers | SuppliersRepository");
+      console.log(response);
+      return response.data.suppliers;
+    });
+  }
+
   return {
     suppliers,
-    fetchSuppliers
+    fetchSuppliers,
+    fetchSuppliersData
   };
 }
