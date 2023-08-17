@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
-import { staticData, getTypeInvoices, getPaymentType } from "data/static-data";
+import { useErrorModal } from "ui/components/modal/error/useErrorModal";
 import { useInvoicePurchaseRepository } from "data/repository/useInvoicePurchaseRepository";
 
 /**
- * Detail Invoice Purchase Controller
+ * Dashboard Invoice Purchase Controller
  */
-export const useDashboardInvoicePurchaseController = (spreadsheetId) => {
+export const useDashboardInvoicePurchaseController = (spreadsheetId, navigateUp) => {
+  const { errorModalData, showErrorModal } = useErrorModal(navigateUp);
+  const { invoices, fetchAll } = useInvoicePurchaseRepository(spreadsheetId);
+
   const [uiLogicState, setUiLogicState] = useState({
     isLoading: false,
     error: null
   });
 
+  
   const [dataState, setDataState] = useState({
     invoices: [],
   });
 
-  const { invoices, fetchAll } = useInvoicePurchaseRepository(spreadsheetId);
-
+  
   function setIsLoading(value) {
     setUiLogicState({
       ...uiLogicState,
@@ -30,6 +33,10 @@ export const useDashboardInvoicePurchaseController = (spreadsheetId) => {
       setIsLoading(false);
     })
     .catch((error) => {
+      showErrorModal({
+        error: error,
+        onDismissAction: () => { navigateUp(); }
+      });
     });
   }, []);
 
@@ -42,6 +49,7 @@ export const useDashboardInvoicePurchaseController = (spreadsheetId) => {
   }, [invoices]);
 
   return {
+    errorModalData,
     uiLogicState,
     dataState,
   };

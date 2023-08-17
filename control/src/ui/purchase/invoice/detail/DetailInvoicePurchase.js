@@ -27,6 +27,25 @@ export default function DetailInvoicePurchase() {
     navigate('/purchase/invoice/' + spreadsheetId);
   }
 
+  let titleAction = "";
+  let labelSubmitButton = "";
+
+  switch (action) {
+    case staticData.uiActions.add:
+      titleAction = "Nuevo";
+      labelSubmitButton= "Agregar Factura";
+      break;
+    case staticData.uiActions.update:
+      titleAction = "Modificar";
+      labelSubmitButton = "Modificar Factura";
+      break;
+    case staticData.uiActions.accountingSupport:
+      titleAction = "Soporte Contable";
+      labelSubmitButton = "Modificar Factura";
+      break;
+    default:
+  }
+
   //UI
   const {
     uiLogicState,
@@ -111,7 +130,7 @@ export default function DetailInvoicePurchase() {
           <Navigator navigateTo={'/purchase/invoice/' + spreadsheetId} />
 
           <div className='d-flex flex-row border-bottom fs-4 mb-2 mt-4'>
-            <div className='p-3 mb-2 border-end'>{uiState.titleAction}</div>
+            <div className='p-3 mb-2 border-end'>{titleAction}</div>
             <div className='p-3'>Factura</div>
           </div>
 
@@ -135,7 +154,7 @@ export default function DetailInvoicePurchase() {
 
                 <div className="mb-3">
                   <label htmlFor="inputInvoiceNumber" className="form-label">Numero de factura</label>
-                  <input type="text" className="form-control" id="inputInvoiceNumber" aria-describedby="invoiceNumberHelp" required={formState.isInvoiceNumberRequired} value={formState.invoiceNumber} onChange={(e) => onUpdateInvoiceNumber(e.target.value)} disabled={formState.isFormDisable}></input>
+                  <input type="text" className="form-control" id="inputInvoiceNumber" aria-describedby="invoiceNumberHelp" required={uiState.isInvoiceNumberRequired} value={formState.invoiceNumber} onChange={(e) => onUpdateInvoiceNumber(e.target.value)} disabled={formState.isFormDisable}></input>
                 </div>
 
                 <div className="mb-3">
@@ -172,7 +191,7 @@ export default function DetailInvoicePurchase() {
               </div>
 
               <div className='d-flex flex-row justify-content-end border-top mt-3'>
-                <button type="submit" className="btn btn-light mt-3" disabled={formState.isFormDisable}>{uiState.labelSubmitButton}</button>
+                <button type="submit" className="btn btn-light mt-3" disabled={formState.isFormDisable}>{labelSubmitButton}</button>
               </div>
 
             </div>

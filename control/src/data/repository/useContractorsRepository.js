@@ -14,8 +14,18 @@ export const useContractorsRepository = ({spreadsheetId}) => {
     });
   }
 
+  async function fetchContractorsAsData() {
+    console.log("Fetching contractors...");
+    return fetchAllContractors(spreadsheetId).then((response) => {
+      console.log("Contractors | ContractorsRepository");
+      console.log(response);
+      return response.data.contractors;
+    });
+  }
+
   return {
     contractors,
-    fetchContractors
+    fetchContractors,
+    fetchContractorsAsData
   };
 }
