@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { storageConfig, getJsonItem } from "util/storage-util"
 import { staticData } from "data/static-data";
-import { isDefaultRol, isSuperAdminRol } from "util/session-util";
+import { isAccountantRol, isDefaultRol, isSuperAdminRol } from "util/session-util";
 
 import Navbar from 'ui/components/navbar';
 import Navigator from 'ui/components/navigator';
@@ -74,14 +74,14 @@ export default function DetailInvoicePurchase() {
 
     switch (action) {
       case staticData.uiActions.accountingSupport:
-        if (isDefaultRol(userRol) || isSuperAdminRol(userRol)) {
+        if (isAccountantRol(userRol) || isSuperAdminRol(userRol)) {
           view = (
             <form onSubmit={handleAccountingSupportSubmit}>
               <div className='container-fluid d-flex flex-column p-3 mb-2 mt-4 bg-body-tertiary'>
                 <div className='container-fluid p-0 d-flex flex-column'>
                   <div className="mb-3">
-                    <label htmlFor="inputPhotoAccountingSupport" className="form-label">Foto Soporte Contable</label>
-                    <input type="file" className="form-control" id="inputPhotoAccountingSupport" required></input>
+                    <label htmlFor="inputAccountingSupportPhoto" className="form-label">Foto Soporte Contable</label>
+                    <input type="file" className="form-control" id="inputAccountingSupportPhoto" accept=".pdf,image/*" required ></input>
                   </div>
 
                 </div>
@@ -141,6 +141,7 @@ export default function DetailInvoicePurchase() {
                 <div className="mb-3">
                   <label htmlFor="inputInvoicePhoto" className="form-label">Foto factura</label>
                   <input type="file" className="form-control" id="inputInvoicePhoto" accept=".pdf,image/*" disabled={formState.isFormDisable}></input>
+                  {formState.photoInvoiceFileId != "" ? (<a href={formState.photoInvoiceFileId} target="_blank" type="button" className="btn btn-outline-light mt-2" >Ver factura</a>) : (null)}
                 </div>
 
                 <div className="mb-3">

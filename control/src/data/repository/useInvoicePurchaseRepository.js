@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fetchAllInvoicePurchase, fetchAppendApi, fetchGetByRangeApi, fetchUpdateApi } from "network/api/purchase/InvoicePurchaseApi";
+import { fetchAllInvoicePurchase, fetchAppendApi, fetchGetByRangeApi, fetchUpdateApi, fetchAddAccountingSupportApi } from "network/api/purchase/InvoicePurchaseApi";
 
 export const useInvoicePurchaseRepository = (spreadsheetId) => {
   const [invoices, setInvoices] = useState([]);
@@ -74,11 +74,16 @@ export const useInvoicePurchaseRepository = (spreadsheetId) => {
     return fetchUpdateApi(spreadsheetId, payload);
   }
 
+  async function addAccountingSupportInvoiceService(payload) {
+    return fetchAddAccountingSupportApi(spreadsheetId, payload);
+  }
+
   return {
     invoices,
     fetchAll,
     appendInvoiceService,
     getByIdInvoiceService,
-    updateInvoiceService
+    updateInvoiceService,
+    addAccountingSupportInvoiceService
   };
 }

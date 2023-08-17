@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import Loading from "../components/loading";
 import Navigator from "../components/navigator";
-import { isSessionReady, isDefaultRol, isAdminRol, isSuperAdminRol, isAssistantRol } from "util/session-util";
+import { isSessionReady, isDefaultRol, isAdminRol, isSuperAdminRol, isAssistantRol, isAccountantRol } from "util/session-util";
 import ItemDashboardFeature from "./item-dashboard-feature";
+import ItemDashboardFeatureHttp from "./item-dashboard-feature-http";
 import LabelSectionDashboardFeature from "./label-section-dashboard-feature";
 import { storageConfig, getJsonItem } from "util/storage-util";
 
 function DashboardFeature() {
   const [isLoading, setIsLoading] = useState(false);
 
+  const [reportsSection, setReportsSection] = useState([]);
   const [purchasesSection, setPuchasesSection] = useState([]);
   const [servicesSection, setServicesSection] = useState([]);
   const [clientsSection, setClientsSection] = useState([]);
@@ -26,6 +28,7 @@ function DashboardFeature() {
         const rol = parseInt(userSession.rol);
         const selectedProject = getJsonItem(storageConfig.selectedProjectDataKey);
 
+        loadReports(rol, selectedProject);
         loadPurchaseFeatures(rol, selectedProject);
         loadServicesFeatures(rol, selectedProject);
         loadClientsFeatures(rol, selectedProject);
@@ -40,17 +43,41 @@ function DashboardFeature() {
     task();
   }, []);
 
+  function loadReports(rol, selectedProject) {
+    const features = [];
+
+    const titleKey = 'reports';
+    features.push(<LabelSectionDashboardFeature title='Reportes' key={titleKey + (features.length + 1)} />);
+
+    if (isDefaultRol(rol) || isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const minuteServiceURL = "https://lookerstudio.google.com/u/0/reporting/ed1a3be3-1883-4814-ac46-9a53cf665a1c/page/hPssC" 
+      features.push(<ItemDashboardFeatureHttp url={minuteServiceURL} title='Ejecución Obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+    }
+
+    if (isAccountantRol(rol) || isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const minuteAccountantURL = "" 
+      features.push(<ItemDashboardFeatureHttp url={minuteAccountantURL} title='Contable' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+    }
+
+    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+      const minutePatnersURL = "" 
+      features.push(<ItemDashboardFeatureHttp url={minutePatnersURL} title='Socios' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+    }
+
+    setReportsSection(features);
+  }
+
   function loadPurchaseFeatures(rol, selectedProject) {
     const features = [];
 
     const titleKey = 'purchases';
-    features.push(<LabelSectionDashboardFeature title='Compras' key={titleKey + (features.length + 1)} />);
+    features.push(<LabelSectionDashboardFeature title='Compras y pagos' key={titleKey + (features.length + 1)} />);
 
     if (isSuperAdminRol(rol) || isAdminRol(rol)) {
       features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
 
       const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
-      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas y pagos' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
 
       features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
 
@@ -58,9 +85,9 @@ function DashboardFeature() {
       features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
     }
 
-    if (isAssistantRol(rol)) {
+    if (isAssistantRol(rol) || isAccountantRol(rol)) {
       const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
-      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas y pagos' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
     }
 
     if (isDefaultRol(rol)) {
@@ -88,8 +115,6 @@ function DashboardFeature() {
 
       const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
       features.push(<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
-
-      features.push(<ItemDashboardFeature route='/dashboard' title='Pagos a contratistas' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
     }
 
     setServicesSection(features);
@@ -183,6 +208,7 @@ function DashboardFeature() {
             Funcionalides disponibles
           </div>
 
+          {reportsSection}
           {purchasesSection}
           {servicesSection}
           {clientsSection}

@@ -19,6 +19,7 @@ export const networkConfig = {
     invoice: {
       root: "/purchase/invoice",
       getByRange: "/purchase/invoice/range",
+      accountingSupport: "/purchase/invoice/accountingsupport",
     }
   },
   service: {

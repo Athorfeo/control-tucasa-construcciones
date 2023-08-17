@@ -59,3 +59,19 @@ export async function fetchUpdateApi(spreadsheetId, payload) {
     }
   );
 }
+
+export async function fetchAddAccountingSupportApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.purchase.invoice.accountingSupport;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}
