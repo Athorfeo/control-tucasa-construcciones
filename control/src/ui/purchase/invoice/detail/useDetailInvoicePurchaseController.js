@@ -44,7 +44,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     withholdingTax: "",
     iva: "",
     items: [],
-    photoAccountingSupportFileId: "",
+    accountingSupport: "",
   });
 
   const { fetchSuppliersData } = useSuppliersRepository(spreadsheetId);
@@ -149,7 +149,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
         withholdingTax: payload.withholdingTax,
         iva: payload.iva,
         items: payload.items,
-        photoAccountingSupportFileId: payload.photoAccountingSupport.fileId,
+        accountingSupport: payload.accountingSupport,
       });
 
       setIsLoading(false);
@@ -258,6 +258,13 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     });
   }
 
+  function onUpdateAccountingSupport(value) {
+    setFormState({
+      ...formState,
+      accountingSupport: value
+    });
+  }
+
   function onAddItem(item) {
     const _temp = [...formState.items];
     _temp.push(item);
@@ -303,9 +310,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
       withholdingTax: formState.withholdingTax,
       iva: formState.iva,
       items: formState.items,
-      photoAccountingSupport: {
-        fileId: formState.photoAccountingSupportFileId
-      },
+      accountingSupport: formState.accountingSupport,
     };
 
     return data;
@@ -323,23 +328,6 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
 
     try {
       const file = document.querySelector("#inputInvoicePhoto").files[0];
-      const rawData = await fileToBase64(file);
-      data = {
-        mimeType: file.type,
-        rawData: rawData,
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
-    return data;
-  }
-
-  async function getAccountingSupportFile() {
-    var data = null;
-
-    try {
-      const file = document.querySelector("#inputAccountingSupportPhoto").files[0];
       const rawData = await fileToBase64(file);
       data = {
         mimeType: file.type,
@@ -434,9 +422,6 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
         photoInvoice: {
           ...photoFile,
           fileId: formState.photoInvoiceFileId
-        },
-        photoAccountingSupport: {
-          fileId: formState.photoAccountingSupportFileId
         }
       }
 
@@ -465,49 +450,36 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
 
   async function addAccountingSupportInvoice() {
     setIsLoading(true);
-    const photoFile = await getAccountingSupportFile();
     const formData = getFormData();
 
-    if (photoFile === null) {
-      showFinishDialog({
-        title: 'Foto faltante',
-        message: 'Debe seleccionar la foto del soporte contable.',
-        labelButton: 'Cerrar',
-        onDismissAction: () => { setIsLoading(false); }
-      });
-    } else {
-      const payload = {
-        startPosition: start,
-        endPosition: end,
-        id: formState.id,
-        provider: formData.provider,
-        photoAccountingSupport: {
-          fileId: formState.photoAccountingSupportFileId,
-          ...photoFile
-        }
-      }
-
-      console.log("Add accounting support invoice payload");
-      console.log(payload);
-
-      addAccountingSupportInvoiceService(payload)
-        .then(() => {
-          setIsLoading(false);
-
-          showFinishDialog({
-            title: 'Soporte contable agregado',
-            message: 'Se ha agregado el soporte contable exitosamente. Pulse el boton para finalizar.',
-            labelButton: 'Finalizar',
-            onDismissAction: () => navigateUp()
-          });
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          showErrorModal({
-            error: error
-          });
-        });
+    const payload = {
+      startPosition: start,
+      endPosition: end,
+      id: formState.id,
+      provider: formData.provider,
+      accountingSupport: formData.accountingSupport
     }
+
+    console.log("Add accounting support invoice payload");
+    console.log(payload);
+
+    addAccountingSupportInvoiceService(payload)
+      .then(() => {
+        setIsLoading(false);
+
+        showFinishDialog({
+          title: 'Soporte contable agregado',
+          message: 'Se ha agregado el soporte contable exitosamente. Pulse el boton para finalizar.',
+          labelButton: 'Finalizar',
+          onDismissAction: () => navigateUp()
+        });
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        showErrorModal({
+          error: error
+        });
+      });
   }
 
   return {
@@ -526,6 +498,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     onUpdateInvoiceNumber,
     onUpdateWithholdingTax,
     onUpdateIva,
+    onUpdateAccountingSupport,
     onAddItem,
     onRemoveItem,
     handleSubmit,

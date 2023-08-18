@@ -9,9 +9,9 @@ function ViewItemInvoice({ spreadsheetId, userRol, invoices }) {
         <div className='container-fluid p-0 d-flex flex-column'>
           <div className='d-flex flex-row'>
             <div className='fw-bold'>#{item.id}</div>
-            <div className='fw-light ms-2'>{item.invoiceNumber} | {item.provider}</div>
+            <div className='fw-light ms-2'>{item.invoiceDate}</div>
           </div>
-
+          <div className='fw-light mt-2'>{item.provider}  | {item.invoiceNumber}</div>
           <div className='fw-light mt-2'>{item.observations}</div>
         </div>
 

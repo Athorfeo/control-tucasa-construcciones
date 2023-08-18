@@ -63,6 +63,7 @@ export default function DetailInvoicePurchase() {
     onUpdateInvoiceNumber,
     onUpdateWithholdingTax,
     onUpdateIva,
+    onUpdateAccountingSupport,
     onAddItem,
     onRemoveItem,
     handleSubmit,
@@ -98,10 +99,10 @@ export default function DetailInvoicePurchase() {
             <form onSubmit={handleAccountingSupportSubmit}>
               <div className='container-fluid d-flex flex-column p-3 mb-2 mt-4 bg-body-tertiary'>
                 <div className='container-fluid p-0 d-flex flex-column'>
-                  <div className="mb-3">
-                    <label htmlFor="inputAccountingSupportPhoto" className="form-label">Foto Soporte Contable</label>
-                    <input type="file" className="form-control" id="inputAccountingSupportPhoto" accept=".pdf,image/*" required ></input>
-                  </div>
+                <div className="mb-3">
+                  <label htmlFor="inputAccountingSupport" className="form-label">Soporte Contable</label>
+                  <input type="text" className="form-control" id="inputAccountingSupport" aria-describedby="accountingSupportHelp" required value={formState.accountingSupport} onChange={(e) => onUpdateAccountingSupport(e.target.value)}></input>
+                </div>
 
                 </div>
 

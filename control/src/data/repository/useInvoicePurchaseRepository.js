@@ -56,8 +56,7 @@ export const useInvoicePurchaseRepository = (spreadsheetId) => {
             _invoices.push(_invoiceTemp);
           }
         });
-
-        setInvoices(_invoices.sort((a, b) => parseInt(b.id) - parseInt(a.id)));
+        setInvoices(_invoices.sort((a, b) => (new Date(b.invoiceDate) - new Date(a.invoiceDate)) || (parseInt(b.id) - parseInt(a.id))));
       }
     });
   }
