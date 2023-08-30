@@ -57,7 +57,7 @@ function ViewAddItem({
 
               <div className="mb-3">
                 <label htmlFor="inputQuantity" className="form-label">Cantidad</label>
-                <input type="number" min="1" max="9999" className="form-control" id="inputQuantity" aria-describedby="quantityHelp" required value={quantity} onChange={(e) => setQuantity(e.target.value)} ></input>
+                <input type="number" min="0" max="9999" step="any" className="form-control" id="inputQuantity" aria-describedby="quantityHelp" required value={quantity} onChange={(e) => setQuantity(e.target.value)} ></input>
                 <div id="quantityHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
               </div>
 
