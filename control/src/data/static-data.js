@@ -51,7 +51,7 @@ export const staticData = {
     pendiente: {id: 8, name: "PENDIENTE"},
     pseBancolombia: {id: 9, name: "PSE (BANCOLOMBIA)"},
     pseDavivienda: {id: 10, name: "PSE (DAVIVIENDA)"},
-    efectivo: {id: 11, name: "EFECTIVO(E)"},
+    efectivoE: {id: 11, name: "EFECTIVO (E)"},
   },
 };
 
@@ -71,5 +71,5 @@ export const getPaymentType = [
   staticData.paymentType.pendiente,
   staticData.paymentType.pseBancolombia,
   staticData.paymentType.pseDavivienda,
-  staticData.paymentType.efectivo,
+  staticData.paymentType.efectivoE,
 ];

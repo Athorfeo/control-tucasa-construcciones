@@ -50,18 +50,18 @@ function DashboardFeature() {
     features.push(<LabelSectionDashboardFeature title='Reportes' key={titleKey + (features.length + 1)} />);
 
     if (isDefaultRol(rol) || isSuperAdminRol(rol) || isAdminRol(rol)) {
-      const minuteServiceURL = "https://lookerstudio.google.com/u/0/reporting/ed1a3be3-1883-4814-ac46-9a53cf665a1c/page/hPssC" 
-      features.push(<ItemDashboardFeatureHttp url={minuteServiceURL} title='Ejecución Obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+      const minuteURL = selectedProject.reports.minute;
+      features.push(<ItemDashboardFeatureHttp url={minuteURL} title='Ejecución Obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
     }
 
     if (isAccountantRol(rol) || isSuperAdminRol(rol) || isAdminRol(rol)) {
-      const minuteAccountantURL = "" 
-      features.push(<ItemDashboardFeatureHttp url={minuteAccountantURL} title='Contable' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      const accountantURL = selectedProject.reports.accountant;
+      features.push(<ItemDashboardFeatureHttp url={accountantURL} title='Contable' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
     }
 
     if (isSuperAdminRol(rol) || isAdminRol(rol)) {
-      const minutePatnersURL = "" 
-      features.push(<ItemDashboardFeatureHttp url={minutePatnersURL} title='Socios' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      const patnersURL = selectedProject.reports.patners;
+      features.push(<ItemDashboardFeatureHttp url={patnersURL} title='Socios' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
     }
 
     setReportsSection(features);
