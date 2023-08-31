@@ -13,6 +13,8 @@ import DashboardPurchaseOrder from './ui/purchase/order/dashboard-purchase-order
 import DashboardInvoicePurchase from './ui/purchase/invoice/DashboardInvoicePurchase';
 import DetailInvoicePurchase from './ui/purchase/invoice/detail/DetailInvoicePurchase';
 import DetailPurchaseOrder from './ui/purchase/order/detail/detail-purchase-order';
+import DashboardPettyCashPurchase from './ui/purchase/pettycash/DashboardPettyCashPurchase';
+//import DetailPettyCashPurchase from './ui/purchase/pettycash/detail/DetailInvoicePurchase';
 import DashboardFeature from './ui/feature/dashboard-feature';
 import DashboardMinuteService from 'ui/service/minute/DashboardMinuteService';
 import DetailMinuteService from 'ui/service/minute/detail/DetailMinuteService';
@@ -60,6 +62,19 @@ const router = createBrowserRouter([
         path: "/purchase/invoice/:spreadsheetId/:action/start/:start/end/:end",
         element: <DetailInvoicePurchase />
       },
+      // Petty Cash [Purchase]
+      {
+        path: "/purchase/pettycash/:spreadsheetId",
+        element: <DashboardPettyCashPurchase />
+      },
+      {
+        path: "/purchase/pettycash/:spreadsheetId/:action",
+        element: <DetailInvoicePurchase />
+      },
+      {
+        path: "/purchase/pettycash/:spreadsheetId/:action/start/:start/end/:end",
+        element: <DetailInvoicePurchase />
+      },
       // Service
       {
         path: "/service/minute/:spreadsheetId",
@@ -70,7 +85,7 @@ const router = createBrowserRouter([
         element: <DetailMinuteService />
       },
       {
-        path: "/service/minute/:spreadsheetId/:action/start/:start/end/:end",
+        path: "/service/minute/:spreadsheetId/:action/position/:position",
         element: <DetailMinuteService />
       },
     ],

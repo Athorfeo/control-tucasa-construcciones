@@ -71,28 +71,38 @@ function DashboardFeature() {
     const features = [];
 
     const titleKey = 'purchases';
-    features.push(<LabelSectionDashboardFeature title='Compras y pagos' key={titleKey + (features.length + 1)} />);
+    features.push(<LabelSectionDashboardFeature title='Compras y pagos' key={titleKey + 0} />);
+
+    const pettyCashRoute = "/purchase/pettycash/" + selectedProject.purchase.pettyCash;
+    const pettyCashFeature = <ItemDashboardFeature route={pettyCashRoute} title='Caja menor' description='Esta es una descripcion' isEnable={true} key={titleKey + 1} />;
+
+    const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
+    const invoiceFeature = <ItemDashboardFeature route={invoiceRoute} title='Facturas y pagos' description='Esta es una descripcion' isEnable={true} key={titleKey + 2} />;
+    
+    const taxesFeature = <ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' isEnable={false} key={titleKey + 3} />;
+
+    const orderRoute = "/purchase/order/" + selectedProject.purchase.order;
+    const orderFeature = <ItemDashboardFeature route={orderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + 4} isEnable={true} />;
+
 
     if (isSuperAdminRol(rol) || isAdminRol(rol)) {
-      features.push(<ItemDashboardFeature route='/dashboard' title='Caja menor' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-
-      const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
-      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas y pagos' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
-
-      features.push(<ItemDashboardFeature route='/dashboard' title='Impuestos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
-
-      const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchase.order;
-      features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
+      features.push(pettyCashFeature);
+      features.push(invoiceFeature);
+      features.push(taxesFeature);
+      features.push(orderFeature);
     }
 
-    if (isAssistantRol(rol) || isAccountantRol(rol)) {
-      const invoiceRoute = "/purchase/invoice/" + selectedProject.purchase.invoice;
-      features.push(<ItemDashboardFeature route={invoiceRoute} title='Facturas y pagos' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+    if (isAssistantRol(rol)) {
+      features.push(pettyCashFeature);
+      features.push(invoiceFeature);
     }
+
+    if (isAccountantRol(rol)) {
+      features.push(pettyCashFeature);
+      features.push(invoiceFeature);    }
 
     if (isDefaultRol(rol)) {
-      const purchaseOrderRoute = "/purchase/order/" + selectedProject.purchase.order;
-      features.push(<ItemDashboardFeature route={purchaseOrderRoute} title='Orden de compra' description='Esta es una descripcion' key={titleKey + (features.length + 1)} isEnable={true} />);
+      features.push(orderFeature);
     }
 
     setPuchasesSection(features);
