@@ -60,8 +60,8 @@ export async function fetchUpdateApi(spreadsheetId, payload) {
   );
 }
 
-export async function fetchAddAccountingSupportApi(spreadsheetId, payload) {
-  const url = getUrlBase() + networkConfig.purchase.invoice.accountingSupport;
+export async function fetchAddAccountingDocumentApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.purchase.invoice.accountingDocument;
   const body = JSON.stringify({data: payload});
   return fetchExecutor(
     url,

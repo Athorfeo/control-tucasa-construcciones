@@ -45,7 +45,23 @@ export async function fetchAppendPettyCashApi(spreadsheetId, payload) {
 }
 
 export async function fetchUpdatePettyCashApi(spreadsheetId, payload) {
-  const url = getUrlBase() + networkConfig.purchase.invoice.root;
+  const url = getUrlBase() + networkConfig.purchase.pettyCash.root;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}
+
+export async function fetchAccountingDocumentPettyCashApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.purchase.pettyCash.accountingDocument;
   const body = JSON.stringify({data: payload});
   return fetchExecutor(
     url,

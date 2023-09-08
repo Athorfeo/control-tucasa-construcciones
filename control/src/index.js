@@ -14,7 +14,7 @@ import DashboardInvoicePurchase from './ui/purchase/invoice/DashboardInvoicePurc
 import DetailInvoicePurchase from './ui/purchase/invoice/detail/DetailInvoicePurchase';
 import DetailPurchaseOrder from './ui/purchase/order/detail/detail-purchase-order';
 import DashboardPettyCashPurchase from './ui/purchase/pettycash/DashboardPettyCashPurchase';
-//import DetailPettyCashPurchase from './ui/purchase/pettycash/detail/DetailInvoicePurchase';
+import DetailPettyCashPurchase from './ui/purchase/pettycash/detail/DetailPettyCashPurchase';
 import DashboardFeature from './ui/feature/dashboard-feature';
 import DashboardMinuteService from 'ui/service/minute/DashboardMinuteService';
 import DetailMinuteService from 'ui/service/minute/detail/DetailMinuteService';
@@ -69,11 +69,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/purchase/pettycash/:spreadsheetId/:action",
-        element: <DetailInvoicePurchase />
+        element: <DetailPettyCashPurchase />
       },
       {
-        path: "/purchase/pettycash/:spreadsheetId/:action/start/:start/end/:end",
-        element: <DetailInvoicePurchase />
+        path: "/purchase/pettycash/:spreadsheetId/:action/position/:position",
+        element: <DetailPettyCashPurchase />
       },
       // Service
       {

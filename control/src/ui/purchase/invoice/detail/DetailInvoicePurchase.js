@@ -12,6 +12,7 @@ import FinishModal from "ui/components/modal/finish/FinishModal";
 import ViewSuppliersSelect from "ui/components/suppliers/ViewSuppliersSelect";
 import ViewContractorsSelect from "ui/components/contractors/ViewContractorsSelect";
 import ViewPaymentTypeSelect from "ui/components/paymentType/ViewPaymentTypeSelect";
+import AccountingDocument from "ui/components/accountingdocument/AccountingDocument";
 
 import { useDetailInvoicePurchaseController } from "./useDetailInvoicePurchaseController";
 import ViewTypeInvoice from "./ViewTypeInvoice";
@@ -198,7 +199,7 @@ export default function DetailInvoicePurchase() {
             </div>
           </form>
 
-          {accountingSupportView()}
+          <AccountingDocument action={action} userRol={userRol} handleSubmit={handleAccountingSupportSubmit} value={formState.accountingSupport} onUpdateValue={onUpdateAccountingSupport} />
         </div>
       );
     }

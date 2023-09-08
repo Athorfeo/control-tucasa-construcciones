@@ -19,11 +19,12 @@ export const networkConfig = {
     invoice: {
       root: "/purchase/invoice",
       getByRange: "/purchase/invoice/range",
-      accountingSupport: "/purchase/invoice/accountingsupport",
+      accountingDocument: "/purchase/invoice/accountingdocument",
     },
     pettyCash: {
       root: "/purchase/pettycash",
       getByRange: "/purchase/pettycash/range",
+      accountingDocument: "/purchase/pettycash/accountingdocument",
     }
   },
   service: {

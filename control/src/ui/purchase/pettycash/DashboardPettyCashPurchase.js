@@ -54,7 +54,7 @@ export default function DashboardPettyCashPurchase() {
 
           <div className='mt-4'>
             <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de facturas de caja menor</p>
-            <ViewItemPettyCash spreadsheetId={spreadsheetId} userRol={userRol} data={dataState.pettyCash}  />
+            <ViewItemPettyCash spreadsheetId={spreadsheetId} userRol={userRol} data={dataState.pettyCash} />
           </div>
         </div>
       )}

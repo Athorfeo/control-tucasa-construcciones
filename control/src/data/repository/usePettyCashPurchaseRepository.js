@@ -2,7 +2,8 @@ import {
   fetchAllPettyCashApi,
   fetchGetByRangePettyCashApi,
   fetchAppendPettyCashApi,
-  fetchUpdatePettyCashApi
+  fetchUpdatePettyCashApi,
+  fetchAccountingDocumentPettyCashApi
  } from "network/api/purchase/PettyCashPurchaseApi";
 
 export const usePettyCashPurchaseRepository = (spreadsheetId) => {
@@ -38,10 +39,19 @@ export const usePettyCashPurchaseRepository = (spreadsheetId) => {
     });
   }
 
+  async function updateAccountingDocumentService(payload) {
+    return fetchAccountingDocumentPettyCashApi(spreadsheetId, payload).then((response) => {
+      console.log("Update accounting document service | Petty Cash");
+      console.log(response);
+      return response;
+    });
+  }
+
   return {
     fetchAllService,
     getByIdService,
     appendService,
-    updateService
+    updateService,
+    updateAccountingDocumentService
   };
 }

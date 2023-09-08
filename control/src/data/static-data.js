@@ -34,6 +34,7 @@ export const staticData = {
     add: "add",
     update: "update",
     approve: "approve",
+    detail: "detail",
     accountingSupport: "accountingsupport",
   },
   typeInvoice: {
@@ -52,6 +53,21 @@ export const staticData = {
     pseBancolombia: {id: 9, name: "PSE (BANCOLOMBIA)"},
     pseDavivienda: {id: 10, name: "PSE (DAVIVIENDA)"},
     efectivoE: {id: 11, name: "EFECTIVO (E)"},
+  },
+  banks: {
+    davivienda: {id: 1, name: "DAVIVIENDA"},
+    bancolombia: {id: 2, name: "BANCOLOMBIA"},
+    crediservir: {id: 3, name: "CREDISERVIR"},
+    daviplata: {id: 4, name: "DAVIPLATA"},
+    nequi: {id: 5, name: "NEQUI"},
+    bogota: {id: 6, name: "BANCO DE BOGOTA"},
+    cajasocial: {id: 7, name: "BANCO CAJA SOCIAL"},
+    bbva: {id: 8, name: "BBVA"},
+    agragrio: {id: 9, name: "BANCO AGRARIO"},
+    w: {id: 10, name: "BANCO W"},
+    mujer: {id: 11, name: "BANCO DE LA MUJER"},
+    efecty: {id: 12, name: "EFECTY"},
+    afectivo: {id: 13, name: "EFECTIVO"},
   },
 };
 
@@ -72,4 +88,19 @@ export const getPaymentType = [
   staticData.paymentType.pseBancolombia,
   staticData.paymentType.pseDavivienda,
   staticData.paymentType.efectivoE,
+];
+
+export const getBanks = [
+  staticData.banks.davivienda,
+  staticData.banks.bancolombia,
+  staticData.banks.crediservir,
+  staticData.banks.nequi,
+  staticData.banks.bogota,
+  staticData.banks.cajasocial,
+  staticData.banks.bbva,
+  staticData.banks.agragrio,
+  staticData.banks.w,
+  staticData.banks.mujer,
+  staticData.banks.efecty,
+  staticData.banks.afectivo,
 ];
