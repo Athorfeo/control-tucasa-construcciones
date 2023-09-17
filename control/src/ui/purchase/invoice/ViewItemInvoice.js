@@ -11,23 +11,27 @@ function ViewItemInvoice({ spreadsheetId, userRol, invoices }) {
             <div className='fw-bold'>#{item.id}</div>
             <div className='fw-light ms-2'>{item.invoiceDate}</div>
           </div>
-          <div className='fw-light mt-2'>{item.provider}  | {item.invoiceNumber}</div>
+
+          <div className='fw-bold mt-2'>Proveedor / Contratista</div>
+          <div className='fw-light'>{item.provider}</div>
+
+          <div className='fw-bold mt-2'>Numero de factura</div>
+          <div className='fw-light'>{item.invoiceNumber}</div>
+
           <div className='fw-light mt-2'>{item.observations}</div>
         </div>
 
-        <div className='d-flex flex-row justify-content-end border-top mt-3'>
-          <div>
-            {(isAssistantRol(userRol) || isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
-              <Link className="gap-2 text-light text-decoration-none" to={'/purchase/invoice/' + spreadsheetId + '/update/start/' + item.startPosition + '/end/' + item.endPosition}>
-                <button type="button" className="btn btn-outline-light mt-3">Modificar</button>
-              </Link>
-            ) : (null)}
-            {(isAccountantRol(userRol)  || isSuperAdminRol(userRol)) ? (
-              <Link className="gap-2 text-light text-decoration-none" to={'/purchase/invoice/' + spreadsheetId + '/accountingsupport/start/' + item.startPosition + '/end/' + item.endPosition}>
-                <button type="button" className="btn btn-outline-light mt-3 ms-3">Agregar soporte contable</button>
-              </Link>
-            ) : (null)}
-          </div>
+        <div className='d-flex flex-column flex-sm-row align-items-end justify-content-end border-top mt-3'>
+          {(isAssistantRol(userRol) || isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
+            <Link className="gap-2 text-light text-decoration-none" to={'/purchase/invoice/' + spreadsheetId + '/update/start/' + item.startPosition + '/end/' + item.endPosition}>
+              <button type="button" className="btn btn-outline-light mt-3">Modificar</button>
+            </Link>
+          ) : (null)}
+          {(isAccountantRol(userRol) || isSuperAdminRol(userRol)) ? (
+            <Link className="gap-2 text-light text-decoration-none" to={'/purchase/invoice/' + spreadsheetId + '/accountingsupport/start/' + item.startPosition + '/end/' + item.endPosition}>
+              <button type="button" className="btn btn-outline-light mt-3 ms-3">Agregar documento contable</button>
+            </Link>
+          ) : (null)}
         </div>
       </div>
     );

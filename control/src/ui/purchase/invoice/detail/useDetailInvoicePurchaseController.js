@@ -41,15 +41,15 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     positionSelectedPaymentType: 0,
     photoInvoiceFileId: "",
     invoiceNumber: "",
-    withholdingTax: "",
-    iva: "",
+    withholdingTax: "0",
+    iva: "0",
     items: [],
     accountingSupport: "",
   });
 
   const { fetchSuppliersData } = useSuppliersRepository(spreadsheetId);
   const { fetchContractorsAsData } = useContractorsRepository(spreadsheetId);
-  const { appendInvoiceService, getByIdInvoiceService, updateInvoiceService, addAccountingSupportInvoiceService } = useInvoicePurchaseRepository(spreadsheetId);
+  const { appendInvoiceService, getByIdInvoiceService, updateInvoiceService, addAccountingDocumentInvoiceService } = useInvoicePurchaseRepository(spreadsheetId);
 
   const { finishModalData, showFinishDialog } = useFinishModal();
   const { errorModalData, showErrorModal } = useErrorModal();
@@ -456,14 +456,13 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
       startPosition: start,
       endPosition: end,
       id: formState.id,
-      provider: formData.provider,
-      accountingSupport: formData.accountingSupport
+      accountingDocument: formData.accountingSupport
     }
 
     console.log("Add accounting support invoice payload");
     console.log(payload);
 
-    addAccountingSupportInvoiceService(payload)
+    addAccountingDocumentInvoiceService(payload)
       .then(() => {
         setIsLoading(false);
 
