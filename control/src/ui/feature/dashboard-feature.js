@@ -120,20 +120,20 @@ function DashboardFeature() {
   function loadServicesFeatures(rol, selectedProject) {
     const features = [];
 
-    if (isDefaultRol(rol)) {
-      const titleKey = 'services';
-      features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)} />);
+    const titleKey = 'services';
+    const labelFeature = (<LabelSectionDashboardFeature title='Servicios' key={titleKey + 1} />);
 
-      const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
-      features.push(<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+    const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
+    const minuteFeature = (<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Modulo de actas de avance de obra' isEnable={true} key={titleKey + 2} />);
+
+    if (isDefaultRol(rol)) {
+      features.push(labelFeature);
+      features.push(minuteFeature);
     }
 
     if (isSuperAdminRol(rol) || isAdminRol(rol)) {
-      const titleKey = 'services';
-      features.push(<LabelSectionDashboardFeature title='Servicios' key={titleKey + (features.length + 1)} />);
-
-      const minuteServiceRoute = "/service/minute/" + selectedProject.service.minute;
-      features.push(<ItemDashboardFeature route={minuteServiceRoute} title='Actas de avance de obra' description='Esta es una descripcion' isEnable={true} key={titleKey + (features.length + 1)} />);
+      features.push(labelFeature);
+      features.push(minuteFeature);
     }
 
     setServicesSection(features);
