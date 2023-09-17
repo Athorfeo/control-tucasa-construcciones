@@ -50,7 +50,7 @@ function ViewAddProductDetailOrderPurchase({ onAddProduct }) {
 
               <div className="mb-3">
                 <label htmlFor="inputProductQuantity" className="form-label">Cantidad</label>
-                <input type="number" min="1" max="9999" step="any" className="form-control" id="inputProductQuantity" aria-describedby="productQuantityHelp" value={quantity} onChange={(e) => setQuantity(e.target.value)} required></input>
+                <input type="number" min="0" max="9999" step="any" className="form-control" id="inputProductQuantity" aria-describedby="productQuantityHelp" value={quantity} onChange={(e) => setQuantity(e.target.value)} required></input>
                 <div id="productQuantityHelp" className="form-text">Coloca la cantidad del producto a agregar.</div>
               </div>
 
