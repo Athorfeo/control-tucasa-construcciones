@@ -85,7 +85,7 @@ const router = createBrowserRouter([
         element: <DetailMinuteService />
       },
       {
-        path: "/service/minute/:spreadsheetId/:action/position/:position",
+        path: "/service/minute/:spreadsheetId/:action/start/:start/end/:end",
         element: <DetailMinuteService />
       },
     ],

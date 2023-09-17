@@ -25,7 +25,7 @@ export const useDetailPettyCashPurchaseController = (spreadsheetId, action, posi
     createdDate: "",
     date: getCurrentDateFormatted(),
     positionSelectedBank: 0,
-    amount: "",
+    amount: "0",
     fileUrl: "",
     accountingDocument: "",
   });

@@ -13,6 +13,7 @@ import ViewSuppliersSelect from "ui/components/suppliers/ViewSuppliersSelect";
 import ViewContractorsSelect from "ui/components/contractors/ViewContractorsSelect";
 import ViewPaymentTypeSelect from "ui/components/paymentType/ViewPaymentTypeSelect";
 import AccountingDocument from "ui/components/accountingdocument/AccountingDocument";
+import CurrencyInput from "ui/components/currency/CurrencyInput";
 
 import { useDetailInvoicePurchaseController } from "./useDetailInvoicePurchaseController";
 import ViewTypeInvoice from "./ViewTypeInvoice";
@@ -165,17 +166,9 @@ export default function DetailInvoicePurchase() {
                   {formState.photoInvoiceFileId != "" ? (<a href={formState.photoInvoiceFileId} target="_blank" type="button" className="btn btn-outline-light mt-2" >Ver factura</a>) : (null)}
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="inputWithholdingTax" className="form-label">Retencion</label>
-                  <input type="number" min="0" max="999999999" step="any" className="form-control" id="inputWithholdingTax" aria-describedby="withholdingTaxHelp" required value={formState.withholdingTax} onChange={(e) => onUpdateWithholdingTax(e.target.value)} disabled={formState.isFormDisable}></input>
-                  <div id="withholdingTaxHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="inputIva" className="form-label">IVA</label>
-                  <input type="number" min="0" max="999999999" step="any" className="form-control" id="inputIva" aria-describedby="ivaHelp" required value={formState.iva} onChange={(e) => onUpdateIva(e.target.value)} disabled={formState.isFormDisable}></input>
-                  <div id="ivaHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
-                </div>
+                <CurrencyInput id="inputWithholdingTax" label="Retencion" value={formState.withholdingTax} onUpdateValue={onUpdateWithholdingTax} isDisabled={formState.isFormDisable}/>
+                
+                <CurrencyInput id="inputIva" label="IVA" value={formState.iva} onUpdateValue={onUpdateIva} isDisabled={formState.isFormDisable}/>
 
                 <div className="mb-3">
                   <label htmlFor="labelDescription" className="form-label">Observaciones</label>

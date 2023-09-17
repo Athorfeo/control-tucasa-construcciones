@@ -1,5 +1,6 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import ViewChaptersSelect from "ui/components/chapters/ViewChaptersSelect";
+import CurrencyInput from "ui/components/currency/CurrencyInput";
 
 function ViewAddItem({
   activityMaterialLabel,
@@ -8,7 +9,7 @@ function ViewAddItem({
   onAddItem,
 }) {
   const [activityMaterial, setActivityMaterial] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("0");
   const [quantity, setQuantity] = useState("");
   const [positionSelectedChapter, setPositionSelectedChapter] = useState(0);
 
@@ -27,7 +28,7 @@ function ViewAddItem({
     onAddItem(data);
 
     setActivityMaterial("");
-    setPrice("");
+    setPrice("0");
     setQuantity("");
     setPositionSelectedChapter(0);
   }
@@ -49,11 +50,7 @@ function ViewAddItem({
                 <input type="text" className="form-control" id="inputActivityMaterial" aria-describedby="activityMaterialHelp" required value={activityMaterial} onChange={(e) => setActivityMaterial(e.target.value)}></input>
               </div>
 
-              <div className="mb-3">
-                <label htmlFor="inputPrice" className="form-label">Precio</label>
-                <input type="number" min="0" max="999999999" step="any" className="form-control" id="inputPrice" aria-describedby="priceHelp" required value={price} onChange={(e) => setPrice(e.target.value)} ></input>
-                <div id="priceHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
-              </div>
+              <CurrencyInput id="inputPrice" label="Precio" value={price} onUpdateValue={setPrice} isDisabled={false}/>
 
               <div className="mb-3">
                 <label htmlFor="inputQuantity" className="form-label">Cantidad</label>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { storageConfig, getJsonItem } from "util/storage-util"
+import { storageConfig, getJsonItem } from "util/storage-util";
+import { currencyPattern, setCurrencyFormat, removeCurrencyFormat } from "util/currencyUtil";
 import { staticData } from "data/static-data";
 
 import Navbar from 'ui/components/navbar';
@@ -10,6 +11,7 @@ import ErrorModal from "ui/components/modal/error/ErrorModal";
 import FinishModal from "ui/components/modal/finish/FinishModal";
 import ViewBanksSelect from "ui/components/banks/ViewBanksSelect";
 import AccountingDocument from "ui/components/accountingdocument/AccountingDocument";
+import CurrencyInput from "ui/components/currency/CurrencyInput";
 
 import { useDetailPettyCashPurchaseController } from "./useDetailPettyCashPurchaseController";
 
@@ -28,7 +30,7 @@ export default function DetailPettyCashPurchase() {
   switch (action) {
     case staticData.uiActions.add:
       titleAction = "Nuevo";
-      labelSubmitButton= "Agregar Caja Menor";
+      labelSubmitButton = "Agregar Caja Menor";
       break;
     case staticData.uiActions.update:
     case staticData.uiActions.accountingSupport:
@@ -82,16 +84,12 @@ export default function DetailPettyCashPurchase() {
 
                 <div className="mb-3">
                   <label htmlFor="labelDescription" className="form-label">Fecha Factura</label>
-                  <input className="form-control" id="inputStartDate" type="date" value={formState.date} onChange={(e) => onUpdateDate(e.target.value)} required disabled={formState.isFormDisable} />
+                  <input className="form-control" id="inputStartDate" type="date" required value={formState.date} onChange={(e) => onUpdateDate(e.target.value)} disabled={formState.isFormDisable} />
                 </div>
 
                 <ViewBanksSelect data={dataState.banks} positionSelected={formState.positionSelectedBank} setPositionSelected={onSelectBank} isFormDisable={formState.isFormDisable} />
 
-                <div className="mb-3">
-                  <label htmlFor="inputAmount" className="form-label">Monto</label>
-                  <input type="number" min="0" max="999999999" step="any" className="form-control" id="inputAmount" aria-describedby="amountHelp" required value={formState.amount} onChange={(e) => onUpdateAmount(e.target.value)} disabled={formState.isFormDisable}></input>
-                  <div id="amountHelp" className="form-text">Los decimales deben ir con punto (26.39).</div>
-                </div>
+                <CurrencyInput id="inputAmount" label="Monto" value={formState.amount} onUpdateValue={onUpdateAmount} isDisabled={formState.isFormDisable}/>
 
                 <div className="mb-3">
                   <label htmlFor="inputFile" className="form-label">Foto factura</label>

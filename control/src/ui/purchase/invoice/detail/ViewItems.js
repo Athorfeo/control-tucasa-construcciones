@@ -1,4 +1,5 @@
 import React from 'react';
+import { setCurrencyFormat } from "util/currencyUtil";
 
 function ViewItems({ data, isFormDisable, onRemoveItem }) {
   const items = data.map((item, index) => {
@@ -12,7 +13,7 @@ function ViewItems({ data, isFormDisable, onRemoveItem }) {
 
 
         <div className='fw-bold mt-2'>Precio</div>
-        <div className='fw-light'>{item.price}</div>
+        <div className='fw-light'>${setCurrencyFormat(item.price)}</div>
 
         <div className='fw-bold mt-2'>Cantidad</div>
         <div className='fw-light'>{item.quantity}</div>
