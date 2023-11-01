@@ -6,6 +6,8 @@ export function getCurrentDateFormatted() {
 
   if( month < 10 ) {
     month = "0" + month;
+  } else {
+    month = month;
   }
 
   if( day < 10 ) {
