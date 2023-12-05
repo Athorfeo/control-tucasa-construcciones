@@ -31,7 +31,9 @@ function ItemView({ spreadsheetId, ordersPurchase, userRol }) {
                 ) : (null)}
               </div>
             ) : (
-              null
+              <Link className="gap-2 text-light text-decoration-none" to={'/service/minute/' + spreadsheetId +'/detail/start/' + purchase.startPosition + '/end/' + purchase.endPosition}>
+                <button type="button" className="btn btn-outline-light mt-3 ms-3">Detalle</button>
+              </Link>
             )}
           </div>
         </div>
