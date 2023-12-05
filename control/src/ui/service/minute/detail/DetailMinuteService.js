@@ -67,6 +67,8 @@ function DetailMinuteService() {
           }
         });
         return !isReadyToApprove;
+      case 'detail':
+          return true;
       default:
         return false;
     }
@@ -87,6 +89,12 @@ function DetailMinuteService() {
       case 'approve':
         setTitleAction('Aprobar');
         setLabelSubmitButton("Aprobar Acta");
+        setIsFormDisable(true);
+        fetchData();
+        break;
+      case 'detail':
+        setTitleAction('Detalle');
+        setLabelSubmitButton("Modificar Acta");
         setIsFormDisable(true);
         fetchData();
         break;
