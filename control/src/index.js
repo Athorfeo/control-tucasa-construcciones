@@ -18,6 +18,7 @@ import DetailPettyCashPurchase from './ui/purchase/pettycash/detail/DetailPettyC
 import DashboardFeature from './ui/feature/dashboard-feature';
 import DashboardMinuteService from 'ui/service/minute/DashboardMinuteService';
 import DetailMinuteService from 'ui/service/minute/detail/DetailMinuteService';
+import DashboardClients from 'ui/clients/DashboardClients';
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,19 @@ const router = createBrowserRouter([
       {
         path: "/service/minute/:spreadsheetId/:action/start/:start/end/:end",
         element: <DetailMinuteService />
+      },
+      // Clients
+      {
+        path: "/clients/:spreadsheetId",
+        element: <DashboardClients />
+      },
+      {
+        path: "/clients/:spreadsheetId/:action",
+        element: <DashboardClients />
+      },
+      {
+        path: "/clients/:spreadsheetId/:action/start/:start/end/:end",
+        element: <DashboardClients />
       },
     ],
   },
