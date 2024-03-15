@@ -46,7 +46,7 @@ export default function DashboardClients() {
             <div className="d-flex flex-column bg-body-tertiary p-3">
               <div className='fs-6 fw-bold'>Opciones</div>
               <hr></hr>
-              <Link className="d-grid gap-2 text-light text-decoration-none" to={'/purchase/pettycash/' + spreadsheetId + '/add'}>
+              <Link className="d-grid gap-2 text-light text-decoration-none" to={'/clients/' + spreadsheetId + '/add'}>
                 <button className="btn btn-outline-light text-start">Nuevo cliente</button>
               </Link>
             </div>

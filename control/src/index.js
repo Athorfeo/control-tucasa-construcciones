@@ -19,6 +19,7 @@ import DashboardFeature from './ui/feature/dashboard-feature';
 import DashboardMinuteService from 'ui/service/minute/DashboardMinuteService';
 import DetailMinuteService from 'ui/service/minute/detail/DetailMinuteService';
 import DashboardClients from 'ui/clients/DashboardClients';
+import DetailClientScreen from 'ui/clients/detail/DetailClientScreen';
 
 const router = createBrowserRouter([
   {
@@ -96,11 +97,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/clients/:spreadsheetId/:action",
-        element: <DashboardClients />
+        element: <DetailClientScreen />
       },
       {
-        path: "/clients/:spreadsheetId/:action/start/:start/end/:end",
-        element: <DashboardClients />
+        path: "/clients/:spreadsheetId/:action/position/:position",
+        element: <DetailClientScreen />
       },
     ],
   },
