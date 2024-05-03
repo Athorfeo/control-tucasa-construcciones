@@ -4,6 +4,7 @@ import { useFinishModal } from 'ui/components/modal/finish/useFinishModal';
 import { useErrorModal } from 'ui/components/modal/error/useErrorModal';
 import { getFileData } from "util/fileUtil";
 import { useClientsRepository } from "data/repository/useClientsRepository";
+import { useHouseholdDetailClientController } from "./household/useHouseholdDetailClientController";
 
 /**
  * Detail Client Controller
@@ -32,6 +33,12 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
   });
 
   const { getByIdService, appendService, updateService, updateAccountingDocumentService } = useClientsRepository(spreadsheetId);
+
+  // Household Data
+  const {
+    householdDataState,
+    onUpdateHouseholds,
+  } = useHouseholdDetailClientController(spreadsheetId, action, position);
 
   function showSuccessAppendDialog() {
     showFinishDialog({
@@ -106,6 +113,8 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
         documentFileUrl: payload.documentFileUrl,
         rutFileUrl: payload.rutFileUrl,
       });
+
+      onUpdateHouseholds(payload.households);
 
       setIsLoading(false);
     }).catch((error) => {
@@ -265,5 +274,7 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     onUpdateDocumentFile,
     onUpdateRutFile,
     handleSubmit,
+    householdDataState,
+    onUpdateHouseholds,
   };
 }

@@ -14,6 +14,9 @@ import Loading from "ui/components/loading";
 
 import { useDetailClientController } from "./useDetailClientController";
 
+import HouseholdDetailClientItemView from "./household/HouseholdDetailClientItemView";
+import HouseholdViewModal from "./household/modal/HouseholdViewModal";
+
 function DetailClientScreen() {
   let { spreadsheetId, action, position } = useParams();
   const userRol = parseInt(getJsonItem(storageConfig.userDataKey).rol);
@@ -40,6 +43,8 @@ function DetailClientScreen() {
     onUpdateDocumentFile,
     onUpdateRutFile,
     handleSubmit,
+    householdDataState,
+    onUpdateHouseholds,
   } = useDetailClientController(spreadsheetId, action, position, navigateUp);
 
   // Load Order Purchase
@@ -66,6 +71,7 @@ function DetailClientScreen() {
       <Navbar />
       <ErrorModal data={errorModalData} />
       <FinishModal data={finishModalData} />
+      <HouseholdViewModal onAdd={ {} } />
 
       {uiLogicState.isLoading ? (
         <Loading />
@@ -129,6 +135,25 @@ function DetailClientScreen() {
             </div>
 
           </form>
+
+          <div className='mt-4'>
+            <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de viviendas</p>
+            <div class="d-flex flex-wrap justify-content-around justify-content-md-between">
+              <HouseholdDetailClientItemView spreadsheetId={spreadsheetId} userRol={userRol} data={householdDataState.households} />
+            </div>
+
+            <div className='d-flex flex-row justify-content-end border-top mt-3'>
+              <button 
+                type="button" 
+                className="btn btn-light mt-3" 
+                data-bs-toggle="modal" 
+                data-bs-target="#householdViewModal"
+                disabled={formState.isFormDisable}
+              >
+                Agregar vivienda
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
