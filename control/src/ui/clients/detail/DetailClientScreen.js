@@ -16,6 +16,7 @@ import { useDetailClientController } from "./useDetailClientController";
 
 import HouseholdDetailClientItemView from "./household/HouseholdDetailClientItemView";
 import HouseholdViewModal from "./household/modal/HouseholdViewModal";
+import { useHouseholdViewModalController } from "./household/modal/useHouseholdViewModalController";
 
 function DetailClientScreen() {
   let { spreadsheetId, action, position } = useParams();
@@ -47,6 +48,26 @@ function DetailClientScreen() {
     onUpdateHouseholds,
   } = useDetailClientController(spreadsheetId, action, position, navigateUp);
 
+  const {
+    formStateHousehold,
+    onUpdateDocumentHousehold,
+    onUpdateNumberHousehold,
+    onUpdateValueHousehold,
+    onUpdateInitialFeeHousehold,
+    onUpdateBalanceHousehold,
+    onUpdatePromiseFile,
+    onUpdateInvoiceFile,
+    onUpdateCertificateFile,
+    onLoadDataHousehold,
+    isSubmitDisabledHousehold,
+    handleSubmitFormHousehold
+  } = useHouseholdViewModalController({
+    onAddCallback: (data) => {
+      console.log("onAddCallbackHousehold");
+      console.log(data);
+    }
+  });
+
   // Load Order Purchase
   useEffect(() => {
     switch (action) {
@@ -71,7 +92,19 @@ function DetailClientScreen() {
       <Navbar />
       <ErrorModal data={errorModalData} />
       <FinishModal data={finishModalData} />
-      <HouseholdViewModal onAdd={ {} } />
+      <HouseholdViewModal 
+        formStateHousehold={formStateHousehold}
+        onUpdateDocumentHousehold={onUpdateDocumentHousehold}
+        onUpdateNumberHousehold={onUpdateNumberHousehold}
+        onUpdateValueHousehold={onUpdateValueHousehold}
+        onUpdateInitialFeeHousehold={onUpdateInitialFeeHousehold}
+        onUpdateBalanceHousehold={onUpdateBalanceHousehold}
+        onUpdatePromiseFile={onUpdatePromiseFile}
+        onUpdateInvoiceFile={onUpdateInvoiceFile}
+        onUpdateCertificateFile={onUpdateCertificateFile}
+        isSubmitDisabledHousehold={isSubmitDisabledHousehold}
+        handleSubmitFormHousehold={handleSubmitFormHousehold}
+      />
 
       {uiLogicState.isLoading ? (
         <Loading />
@@ -138,7 +171,7 @@ function DetailClientScreen() {
 
           <div className='mt-4'>
             <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de viviendas</p>
-            <div class="d-flex flex-wrap justify-content-around justify-content-md-between">
+            <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
               <HouseholdDetailClientItemView spreadsheetId={spreadsheetId} userRol={userRol} data={householdDataState.households} />
             </div>
 
@@ -149,6 +182,7 @@ function DetailClientScreen() {
                 data-bs-toggle="modal" 
                 data-bs-target="#householdViewModal"
                 disabled={formState.isFormDisable}
+                onClick={() => { onUpdateDocumentHousehold(formState.document) }}
               >
                 Agregar vivienda
               </button>

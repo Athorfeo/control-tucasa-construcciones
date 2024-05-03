@@ -1,24 +1,21 @@
 import React from 'react';
-import { staticData } from "data/static-data";
 import CurrencyInput from "ui/components/input/CurrencyInput";
-import { useHouseholdViewModalController } from "./useHouseholdViewModalController";
+import TextInput from "ui/components/input/TextInput";
+import FileInput from "ui/components/input/FileInput";
 
-function HouseholdViewModal({ onAddItem }) {
-  const {
-    formState,
-    onUpdateDocument,
-    onUpdateNumberHousehold,
-    onUpdateValue,
-    onUpdateInitialFee,
-    onUpdateBalance,
-    isSubmitDisabled,
-    handleSubmitForm
-  } = useHouseholdViewModalController({
-    onAddCallback: (data) => {
-      onAddItem(data);
-    }
-  });
-
+function HouseholdViewModal({ 
+  formStateHousehold,
+  onUpdateDocumentHousehold,
+  onUpdateNumberHousehold,
+  onUpdateValueHousehold,
+  onUpdateInitialFeeHousehold,
+  onUpdateBalanceHousehold,
+  onUpdatePromiseFile,
+  onUpdateInvoiceFile,
+  onUpdateCertificateFile,
+  isSubmitDisabledHousehold,
+  handleSubmitFormHousehold
+}) {
   return (
     <div className="modal fade" id="householdViewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="labelHouseholdViewModal" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -30,24 +27,20 @@ function HouseholdViewModal({ onAddItem }) {
           </div>
 
           <div className="modal-body">
-            <form onSubmit={handleSubmitForm}>
-              <div className="mb-3">
-                <label htmlFor="inputDocument" className="form-label">Documento</label>
-                <input type="text" className="form-control" id="inputDocument" aria-describedby="inputDocumentHelp" value={formState.document} onChange={(e) => onUpdateDocument(e.target.value)}  disabled={true} required></input>
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="inputNumberHousehold" className="form-label">Numero de vivienda</label>
-                <input type="text" className="form-control" id="inputNumberHousehold" aria-describedby="inputNumberHouseholdHelp" value={formState.numberHousehold} onChange={(e) => onUpdateNumberHousehold(e.target.value)} required></input>
-              </div>
-
-              <CurrencyInput id="inputValue" label="Valor" value={formState.value} onUpdateValue={onUpdateValue}/>
-              <CurrencyInput id="inputInitialValue" label="Cuota inicial" value={formState.initialFee} onUpdateValue={onUpdateInitialFee}/>
-              <CurrencyInput id="inputBalance" label="Balance" value={formState.balance} onUpdateValue={onUpdateBalance}/>
+            <form onSubmit={handleSubmitFormHousehold}>
+              
+              <TextInput id="inputDocument" label="Documento" value={formStateHousehold.document} onUpdateValue={onUpdateDocumentHousehold} isDisabled={true}/>
+              <TextInput id="inputNumberHousehold" label="Numero de vivienda" value={formStateHousehold.numberHousehold} onUpdateValue={onUpdateNumberHousehold}/>
+              <CurrencyInput id="inputValue" label="Valor" value={formStateHousehold.value} onUpdateValue={onUpdateValueHousehold}/>
+              <CurrencyInput id="inputInitialValue" label="Cuota inicial" value={formStateHousehold.initialFee} onUpdateValue={onUpdateInitialFeeHousehold}/>
+              <CurrencyInput id="inputBalance" label="Balance" value={formStateHousehold.balance} onUpdateValue={onUpdateBalanceHousehold}/>
+              <FileInput id="inputPromise" label="Promesa de compraventa" fileUrl={formStateHousehold.promiseFileUrl} onUpdateValue={onUpdatePromiseFile}/>
+              <FileInput id="inputInvoice" label="Factura de venta" fileUrl={formStateHousehold.invoiceFileUrl} onUpdateValue={onUpdateInvoiceFile}/>
+              <FileInput id="inputCertificate" label="Certificado" fileUrl={formStateHousehold.certificateFileUrl} onUpdateValue={onUpdateCertificateFile}/>
 
               <hr></hr>
               <div className='d-grid gap-2'>
-                <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled={isSubmitDisabled()}>Agregar</button>
+                <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled={isSubmitDisabledHousehold()}>Agregar</button>
               </div>
             </form>
           </div>
