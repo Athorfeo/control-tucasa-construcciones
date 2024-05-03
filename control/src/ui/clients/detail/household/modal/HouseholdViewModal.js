@@ -1,6 +1,6 @@
 import React from 'react';
 import { staticData } from "data/static-data";
-import CurrencyInput from "ui/components/currency/CurrencyInput";
+import CurrencyInput from "ui/components/input/CurrencyInput";
 import { useHouseholdViewModalController } from "./useHouseholdViewModalController";
 
 function HouseholdViewModal({ onAddItem }) {

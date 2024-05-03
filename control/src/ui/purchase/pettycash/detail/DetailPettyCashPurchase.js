@@ -11,7 +11,7 @@ import ErrorModal from "ui/components/modal/error/ErrorModal";
 import FinishModal from "ui/components/modal/finish/FinishModal";
 import ViewBanksSelect from "ui/components/banks/ViewBanksSelect";
 import AccountingDocument from "ui/components/accountingdocument/AccountingDocument";
-import CurrencyInput from "ui/components/currency/CurrencyInput";
+import CurrencyInput from "ui/components/input/CurrencyInput";
 
 import { useDetailPettyCashPurchaseController } from "./useDetailPettyCashPurchaseController";
 
