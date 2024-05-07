@@ -5,6 +5,7 @@ export const useHouseholdViewModalController = ({
   onAddCallback
 }) => {
   const [formStateHousehold, setFormState] = useState({
+    isUpdating: false,
     position: -1,
     id: "",
     createdDate: "",
@@ -22,7 +23,7 @@ export const useHouseholdViewModalController = ({
   });
 
   function resetFormState() {
-    setFormState({
+    return {
       position: -1,
       id: "",
       createdDate: "",
@@ -37,7 +38,7 @@ export const useHouseholdViewModalController = ({
       invoiceFileUrl: "",
       certificateFile: null,
       certificateFileUrl: "",
-    });
+    };
   }
 
   function onUpdateDocumentHousehold(value) {
@@ -96,20 +97,57 @@ export const useHouseholdViewModalController = ({
     });
   }
 
-  function onLoadDataHousehold(data) {
+  function onInitAddHousehold(document) {
+    setFormState({
+      ...resetFormState(),
+      document: document
+    });
+  }
 
+  function onInitUpdateHousehold(item) {
+    setFormState({
+      position: item.position,
+      id: item.id,
+      createdDate: item.createdDate,
+      document: item.document,
+      numberHousehold: item.numberHousehold,
+      value: item.value,
+      initialFee: item.initialFee,
+      balance: item.balance,
+      promiseFile: null,
+      promiseFileUrl: item.promiseFileUrl,
+      invoiceFile: null,
+      invoiceFileUrl: item.invoiceFileUrl,
+      certificateFile: null,
+      certificateFileUrl: item.certificateFileUrl
+    });
   }
 
   const isSubmitDisabledHousehold = () => {
+    var isPromiseFileValid = false;
+    if(formStateHousehold.promiseFile != null || formStateHousehold.promiseFileUrl !== "") {
+      isPromiseFileValid = true;
+    }
+
+    var isInvoiceFileValid = false;
+    if(formStateHousehold.invoiceFile != null || formStateHousehold.invoiceFile !== "") {
+      isInvoiceFileValid = true;
+    }
+
+    var isCertificateFileValid = false;
+    if(formStateHousehold.certificateFile != null || formStateHousehold.certificateFile !== "") {
+      isCertificateFileValid = true;
+    }
+
     if (
       formStateHousehold.document !== '' && 
       formStateHousehold.numberHousehold !== '' &&
       formStateHousehold.value !== '' &&
       formStateHousehold.initialFee !== '' &&
       formStateHousehold.balance !== '' &&
-      formStateHousehold.promiseFile != null &&
-      formStateHousehold.invoiceFile != null &&
-      formStateHousehold.certificateFile != null
+      isPromiseFileValid &&
+      isInvoiceFileValid &&
+      isCertificateFileValid
     ) {
       return false;
     } else {
@@ -143,7 +181,9 @@ export const useHouseholdViewModalController = ({
 
     onAddCallback(data);
 
-    resetFormState();
+    setFormState({
+      ...resetFormState()
+    });
   };
 
 
@@ -157,8 +197,9 @@ export const useHouseholdViewModalController = ({
     onUpdatePromiseFile,
     onUpdateInvoiceFile,
     onUpdateCertificateFile,
-    onLoadDataHousehold,
     isSubmitDisabledHousehold,
-    handleSubmitFormHousehold
+    handleSubmitFormHousehold,
+    onInitAddHousehold,
+    onInitUpdateHousehold,
   };
 }

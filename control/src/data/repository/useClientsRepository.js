@@ -2,7 +2,8 @@ import {
   fetchAllClientsApi,
   fetchGetByRangeClientsApi,
   fetchAppendClientsApi,
-  fetchUpdateClientsApi
+  fetchUpdateClientsApi,
+  fetchAppendHouseholdClientsApi
  } from "network/api/ClientsApi";
 
 export const useClientsRepository = (spreadsheetId) => {
@@ -38,10 +39,19 @@ export const useClientsRepository = (spreadsheetId) => {
     });
   }
 
+  async function appendHouseholdService(payload) {
+    return fetchAppendHouseholdClientsApi(spreadsheetId, payload).then((response) => {
+      console.log("Append household service | Clients");
+      console.log(response);
+      return response;
+    });
+  }
+
   return {
     fetchAllService,
     getByIdService,
     appendService,
-    updateService
+    updateService,
+    appendHouseholdService
   };
 }

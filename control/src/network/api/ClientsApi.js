@@ -59,3 +59,19 @@ export async function fetchUpdateClientsApi(spreadsheetId, payload) {
     }
   );
 }
+
+export async function fetchAppendHouseholdClientsApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.clients.household.root;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}

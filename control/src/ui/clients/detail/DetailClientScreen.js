@@ -46,6 +46,7 @@ function DetailClientScreen() {
     handleSubmit,
     householdDataState,
     onUpdateHouseholds,
+    onAppendHousehold,
   } = useDetailClientController(spreadsheetId, action, position, navigateUp);
 
   const {
@@ -58,13 +59,15 @@ function DetailClientScreen() {
     onUpdatePromiseFile,
     onUpdateInvoiceFile,
     onUpdateCertificateFile,
-    onLoadDataHousehold,
     isSubmitDisabledHousehold,
-    handleSubmitFormHousehold
+    handleSubmitFormHousehold,
+    onInitAddHousehold,
+    onInitUpdateHousehold
   } = useHouseholdViewModalController({
     onAddCallback: (data) => {
       console.log("onAddCallbackHousehold");
       console.log(data);
+      onAppendHousehold(data);
     }
   });
 
@@ -172,7 +175,15 @@ function DetailClientScreen() {
           <div className='mt-4'>
             <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de viviendas</p>
             <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
-              <HouseholdDetailClientItemView spreadsheetId={spreadsheetId} userRol={userRol} data={householdDataState.households} />
+              <HouseholdDetailClientItemView 
+              spreadsheetId={spreadsheetId} 
+              userRol={userRol} 
+              data={householdDataState.households} 
+              onUpdateHousehold={(item) => {
+                console.log("onUpdateHousehold");
+                console.log(item);
+                onInitUpdateHousehold(item);
+              }} />
             </div>
 
             <div className='d-flex flex-row justify-content-end border-top mt-3'>
@@ -182,7 +193,7 @@ function DetailClientScreen() {
                 data-bs-toggle="modal" 
                 data-bs-target="#householdViewModal"
                 disabled={formState.isFormDisable}
-                onClick={() => { onUpdateDocumentHousehold(formState.document) }}
+                onClick={() => { onInitAddHousehold(formState.document) }}
               >
                 Agregar vivienda
               </button>

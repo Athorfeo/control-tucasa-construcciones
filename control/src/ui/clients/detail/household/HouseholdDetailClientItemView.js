@@ -4,7 +4,7 @@ import { staticData } from "data/static-data";
 import { isAdminRol, isSuperAdminRol, isAccountantRol, isAssistantRol } from "util/session-util";
 import { setCurrencyFormat } from "util/currencyUtil";
 
-function HouseholdDetailClientItemView({ spreadsheetId, userRol, data }) {
+function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateHousehold }) {
   return data.map((item, index) => {
     return (
       <div className='d-flex flex-column p-3 mb-2 bg-body-tertiary' key={item.id}>
@@ -58,9 +58,7 @@ function HouseholdDetailClientItemView({ spreadsheetId, userRol, data }) {
 
         <div className='d-flex flex-row flex-sm-row align-items-end justify-content-end border-top mt-3'>
           {(isAssistantRol(userRol) || isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
-            <Link className="gap-2 text-light text-decoration-none" to={'/clients/' + spreadsheetId + '/' + staticData.uiActions.update + '/position/' + item.position}>
-              <button type="button" className="btn btn-outline-light mt-3">Modificar</button>
-            </Link>
+            <button type="button" className="btn btn-outline-light mt-3" data-bs-toggle="modal" data-bs-target="#householdViewModal" onClick={() => { onUpdateHousehold(item) }}>Modificar</button>
           ) : (null)}
           <Link className="gap-2 text-light text-decoration-none" to={'/clients/' + spreadsheetId + '/' + staticData.uiActions.detail + '/position/' + item.position}>
             <button type="button" className="btn btn-outline-light mt-3 ms-3">Eliminar</button>

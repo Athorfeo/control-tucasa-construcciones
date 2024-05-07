@@ -32,7 +32,7 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     rutFileUrl: "",
   });
 
-  const { getByIdService, appendService, updateService, updateAccountingDocumentService } = useClientsRepository(spreadsheetId);
+  const { getByIdService, appendService, updateService, appendHouseholdService } = useClientsRepository(spreadsheetId);
 
   // Household Data
   const {
@@ -262,6 +262,21 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
       });
   }
 
+  async function onAppendHousehold(payload) {
+    setIsLoading(true);
+    appendHouseholdService(payload)
+        .then(() => {
+          setIsLoading(false);
+          showSuccessAppendDialog();
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          showErrorModal({
+            error: error
+          });
+        });
+  }
+
   return {
     uiLogicState,
     finishModalData,
@@ -276,5 +291,6 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     handleSubmit,
     householdDataState,
     onUpdateHouseholds,
+    onAppendHousehold,
   };
 }

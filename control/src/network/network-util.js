@@ -39,7 +39,10 @@ export const networkConfig = {
     root: "/clients",
     getByRange: "/clients/range",
     update: "/clients/update",
-    approve: "/clients/approve"
+    approve: "/clients/approve",
+    household: {
+      root: "/clients/households"
+    }
   },
 };
 
