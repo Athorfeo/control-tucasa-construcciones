@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { staticData, getBanks } from "data/static-data";
+import { useState, useEffect } from 'react';
+import { staticData } from "data/static-data";
 import { useFinishModal } from 'ui/components/modal/finish/useFinishModal';
 import { useErrorModal } from 'ui/components/modal/error/useErrorModal';
 import { getFileData } from "util/fileUtil";
@@ -32,12 +32,19 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     rutFileUrl: "",
   });
 
-  const { getByIdService, appendService, updateService, appendHouseholdService } = useClientsRepository(spreadsheetId);
+  const { 
+    getByIdService, 
+    appendService, 
+    updateService, 
+    appendHouseholdService, 
+    updateHouseholdService, 
+    deleteHouseholdService
+  } = useClientsRepository(spreadsheetId);
 
   // Household Data
   const {
     householdDataState,
-    onUpdateHouseholds,
+    onUpdateHouseholdState,
   } = useHouseholdDetailClientController(spreadsheetId, action, position);
 
   function showSuccessAppendDialog() {
@@ -114,7 +121,7 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
         rutFileUrl: payload.rutFileUrl,
       });
 
-      onUpdateHouseholds(payload.households);
+      onUpdateHouseholdState(payload.households);
 
       setIsLoading(false);
     }).catch((error) => {
@@ -277,6 +284,36 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
         });
   }
 
+  async function onUpdateHousehold(payload) {
+    setIsLoading(true);
+    updateHouseholdService(payload)
+        .then(() => {
+          setIsLoading(false);
+          showSuccessAppendDialog();
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          showErrorModal({
+            error: error
+          });
+        });
+  }
+
+  async function onDeleteHousehold(payload) {
+    setIsLoading(true);
+    deleteHouseholdService(payload)
+        .then(() => {
+          setIsLoading(false);
+          showSuccessAppendDialog();
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          showErrorModal({
+            error: error
+          });
+        });
+  }
+
   return {
     uiLogicState,
     finishModalData,
@@ -290,7 +327,8 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     onUpdateRutFile,
     handleSubmit,
     householdDataState,
-    onUpdateHouseholds,
     onAppendHousehold,
+    onUpdateHousehold,
+    onDeleteHousehold
   };
 }

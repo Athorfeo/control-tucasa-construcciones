@@ -75,3 +75,35 @@ export async function fetchAppendHouseholdClientsApi(spreadsheetId, payload) {
     }
   );
 }
+
+export async function fetchUpdateHouseholdClientsApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.clients.household.root;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}
+
+export async function fetchDeleteHouseholdClientsApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.clients.household.root;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}

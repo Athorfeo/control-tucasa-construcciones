@@ -4,7 +4,7 @@ import { staticData } from "data/static-data";
 import { isAdminRol, isSuperAdminRol, isAccountantRol, isAssistantRol } from "util/session-util";
 import { setCurrencyFormat } from "util/currencyUtil";
 
-function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateHousehold }) {
+function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateHousehold, onDeleteHousehold }) {
   return data.map((item, index) => {
     return (
       <div className='d-flex flex-column p-3 mb-2 bg-body-tertiary' key={item.id}>
@@ -60,9 +60,22 @@ function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateH
           {(isAssistantRol(userRol) || isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
             <button type="button" className="btn btn-outline-light mt-3" data-bs-toggle="modal" data-bs-target="#householdViewModal" onClick={() => { onUpdateHousehold(item) }}>Modificar</button>
           ) : (null)}
-          <Link className="gap-2 text-light text-decoration-none" to={'/clients/' + spreadsheetId + '/' + staticData.uiActions.detail + '/position/' + item.position}>
-            <button type="button" className="btn btn-outline-light mt-3 ms-3">Eliminar</button>
-          </Link>
+          {(isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
+            <button 
+              type="button" 
+              className="btn btn-outline-light mt-3 ms-3"
+              onClick={() => {
+                const payload = {
+                  position: item.position,
+                  invoiceFileUrl: item.invoiceFileUrl,
+                  promiseFileUrl: item.promiseFileUrl,
+                  certificateFileUrl: item.certificateFileUrl
+                };
+                onDeleteHousehold(payload);
+               }}
+            >Eliminar</button>
+          ) : (null)}
+          
         </div>
       </div>
     );

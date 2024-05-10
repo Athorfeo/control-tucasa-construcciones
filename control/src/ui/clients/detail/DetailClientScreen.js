@@ -45,8 +45,9 @@ function DetailClientScreen() {
     onUpdateRutFile,
     handleSubmit,
     householdDataState,
-    onUpdateHouseholds,
     onAppendHousehold,
+    onUpdateHousehold,
+    onDeleteHousehold
   } = useDetailClientController(spreadsheetId, action, position, navigateUp);
 
   const {
@@ -68,6 +69,11 @@ function DetailClientScreen() {
       console.log("onAddCallbackHousehold");
       console.log(data);
       onAppendHousehold(data);
+    },
+    onUpdateCallback: (data) => {
+      console.log("onUpdateCallbackHousehold");
+      console.log(data);
+      onUpdateHousehold(data);
     }
   });
 
@@ -154,13 +160,13 @@ function DetailClientScreen() {
                 <div className="mb-3">
                   <label htmlFor="inputDocumentFile" className="form-label">Archivo Documento</label>
                   <input type="file" className="form-control" id="inputDocumentFile" accept=".pdf,image/*" onChange={(e) => {onUpdateDocumentFile(e.target)}} disabled={formState.isFormDisable}></input>
-                  {formState.documentFileUrl != "" ? (<a href={formState.documentFileUrl} target="_blank" type="button" className="btn btn-outline-light mt-2" >Ver archivo</a>) : (null)}
+                  {formState.documentFileUrl !== "" ? (<a href={formState.documentFileUrl} target="_blank" rel="noreferrer" type="button" className="btn btn-outline-light mt-2" >Ver archivo</a>) : (null)}
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="inputRutFile" className="form-label">Archivo RUT</label>
                   <input type="file" className="form-control" id="inputRutFile" accept=".pdf,image/*" onChange={(e) => {onUpdateRutFile(e.target)}} disabled={formState.isFormDisable}></input>
-                  {formState.rutFileUrl != "" ? (<a href={formState.rutFileUrl} target="_blank" type="button" className="btn btn-outline-light mt-2" >Ver archivo</a>) : (null)}
+                  {formState.rutFileUrl !== "" ? (<a href={formState.rutFileUrl} target="_blank" rel="noreferrer" type="button" className="btn btn-outline-light mt-2" >Ver archivo</a>) : (null)}
                 </div>
 
               </div>
@@ -176,14 +182,20 @@ function DetailClientScreen() {
             <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de viviendas</p>
             <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
               <HouseholdDetailClientItemView 
-              spreadsheetId={spreadsheetId} 
-              userRol={userRol} 
-              data={householdDataState.households} 
-              onUpdateHousehold={(item) => {
-                console.log("onUpdateHousehold");
-                console.log(item);
-                onInitUpdateHousehold(item);
-              }} />
+                spreadsheetId={spreadsheetId} 
+                userRol={userRol} 
+                data={householdDataState.households} 
+                onUpdateHousehold={(item) => {
+                  console.log("onUpdateHousehold");
+                  console.log(item);
+                  onInitUpdateHousehold(item);
+                }}
+                onDeleteHousehold={(payload) => {
+                  console.log("onDeleteHousehold");
+                  console.log(payload);
+                  onDeleteHousehold(payload);
+                }}
+              />
             </div>
 
             <div className='d-flex flex-row justify-content-end border-top mt-3'>

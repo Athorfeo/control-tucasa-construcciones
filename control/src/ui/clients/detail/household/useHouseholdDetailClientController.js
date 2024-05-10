@@ -1,9 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import { staticData, getBanks } from "data/static-data";
-import { useFinishModal } from 'ui/components/modal/finish/useFinishModal';
-import { useErrorModal } from 'ui/components/modal/error/useErrorModal';
-import { getFileData } from "util/fileUtil";
-import { useClientsRepository } from "data/repository/useClientsRepository";
+import { useState } from 'react';
 
 /**
  * Detail Client Controller
@@ -15,7 +10,7 @@ export const useHouseholdDetailClientController = (spreadsheetId, action, positi
 
   //const { getByIdService, appendService, updateService } = useClientsRepository(spreadsheetId);
 
-  function onUpdateHouseholds(value) {
+  function onUpdateHouseholdState(value) {
     setHouseholdDataState({
       ...householdDataState,
       households: value
@@ -24,6 +19,6 @@ export const useHouseholdDetailClientController = (spreadsheetId, action, positi
 
   return {
     householdDataState,
-    onUpdateHouseholds
+    onUpdateHouseholdState
   };
 }

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { getFileData } from "util/fileUtil";
 
 export const useHouseholdViewModalController = ({
-  onAddCallback
+  onAddCallback,
+  onUpdateCallback
 }) => {
   const [formStateHousehold, setFormState] = useState({
     isUpdating: false,
@@ -24,6 +25,7 @@ export const useHouseholdViewModalController = ({
 
   function resetFormState() {
     return {
+      isUpdating: false,
       position: -1,
       id: "",
       createdDate: "",
@@ -100,12 +102,14 @@ export const useHouseholdViewModalController = ({
   function onInitAddHousehold(document) {
     setFormState({
       ...resetFormState(),
+      isUpdating: false,
       document: document
     });
   }
 
   function onInitUpdateHousehold(item) {
     setFormState({
+      isUpdating: true,
       position: item.position,
       id: item.id,
       createdDate: item.createdDate,
@@ -171,16 +175,25 @@ export const useHouseholdViewModalController = ({
       value: formStateHousehold.value,
       initialFee: formStateHousehold.initialFee,
       balance: formStateHousehold.balance,
-      promiseFile: promiseFile,
-      promiseFileUrl: formStateHousehold.promiseFileUrl,
-      invoiceFile: invoiceFile,
-      invoiceFileUrl: formStateHousehold.invoiceFileUrl,
-      certificateFile: certificateFile,
-      certificateFileUrl: formStateHousehold.certificateFileUrl
+      promiseFile: {
+        ...promiseFile,
+        fileUrl: formStateHousehold.promiseFileUrl
+      },
+      invoiceFile: {
+        ...invoiceFile,
+        fileUrl: formStateHousehold.invoiceFileUrl
+      },
+      certificateFile: {
+        ...certificateFile,
+        fileUrl: formStateHousehold.certificateFileUrl
+      }
     }
 
-    onAddCallback(data);
-
+    if(!formStateHousehold.isUpdating){
+      onAddCallback(data);
+    } else {
+      onUpdateCallback(data);
+    }
     setFormState({
       ...resetFormState()
     });
