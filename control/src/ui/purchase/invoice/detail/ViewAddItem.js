@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ViewChaptersSelect from "ui/components/chapters/ViewChaptersSelect";
-import CurrencyInput from "ui/components/currency/CurrencyInput";
+import CurrencyInput from "ui/components/input/CurrencyInput";
 
 function ViewAddItem({
   activityMaterialLabel,

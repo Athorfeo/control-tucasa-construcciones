@@ -34,7 +34,19 @@ export const networkConfig = {
       update: "/service/minute/update",
       approve: "/service/minute/approve",
     }
-  }
+  },
+  clients: {
+    root: "/clients",
+    getByRange: "/clients/range",
+    update: "/clients/update",
+    approve: "/clients/approve",
+    household: {
+      root: "/clients/households"
+    },
+    payment: {
+      root: "/clients/payments"
+    }
+  },
 };
 
 export function getUrlBase() {

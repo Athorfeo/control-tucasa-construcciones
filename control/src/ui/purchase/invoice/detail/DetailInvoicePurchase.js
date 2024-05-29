@@ -13,7 +13,7 @@ import ViewSuppliersSelect from "ui/components/suppliers/ViewSuppliersSelect";
 import ViewContractorsSelect from "ui/components/contractors/ViewContractorsSelect";
 import ViewPaymentTypeSelect from "ui/components/paymentType/ViewPaymentTypeSelect";
 import AccountingDocument from "ui/components/accountingdocument/AccountingDocument";
-import CurrencyInput from "ui/components/currency/CurrencyInput";
+import CurrencyInput from "ui/components/input/CurrencyInput";
 
 import { useDetailInvoicePurchaseController } from "./useDetailInvoicePurchaseController";
 import ViewTypeInvoice from "./ViewTypeInvoice";

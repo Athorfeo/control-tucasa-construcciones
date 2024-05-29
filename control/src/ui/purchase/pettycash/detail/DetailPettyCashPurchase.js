@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { storageConfig, getJsonItem } from "util/storage-util";
-import { currencyPattern, setCurrencyFormat, removeCurrencyFormat } from "util/currencyUtil";
 import { staticData } from "data/static-data";
 
 import Navbar from 'ui/components/navbar';
@@ -11,7 +10,7 @@ import ErrorModal from "ui/components/modal/error/ErrorModal";
 import FinishModal from "ui/components/modal/finish/FinishModal";
 import ViewBanksSelect from "ui/components/banks/ViewBanksSelect";
 import AccountingDocument from "ui/components/accountingdocument/AccountingDocument";
-import CurrencyInput from "ui/components/currency/CurrencyInput";
+import CurrencyInput from "ui/components/input/CurrencyInput";
 
 import { useDetailPettyCashPurchaseController } from "./useDetailPettyCashPurchaseController";
 
@@ -94,9 +93,9 @@ export default function DetailPettyCashPurchase() {
                 <div className="mb-3">
                   <label htmlFor="inputFile" className="form-label">Foto factura</label>
                   <input type="file" className="form-control" id="inputFile" accept=".pdf,image/*" disabled={formState.isFormDisable}></input>
-                  {formState.fileUrl != "" ? (<a href={formState.fileUrl} target="_blank" type="button" className="btn btn-outline-light mt-2" >Ver archivo</a>) : (null)}
+                  {formState.fileUrl !== "" ? (<a href={formState.fileUrl} target="_blank" rel="noreferrer" type="button" className="btn btn-outline-light mt-2" >Ver archivo</a>) : (null)}
                 </div>
-
+                
               </div>
 
               <div className='d-flex flex-row justify-content-end border-top mt-3'>
