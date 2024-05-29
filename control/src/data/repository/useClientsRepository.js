@@ -5,7 +5,10 @@ import {
   fetchUpdateClientsApi,
   fetchAppendHouseholdClientsApi,
   fetchUpdateHouseholdClientsApi,
-  fetchDeleteHouseholdClientsApi
+  fetchDeleteHouseholdClientsApi,
+  fetchAppendPaymentClientsApi,
+  fetchUpdatePaymentClientsApi,
+  fetchDeletePaymentClientsApi
  } from "network/api/ClientsApi";
 
 export const useClientsRepository = (spreadsheetId) => {
@@ -65,6 +68,32 @@ export const useClientsRepository = (spreadsheetId) => {
     });
   }
 
+  // Payments
+
+  async function appendPaymentService(payload) {
+    return fetchAppendPaymentClientsApi(spreadsheetId, payload).then((response) => {
+      console.log("Append payments service | Clients");
+      console.log(response);
+      return response;
+    });
+  }
+
+  async function updatePaymentService(payload) {
+    return fetchUpdatePaymentClientsApi(spreadsheetId, payload).then((response) => {
+      console.log("Update payment service | Clients");
+      console.log(response);
+      return response;
+    });
+  }
+
+  async function deletePaymentService(payload) {
+    return fetchDeletePaymentClientsApi(spreadsheetId, payload).then((response) => {
+      console.log("Delete payment service | Clients");
+      console.log(response);
+      return response;
+    });
+  }
+
   return {
     fetchAllService,
     getByIdService,
@@ -72,6 +101,9 @@ export const useClientsRepository = (spreadsheetId) => {
     updateService,
     appendHouseholdService,
     updateHouseholdService,
-    deleteHouseholdService
+    deleteHouseholdService,
+    appendPaymentService,
+    updatePaymentService,
+    deletePaymentService,
   };
 }

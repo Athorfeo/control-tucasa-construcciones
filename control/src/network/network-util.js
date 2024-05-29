@@ -42,6 +42,9 @@ export const networkConfig = {
     approve: "/clients/approve",
     household: {
       root: "/clients/households"
+    },
+    payment: {
+      root: "/clients/payments"
     }
   },
 };

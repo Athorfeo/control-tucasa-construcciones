@@ -5,6 +5,7 @@ import { useErrorModal } from 'ui/components/modal/error/useErrorModal';
 import { getFileData } from "util/fileUtil";
 import { useClientsRepository } from "data/repository/useClientsRepository";
 import { useHouseholdDetailClientController } from "./household/useHouseholdDetailClientController";
+import { usePaymentDetailClientController } from "./payment/usePaymentDetailClientController";
 
 /**
  * Detail Client Controller
@@ -38,7 +39,10 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     updateService, 
     appendHouseholdService, 
     updateHouseholdService, 
-    deleteHouseholdService
+    deleteHouseholdService,
+    appendPaymentService,
+    updatePaymentService,
+    deletePaymentService,
   } = useClientsRepository(spreadsheetId);
 
   // Household Data
@@ -46,6 +50,12 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     householdDataState,
     onUpdateHouseholdState,
   } = useHouseholdDetailClientController(spreadsheetId, action, position);
+
+  // Payment Data
+  const {
+    paymentsDataState,
+    onUpdatePaymentsState,
+  } = usePaymentDetailClientController(spreadsheetId, action, position);
 
   function showSuccessAppendDialog() {
     showFinishDialog({
@@ -122,6 +132,7 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
       });
 
       onUpdateHouseholdState(payload.households);
+      onUpdatePaymentsState(payload.payments);
 
       setIsLoading(false);
     }).catch((error) => {
@@ -314,6 +325,52 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
         });
   }
 
+  // Payments
+  async function onAppendPayment(payload) {
+    setIsLoading(true);
+    appendPaymentService(payload)
+        .then(() => {
+          setIsLoading(false);
+          showSuccessAppendDialog();
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          showErrorModal({
+            error: error
+          });
+        });
+  }
+
+  async function onUpdatePayment(payload) {
+    setIsLoading(true);
+    updatePaymentService(payload)
+        .then(() => {
+          setIsLoading(false);
+          showSuccessAppendDialog();
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          showErrorModal({
+            error: error
+          });
+        });
+  }
+
+  async function onDeletePayment(payload) {
+    setIsLoading(true);
+    deletePaymentService(payload)
+        .then(() => {
+          setIsLoading(false);
+          showSuccessAppendDialog();
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          showErrorModal({
+            error: error
+          });
+        });
+  }
+
   return {
     uiLogicState,
     finishModalData,
@@ -329,6 +386,10 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     householdDataState,
     onAppendHousehold,
     onUpdateHousehold,
-    onDeleteHousehold
+    onDeleteHousehold,
+    paymentsDataState,
+    onAppendPayment,
+    onUpdatePayment,
+    onDeletePayment
   };
 }

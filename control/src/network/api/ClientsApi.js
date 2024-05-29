@@ -107,3 +107,51 @@ export async function fetchDeleteHouseholdClientsApi(spreadsheetId, payload) {
     }
   );
 }
+
+export async function fetchAppendPaymentClientsApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.clients.payment.root;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}
+
+export async function fetchUpdatePaymentClientsApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.clients.payment.root;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}
+
+export async function fetchDeletePaymentClientsApi(spreadsheetId, payload) {
+  const url = getUrlBase() + networkConfig.clients.payment.root;
+  const body = JSON.stringify({data: payload});
+  return fetchExecutor(
+    url,
+    {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        "Spreadsheet-Id": spreadsheetId,
+      },
+      body: body
+    }
+  );
+}

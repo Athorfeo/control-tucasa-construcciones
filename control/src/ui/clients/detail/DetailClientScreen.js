@@ -18,6 +18,10 @@ import HouseholdDetailClientItemView from "./household/HouseholdDetailClientItem
 import HouseholdViewModal from "./household/modal/HouseholdViewModal";
 import { useHouseholdViewModalController } from "./household/modal/useHouseholdViewModalController";
 
+import PaymentDetailClientItemView from "./payment/PaymentDetailClientItemView";
+import PaymentViewModal from "./payment/modal/PaymentViewModal";
+import { usePaymentViewModalController } from "./payment/modal/usePaymentViewModalController";
+
 function DetailClientScreen() {
   let { spreadsheetId, action, position } = useParams();
   const userRol = parseInt(getJsonItem(storageConfig.userDataKey).rol);
@@ -47,7 +51,11 @@ function DetailClientScreen() {
     householdDataState,
     onAppendHousehold,
     onUpdateHousehold,
-    onDeleteHousehold
+    onDeleteHousehold,
+    paymentsDataState,
+    onAppendPayment,
+    onUpdatePayment,
+    onDeletePayment
   } = useDetailClientController(spreadsheetId, action, position, navigateUp);
 
   const {
@@ -74,6 +82,32 @@ function DetailClientScreen() {
       console.log("onUpdateCallbackHousehold");
       console.log(data);
       onUpdateHousehold(data);
+    }
+  });
+
+  const {
+    formStatePayment,
+    onUpdatePaymentDatePayment,
+    onUpdateDocumentPayment,
+    onUpdateAmountPayment,
+    onSelectPaymentTypePayment,
+    onSelectBankPayment,
+    onUpdateObservationsPayment,
+    onUpdatePaymentFile,
+    isSubmitDisabledPayment,
+    handleSubmitFormPayment,
+    onInitAddPayment,
+    onInitUpdatePayment
+  } = usePaymentViewModalController({
+    onAddCallback: (data) => {
+      console.log("onAddCallbackPayment");
+      console.log(data);
+      onAppendPayment(data);
+    },
+    onUpdateCallback: (data) => {
+      console.log("onUpdateCallbackPayment");
+      console.log(data);
+      onUpdatePayment(data);
     }
   });
 
@@ -113,6 +147,19 @@ function DetailClientScreen() {
         onUpdateCertificateFile={onUpdateCertificateFile}
         isSubmitDisabledHousehold={isSubmitDisabledHousehold}
         handleSubmitFormHousehold={handleSubmitFormHousehold}
+      />
+
+      <PaymentViewModal 
+        formStatePayment={formStatePayment}
+        onUpdatePaymentDatePayment={onUpdatePaymentDatePayment}
+        onUpdateDocumentPayment={onUpdateDocumentPayment}
+        onUpdateAmountPayment={onUpdateAmountPayment}
+        onSelectPaymentTypePayment={onSelectPaymentTypePayment}
+        onSelectBankPayment={onSelectBankPayment}
+        onUpdateObservationsPayment={onUpdateObservationsPayment}
+        onUpdatePaymentFile={onUpdatePaymentFile}
+        isSubmitDisabledPayment={isSubmitDisabledPayment}
+        handleSubmitFormPayment={handleSubmitFormPayment}
       />
 
       {uiLogicState.isLoading ? (
@@ -208,6 +255,40 @@ function DetailClientScreen() {
                 onClick={() => { onInitAddHousehold(formState.document) }}
               >
                 Agregar vivienda
+              </button>
+            </div>
+          </div>
+
+          <div className='mt-4'>
+            <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de Pagos</p>
+            <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
+              <PaymentDetailClientItemView 
+                spreadsheetId={spreadsheetId} 
+                userRol={userRol} 
+                data={paymentsDataState.payments} 
+                onUpdatePayment={(item) => {
+                  console.log("onUpdatePayment");
+                  console.log(item);
+                  onInitUpdatePayment(item);
+                }}
+                onDeletePayment={(payload) => {
+                  console.log("onDeletePayment");
+                  console.log(payload);
+                  onDeletePayment(payload);
+                }}
+              />
+            </div>
+
+            <div className='d-flex flex-row justify-content-end border-top mt-3'>
+              <button 
+                type="button" 
+                className="btn btn-light mt-3" 
+                data-bs-toggle="modal" 
+                data-bs-target="#paymentViewModal"
+                disabled={formState.isFormDisable}
+                onClick={() => { onInitAddPayment(formState.document) }}
+              >
+                Agregar Pago
               </button>
             </div>
           </div>
