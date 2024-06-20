@@ -25,7 +25,7 @@ function PaymentViewModal({
         <div className="modal-content">
 
           <div className="modal-header">
-            <h1 className="modal-title fs-5" id="labelPaymentViewModal">Agregar Vivienda</h1>
+            <h1 className="modal-title fs-5" id="labelPaymentViewModal">{formStatePayment.titleLabel} Pago</h1>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
@@ -37,12 +37,12 @@ function PaymentViewModal({
               <CurrencyInput id="inputAmount" label="Valor" value={formStatePayment.amount} onUpdateValue={onUpdateAmountPayment}/>
               <ViewPaymentTypeSelect data={getPaymentType} positionSelected={formStatePayment.positionSelectedPaymentType} setPositionSelected={onSelectPaymentTypePayment}/>
               <ViewBanksSelect data={getBanks} positionSelected={formStatePayment.positionSelectedBank} setPositionSelected={onSelectBankPayment} />
-              <TextInput id="inputObservations" label="" value={formStatePayment.observations} onUpdateValue={onUpdateObservationsPayment}/>
+              <TextInput id="inputObservations" label="Observaciones" value={formStatePayment.observations} onUpdateValue={onUpdateObservationsPayment} isRequired={false}/>
               <FileInput id="inputPaymentFile" label="Factura de pago" fileUrl={formStatePayment.paymentFileUrl} onUpdateValue={onUpdatePaymentFile}/>
 
               <hr></hr>
               <div className='d-grid gap-2'>
-                <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled={isSubmitDisabledPayment()}>Agregar</button>
+                <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled={isSubmitDisabledPayment()}>{formStatePayment.titleLabel}</button>
               </div>
             </form>
           </div>

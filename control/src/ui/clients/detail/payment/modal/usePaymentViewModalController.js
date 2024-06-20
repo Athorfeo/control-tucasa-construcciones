@@ -8,6 +8,7 @@ export const usePaymentViewModalController = ({
 }) => {
   const [formStatePayment, setFormState] = useState({
     isUpdating: false,
+    titleLabel: "",
     position: -1,
     id: "",
     createdDate: "",
@@ -24,6 +25,7 @@ export const usePaymentViewModalController = ({
   function resetFormState() {
     return {
       isUpdating: false,
+      titleLabel: "Agregar",
       position: -1,
       id: "",
       createdDate: "",
@@ -114,6 +116,7 @@ export const usePaymentViewModalController = ({
 
     setFormState({
       isUpdating: true,
+      titleLabel: "Modificar",
       position: item.position,
       id: item.id,
       createdDate: item.createdDate,
@@ -137,9 +140,7 @@ export const usePaymentViewModalController = ({
     if (
       formStatePayment.paymentDate !== '' && 
       formStatePayment.document !== '' && 
-      formStatePayment.amount !== '' &&
-      formStatePayment.observations !== '' &&
-      isPaymentFileValid
+      formStatePayment.amount !== ''
     ) {
       return false;
     } else {

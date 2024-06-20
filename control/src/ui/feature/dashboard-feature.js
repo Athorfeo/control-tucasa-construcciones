@@ -140,14 +140,13 @@ function DashboardFeature() {
   }
 
   function loadClientsFeatures(rol, selectedProject) {
-    if (isSuperAdminRol(rol) || isAdminRol(rol)) {
+    if (isSuperAdminRol(rol) || isAdminRol(rol) || isAccountantRol(rol) || isAssistantRol(rol)) {
       const features = [];
-
       const titleKey = 'clients';
       const minuteClientsRoute = "/clients/" + selectedProject.client.client;
 
       features.push(<LabelSectionDashboardFeature title='Clientes' key={titleKey + (features.length + 1)} />);
-      features.push(<ItemDashboardFeature route='/dashboard' title='Abonos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
+      // features.push(<ItemDashboardFeature route='/dashboard' title='Abonos' description='Esta es una descripcion' isEnable={false} key={titleKey + (features.length + 1)} />);
       features.push(<ItemDashboardFeature route={minuteClientsRoute} title='Clientes' description='Modulo de gestion de Clientes' isEnable={true} key={titleKey + (features.length + 1)} />);
 
       setClientsSection(features);

@@ -22,7 +22,7 @@ function HouseholdViewModal({
         <div className="modal-content">
 
           <div className="modal-header">
-            <h1 className="modal-title fs-5" id="labelHouseholdViewModal">Agregar Vivienda</h1>
+            <h1 className="modal-title fs-5" id="labelHouseholdViewModal">{formStateHousehold.titleLabel} Vivienda</h1>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
@@ -33,14 +33,14 @@ function HouseholdViewModal({
               <TextInput id="inputNumberHousehold" label="Numero de vivienda" value={formStateHousehold.numberHousehold} onUpdateValue={onUpdateNumberHousehold}/>
               <CurrencyInput id="inputValue" label="Valor" value={formStateHousehold.value} onUpdateValue={onUpdateValueHousehold}/>
               <CurrencyInput id="inputInitialValue" label="Cuota inicial" value={formStateHousehold.initialFee} onUpdateValue={onUpdateInitialFeeHousehold}/>
-              <CurrencyInput id="inputBalance" label="Balance" value={formStateHousehold.balance} onUpdateValue={onUpdateBalanceHousehold}/>
+              <CurrencyInput id="inputBalance" label="Saldo" value={formStateHousehold.balance} onUpdateValue={onUpdateBalanceHousehold}/>
               <FileInput id="inputPromise" label="Promesa de compraventa" fileUrl={formStateHousehold.promiseFileUrl} onUpdateValue={onUpdatePromiseFile}/>
               <FileInput id="inputInvoice" label="Factura de venta" fileUrl={formStateHousehold.invoiceFileUrl} onUpdateValue={onUpdateInvoiceFile}/>
               <FileInput id="inputCertificate" label="Certificado" fileUrl={formStateHousehold.certificateFileUrl} onUpdateValue={onUpdateCertificateFile}/>
 
               <hr></hr>
               <div className='d-grid gap-2'>
-                <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled={isSubmitDisabledHousehold()}>Agregar</button>
+                <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled={isSubmitDisabledHousehold()}>{formStateHousehold.titleLabel}</button>
               </div>
             </form>
           </div>

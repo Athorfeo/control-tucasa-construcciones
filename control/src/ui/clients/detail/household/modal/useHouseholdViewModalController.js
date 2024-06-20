@@ -7,6 +7,7 @@ export const useHouseholdViewModalController = ({
 }) => {
   const [formStateHousehold, setFormState] = useState({
     isUpdating: false,
+    titleLabel: "",
     position: -1,
     id: "",
     createdDate: "",
@@ -26,6 +27,7 @@ export const useHouseholdViewModalController = ({
   function resetFormState() {
     return {
       isUpdating: false,
+      titleLabel: "Agregar",
       position: -1,
       id: "",
       createdDate: "",
@@ -110,6 +112,7 @@ export const useHouseholdViewModalController = ({
   function onInitUpdateHousehold(item) {
     setFormState({
       isUpdating: true,
+      titleLabel: "Modificar",
       position: item.position,
       id: item.id,
       createdDate: item.createdDate,
@@ -134,12 +137,12 @@ export const useHouseholdViewModalController = ({
     }
 
     var isInvoiceFileValid = false;
-    if(formStateHousehold.invoiceFile != null || formStateHousehold.invoiceFile !== "") {
+    if(formStateHousehold.invoiceFile != null || formStateHousehold.invoiceFileUrl !== "") {
       isInvoiceFileValid = true;
     }
 
     var isCertificateFileValid = false;
-    if(formStateHousehold.certificateFile != null || formStateHousehold.certificateFile !== "") {
+    if(formStateHousehold.certificateFile != null || formStateHousehold.certificateFileUrl !== "") {
       isCertificateFileValid = true;
     }
 
@@ -148,10 +151,7 @@ export const useHouseholdViewModalController = ({
       formStateHousehold.numberHousehold !== '' &&
       formStateHousehold.value !== '' &&
       formStateHousehold.initialFee !== '' &&
-      formStateHousehold.balance !== '' &&
-      isPromiseFileValid &&
-      isInvoiceFileValid &&
-      isCertificateFileValid
+      formStateHousehold.balance !== ''
     ) {
       return false;
     } else {
@@ -189,7 +189,7 @@ export const useHouseholdViewModalController = ({
       }
     }
 
-    if(!formStateHousehold.isUpdating){
+    if (!formStateHousehold.isUpdating) {
       onAddCallback(data);
     } else {
       onUpdateCallback(data);

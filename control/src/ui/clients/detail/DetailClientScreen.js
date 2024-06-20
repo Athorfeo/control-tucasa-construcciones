@@ -130,6 +130,88 @@ function DetailClientScreen() {
     }
   }, []);
 
+  let householdsSection = null;
+  let paymentsSection = null;
+  switch (action) {
+    case staticData.uiActions.update:
+    case staticData.uiActions.detail:
+      householdsSection = (
+        <div className='mt-4'>
+            <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de viviendas</p>
+            <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
+              <HouseholdDetailClientItemView 
+                spreadsheetId={spreadsheetId} 
+                userRol={userRol} 
+                data={householdDataState.households} 
+                onUpdateHousehold={(item) => {
+                  console.log("onUpdateHousehold");
+                  console.log(item);
+                  onInitUpdateHousehold(item);
+                }}
+                onDeleteHousehold={(payload) => {
+                  console.log("onDeleteHousehold");
+                  console.log(payload);
+                  onDeleteHousehold(payload);
+                }}
+                isDisabled={formState.isFormDisable}
+              />
+            </div>
+
+            <div className='d-flex flex-row justify-content-end border-top mt-3'>
+              <button 
+                type="button" 
+                className="btn btn-light mt-3" 
+                data-bs-toggle="modal" 
+                data-bs-target="#householdViewModal"
+                disabled={formState.isFormDisable}
+                onClick={() => { onInitAddHousehold(formState.document) }}
+              >
+                Agregar vivienda
+              </button>
+            </div>
+          </div>
+      );
+
+      paymentsSection = (
+        <div className='mt-4 mb-4'>
+            <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de Pagos</p>
+            <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
+              <PaymentDetailClientItemView 
+                spreadsheetId={spreadsheetId} 
+                userRol={userRol} 
+                data={paymentsDataState.payments} 
+                onUpdatePayment={(item) => {
+                  console.log("onUpdatePayment");
+                  console.log(item);
+                  onInitUpdatePayment(item);
+                }}
+                onDeletePayment={(payload) => {
+                  console.log("onDeletePayment");
+                  console.log(payload);
+                  onDeletePayment(payload);
+                }}
+                isDisabled={formState.isFormDisable}
+              />
+            </div>
+
+            <div className='d-flex flex-row justify-content-end border-top mt-3'>
+              <button 
+                type="button" 
+                className="btn btn-light mt-3" 
+                data-bs-toggle="modal" 
+                data-bs-target="#paymentViewModal"
+                disabled={formState.isFormDisable}
+                onClick={() => { onInitAddPayment(formState.document) }}
+              >
+                Agregar Pago
+              </button>
+            </div>
+          </div>
+      );
+      break;
+    default:
+  }
+
   return (
     <div>
       <Navbar />
@@ -225,73 +307,8 @@ function DetailClientScreen() {
 
           </form>
 
-          <div className='mt-4'>
-            <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de viviendas</p>
-            <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
-              <HouseholdDetailClientItemView 
-                spreadsheetId={spreadsheetId} 
-                userRol={userRol} 
-                data={householdDataState.households} 
-                onUpdateHousehold={(item) => {
-                  console.log("onUpdateHousehold");
-                  console.log(item);
-                  onInitUpdateHousehold(item);
-                }}
-                onDeleteHousehold={(payload) => {
-                  console.log("onDeleteHousehold");
-                  console.log(payload);
-                  onDeleteHousehold(payload);
-                }}
-              />
-            </div>
-
-            <div className='d-flex flex-row justify-content-end border-top mt-3'>
-              <button 
-                type="button" 
-                className="btn btn-light mt-3" 
-                data-bs-toggle="modal" 
-                data-bs-target="#householdViewModal"
-                disabled={formState.isFormDisable}
-                onClick={() => { onInitAddHousehold(formState.document) }}
-              >
-                Agregar vivienda
-              </button>
-            </div>
-          </div>
-
-          <div className='mt-4'>
-            <p className='fw-bold text-uppercase mt-4 mb-2'>Lista de Pagos</p>
-            <div className="d-flex flex-wrap justify-content-around justify-content-md-between">
-              <PaymentDetailClientItemView 
-                spreadsheetId={spreadsheetId} 
-                userRol={userRol} 
-                data={paymentsDataState.payments} 
-                onUpdatePayment={(item) => {
-                  console.log("onUpdatePayment");
-                  console.log(item);
-                  onInitUpdatePayment(item);
-                }}
-                onDeletePayment={(payload) => {
-                  console.log("onDeletePayment");
-                  console.log(payload);
-                  onDeletePayment(payload);
-                }}
-              />
-            </div>
-
-            <div className='d-flex flex-row justify-content-end border-top mt-3'>
-              <button 
-                type="button" 
-                className="btn btn-light mt-3" 
-                data-bs-toggle="modal" 
-                data-bs-target="#paymentViewModal"
-                disabled={formState.isFormDisable}
-                onClick={() => { onInitAddPayment(formState.document) }}
-              >
-                Agregar Pago
-              </button>
-            </div>
-          </div>
+          {householdsSection}
+          {paymentsSection}
         </div>
       )}
     </div>

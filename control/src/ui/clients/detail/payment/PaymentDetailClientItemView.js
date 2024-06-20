@@ -2,7 +2,7 @@ import React from 'react';
 import { isAdminRol, isSuperAdminRol, isAccountantRol, isAssistantRol } from "util/session-util";
 import { setCurrencyFormat } from "util/currencyUtil";
 
-function PaymentDetailClientItemView({ spreadsheetId, userRol, data, onUpdatePayment, onDeletePayment }) {
+function PaymentDetailClientItemView({ spreadsheetId, userRol, data, onUpdatePayment, onDeletePayment, isDisabled }) {
   return data.map((item, index) => {
     return (
       <div className='d-flex flex-column p-3 mb-2 bg-body-tertiary' key={item.id}>
@@ -50,7 +50,7 @@ function PaymentDetailClientItemView({ spreadsheetId, userRol, data, onUpdatePay
 
         <div className='d-flex flex-row flex-sm-row align-items-end justify-content-end border-top mt-3'>
           {(isAssistantRol(userRol) || isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
-            <button type="button" className="btn btn-outline-light mt-3" data-bs-toggle="modal" data-bs-target="#paymentViewModal" onClick={() => { onUpdatePayment(item) }}>Modificar</button>
+            <button type="button" className="btn btn-outline-light mt-3" data-bs-toggle="modal" data-bs-target="#paymentViewModal" onClick={() => { onUpdatePayment(item) }} disabled={isDisabled}>Modificar</button>
           ) : (null)}
           {(isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
             <button 
@@ -63,6 +63,7 @@ function PaymentDetailClientItemView({ spreadsheetId, userRol, data, onUpdatePay
                 };
                 onDeletePayment(payload);
                }}
+               disabled={isDisabled}
             >Eliminar</button>
           ) : (null)}
           

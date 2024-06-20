@@ -4,7 +4,7 @@ import { staticData } from "data/static-data";
 import { isAdminRol, isSuperAdminRol, isAccountantRol, isAssistantRol } from "util/session-util";
 import { setCurrencyFormat } from "util/currencyUtil";
 
-function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateHousehold, onDeleteHousehold }) {
+function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateHousehold, onDeleteHousehold, isDisabled }) {
   return data.map((item, index) => {
     return (
       <div className='d-flex flex-column p-3 mb-2 bg-body-tertiary' key={item.id}>
@@ -39,8 +39,8 @@ function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateH
               <div className='fw-light'>${setCurrencyFormat(item.initialFee)}</div>
             </div>
             <div className='d-flex flex-column'>
-              <div className='fw-bold mt-2'>Deuda</div>
-              <div className='fw-light'>${setCurrencyFormat(item.value)}</div>
+              <div className='fw-bold mt-2'>Saldo</div>
+              <div className='fw-light'>${setCurrencyFormat(item.balance)}</div>
             </div>
           </div>
           
@@ -58,7 +58,7 @@ function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateH
 
         <div className='d-flex flex-row flex-sm-row align-items-end justify-content-end border-top mt-3'>
           {(isAssistantRol(userRol) || isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
-            <button type="button" className="btn btn-outline-light mt-3" data-bs-toggle="modal" data-bs-target="#householdViewModal" onClick={() => { onUpdateHousehold(item) }}>Modificar</button>
+            <button type="button" className="btn btn-outline-light mt-3" data-bs-toggle="modal" data-bs-target="#householdViewModal" onClick={() => { onUpdateHousehold(item) }} disabled={isDisabled}>Modificar</button>
           ) : (null)}
           {(isAdminRol(userRol) || isSuperAdminRol(userRol)) ? (
             <button 
@@ -73,6 +73,7 @@ function HouseholdDetailClientItemView({ spreadsheetId, userRol, data, onUpdateH
                 };
                 onDeleteHousehold(payload);
                }}
+              disabled={isDisabled}
             >Eliminar</button>
           ) : (null)}
           

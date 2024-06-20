@@ -224,28 +224,24 @@ export const useDetailClientController = (spreadsheetId, action, position, navig
     const documentFile = await getFileData(formState.documentFile);
     const rutFile = await getFileData(formState.rutFile);
 
-    if (documentFile === null && rutFile === null) {
-      showErrorInputFileDialog();
-    } else {
-      const payload = {
-        ...getFormData(),
-        documentFile: documentFile,
-        rutFile: rutFile,
-      }
-
-      appendService(payload)
-        .then(() => {
-          setIsLoading(false);
-
-          showSuccessAppendDialog();
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          showErrorModal({
-            error: error
-          });
-        });
+    const payload = {
+      ...getFormData(),
+      documentFile: documentFile,
+      rutFile: rutFile,
     }
+
+    appendService(payload)
+      .then(() => {
+        setIsLoading(false);
+
+        showSuccessAppendDialog();
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        showErrorModal({
+          error: error
+        });
+      });
   }
 
   async function update() {
