@@ -4,9 +4,10 @@ import { useAddActivity } from "./useAddActivity";
 
 function AddActivityView({ onAdd }) {
   const {
-    activityName, setActivityName,
     positionSelectedUnit, setPositionSelectedUnit,
-    positionSelectedChapter, setPositionSelectedChapter,
+    positionSelectedChapter, onUpdateChapter,
+    positionSelectedActivityChapter, onUpdateActivityChapter,
+    activitiesChapter,
     isSubmitDisabled,
     handleSubmitForm
   } = useAddActivity({
@@ -15,12 +16,37 @@ function AddActivityView({ onAdd }) {
     }
   });
 
-  const optionsUnits = staticData.units.map((item, index) => {
-    return (<option value={index} key={index}>{item.name} - {item.detail}</option>);
-  });
-
+  // Chapters
   const optionsChapters = staticData.chapters.map((item, index) => {
     return (<option value={index} key={index}>{item.name}</option>);
+  });
+
+  const selectChapters = (
+    <div className="mb-4">
+      <label htmlFor="labelChapter" className="form-label">Capitulo</label>
+      <select className="form-select" aria-label="Default select example" id="inputChapter" value={positionSelectedChapter} onChange={(e) => onUpdateChapter(e.target.value)} required>
+        {optionsChapters}
+      </select>
+    </div>
+  );
+
+  // Activity chapters
+  const activityChapterOptions = activitiesChapter.map((item, index) => {
+    return (<option value={index} key={index}>{item}</option>);
+  });
+
+  const activityChapterSelect = (
+    <div className="mb-4">
+      <label htmlFor="labelActivityChapter" className="form-label">Actividad</label>
+      <select className="form-select" aria-label="Default select example" id="inputActivityChapter" value={positionSelectedActivityChapter} onChange={(e) => onUpdateActivityChapter(e.target.value)} required>
+        {activityChapterOptions}
+      </select>
+    </div>
+  );
+
+  // Unit (Unidad)
+  const optionsUnits = staticData.units.map((item, index) => {
+    return (<option value={index} key={index}>{item.name} - {item.detail}</option>);
   });
 
   const selectUnit = (
@@ -28,15 +54,6 @@ function AddActivityView({ onAdd }) {
       <label htmlFor="labelUnit" className="form-label">Unidad</label>
       <select className="form-select" aria-label="Default select example" id="inputUnit" value={positionSelectedUnit} onChange={(e) => setPositionSelectedUnit(e.target.value)} required>
         {optionsUnits}
-      </select>
-    </div>
-  );
-
-  const selectChapters = (
-    <div className="mb-4">
-      <label htmlFor="labelChapter" className="form-label">Capitulo</label>
-      <select className="form-select" aria-label="Default select example" id="inputChapter" value={positionSelectedChapter} onChange={(e) => setPositionSelectedChapter(e.target.value)} required>
-        {optionsChapters}
       </select>
     </div>
   );
@@ -53,16 +70,9 @@ function AddActivityView({ onAdd }) {
 
           <div className="modal-body">
             <form onSubmit={handleSubmitForm}>
-              <div className="mb-3">
-                <label htmlFor="inputProductName" className="form-label">Nombre de la Actividad</label>
-                <input type="text" className="form-control" id="inputProductName" aria-describedby="productNameHelp" value={activityName} onChange={(e) => setActivityName(e.target.value)} required></input>
-                <div id="productNameHelp" className="form-text">Coloca el nombre del producto a agregar.</div>
-              </div>
-
-              {selectUnit}
-
               {selectChapters}
-
+              {activityChapterSelect}
+              {selectUnit}
               <hr></hr>
               <div className='d-grid gap-2'>
                 <button type="submit" className="btn btn-light" data-bs-dismiss="modal" disabled={isSubmitDisabled()}>Agregar</button>

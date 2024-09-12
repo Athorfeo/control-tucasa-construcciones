@@ -2,15 +2,27 @@ import { useState } from 'react';
 import { staticData } from "data/static-data";
 
 export const useAddActivity = ({onAddCallback}) => {
-  const [activityName, setActivityName] = useState('');
   const [positionSelectedUnit, setPositionSelectedUnit] = useState(0);
   const [positionSelectedChapter, setPositionSelectedChapter] = useState(0);
+  const [positionSelectedActivityChapter, setPositionSelectedActivitiyChapter] = useState(0);
+  const [activitiesChapter, setActivitiesChapter] = useState(staticData.chapters[0].activities);
+
+  function onUpdateChapter(value) {
+    const activitiesChapterSelected = staticData.chapters[value].activities;
+    setPositionSelectedChapter(value);
+    setActivitiesChapter(activitiesChapterSelected);
+  }
+
+  function onUpdateActivityChapter(value) {
+    setPositionSelectedActivitiyChapter(value);
+  }
 
   const isSubmitDisabled = () => {
     if (
-      activityName !== '' && 
-      positionSelectedUnit !== '' &&
-      positionSelectedChapter !== '') {
+      positionSelectedChapter !== '' &&
+      positionSelectedActivityChapter !== '' &&
+      positionSelectedUnit !== ''
+    ) {
       return false;
     } else {
       return true;
@@ -20,11 +32,12 @@ export const useAddActivity = ({onAddCallback}) => {
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
-    const selectedUnit = staticData.units[positionSelectedUnit];
     const selectedChapter = staticData.chapters[positionSelectedChapter];
+    const selectedActivity = activitiesChapter[positionSelectedActivityChapter];
+    const selectedUnit = staticData.units[positionSelectedUnit];
     
     const data = {
-      activity: activityName,
+      activity: selectedActivity,
       unit: selectedUnit.name,
       chapterName: selectedChapter.name,
       executedQuantity: '0'
@@ -32,20 +45,21 @@ export const useAddActivity = ({onAddCallback}) => {
 
     onAddCallback(data);
 
-    setActivityName('');
-    setPositionSelectedUnit(0);
+    
     setPositionSelectedChapter(0);
+    setPositionSelectedActivitiyChapter(0);
+    setPositionSelectedUnit(0);
   };
 
-
   return {
-    activityName,
-    setActivityName,
     positionSelectedUnit,
     setPositionSelectedUnit,
     positionSelectedChapter,
-    setPositionSelectedChapter,
+    onUpdateChapter,
+    positionSelectedActivityChapter,
+    onUpdateActivityChapter,
+    activitiesChapter,
     isSubmitDisabled,
-    handleSubmitForm,
+    handleSubmitForm
   };
 }
