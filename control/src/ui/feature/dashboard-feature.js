@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import Loading from "../components/loading";
 import Navigator from "../components/navigator";
-import { isSessionReady, isDefaultRol, isAdminRol, isSuperAdminRol, isAssistantRol, isAccountantRol } from "util/session-util";
+import { isSessionProjectReady, isDefaultRol, isAdminRol, isSuperAdminRol, isAssistantRol, isAccountantRol } from "util/session-util";
 import ItemDashboardFeature from "./item-dashboard-feature";
 import ItemDashboardFeatureHttp from "./item-dashboard-feature-http";
 import LabelSectionDashboardFeature from "./label-section-dashboard-feature";
@@ -23,7 +23,7 @@ function DashboardFeature() {
   useEffect(() => {
     const task = async () => {
       setIsLoading(true);
-      if (isSessionReady()) {
+      if (isSessionProjectReady()) {
         const userSession = getJsonItem(storageConfig.userDataKey);
         const rol = parseInt(userSession.rol);
         const selectedProject = getJsonItem(storageConfig.selectedProjectDataKey);

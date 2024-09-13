@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { isSessionReady } from "../../util/session-util";
+import { isSessionProjectReady } from "../../util/session-util";
 import { useNavigate } from "react-router-dom";
 import { storageConfig, getJsonItem } from "../../util/storage-util";
 
@@ -10,7 +10,7 @@ function Navigator(props) {
 
   useEffect(() => {
     const task = async () => {
-      if(isSessionReady()) {
+      if(isSessionProjectReady()) {
         let project = getJsonItem(storageConfig.selectedProjectDataKey);
         setSelectedProjectName(project.name);
       } else {
