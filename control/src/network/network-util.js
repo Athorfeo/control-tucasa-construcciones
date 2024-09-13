@@ -1,7 +1,8 @@
 export const networkConfig = {
   data: {
     suppliers: {
-      getAll: "/data/suppliers",
+      root: "/data/suppliers",
+      getByRange: "/data/suppliers/range"
     },
     contractors: {
       getAll: "/data/contractors",
@@ -46,7 +47,7 @@ export const networkConfig = {
     payment: {
       root: "/clients/payments"
     }
-  },
+  }
 };
 
 export function getUrlBase() {

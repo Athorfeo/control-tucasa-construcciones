@@ -47,7 +47,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     accountingSupport: "",
   });
 
-  const { fetchSuppliersData } = useSuppliersRepository(spreadsheetId);
+  const { fetchAllSuppliersService } = useSuppliersRepository();
   const { fetchContractorsAsData } = useContractorsRepository(spreadsheetId);
   const { appendInvoiceService, getByIdInvoiceService, updateInvoiceService, addAccountingDocumentInvoiceService } = useInvoicePurchaseRepository(spreadsheetId);
 
@@ -62,12 +62,12 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     setIsLoading(true);
 
     try {
-      const suppliers = await fetchSuppliersData();
+      const suppliers = await fetchAllSuppliersService();
       const contractors = await fetchContractorsAsData();
 
       setDataState({
         ...dataState,
-        suppliers: suppliers,
+        suppliers: suppliers.data,
         contractors: contractors
       })
 
