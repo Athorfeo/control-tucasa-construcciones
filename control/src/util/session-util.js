@@ -1,5 +1,15 @@
 import { storageConfig, getJsonItem } from "./storage-util";
 
+export function isSessionReady() {
+    let user = getJsonItem(storageConfig.userDataKey);
+
+    if (user == null) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 export function isSessionProjectReady() {
     let user = getJsonItem(storageConfig.userDataKey);
     let project = getJsonItem(storageConfig.selectedProjectDataKey);

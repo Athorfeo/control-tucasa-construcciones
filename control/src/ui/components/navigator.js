@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { isSessionProjectReady } from "../../util/session-util";
+import { isSessionReady, isSessionProjectReady } from "../../util/session-util";
 import { useNavigate } from "react-router-dom";
 import { storageConfig, getJsonItem } from "../../util/storage-util";
 
@@ -10,11 +10,22 @@ function Navigator(props) {
 
   useEffect(() => {
     const task = async () => {
-      if(isSessionProjectReady()) {
-        let project = getJsonItem(storageConfig.selectedProjectDataKey);
-        setSelectedProjectName(project.name);
+      let isRootViewProp = false;
+      if(props.isRootView != undefined) {
+        isRootViewProp = props.isRootView;
+      }
+
+      if(isRootViewProp) {
+        if(!isSessionReady()) {
+          navigate('/dashboard')
+        }
       } else {
-        navigate('/dashboard')
+        if(isSessionProjectReady()) {
+          let project = getJsonItem(storageConfig.selectedProjectDataKey);
+          setSelectedProjectName(project.name);
+        } else {
+          navigate('/dashboard')
+        }
       }
     };
 
@@ -29,7 +40,9 @@ function Navigator(props) {
 
         </div>
       </Link>
-      Proyecto: <div className='ms-1 fw-bold'>{selectedProjectName}</div>
+      {(selectedProjectName != "") ? (
+        <div className='ms-1'> Proyecto: <span className='fw-bold'>{selectedProjectName}</span></div>
+      ) : null}
     </div>
   );
 }
