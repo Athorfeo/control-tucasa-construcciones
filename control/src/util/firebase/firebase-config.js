@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyBmB2PVPWY1y4bKCZku_k3vos3KB3peI_Y",
-  authDomain: "tcc-control-system.firebaseapp.com",
-  projectId: "tcc-control-system",
-  storageBucket: "tcc-control-system.appspot.com",
-  messagingSenderId: "632293018232",
-  appId: "1:632293018232:web:6e11392ce5fbc15f8ffb8d",
-  measurementId: "G-JYKK9K4H1D"
+  apiKey: "AIzaSyAGuazAJOwpxcp2t3Du_WBP99kzH3XuY6U",
+  authDomain: "control-2-tucasa.firebaseapp.com",
+  projectId: "control-2-tucasa",
+  storageBucket: "control-2-tucasa.appspot.com",
+  messagingSenderId: "714579953227",
+  appId: "1:714579953227:web:a4ef5ffab1683b6d9f2fce",
+  measurementId: "G-1YSLVXGN62"
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 function ViewSuppliersSelect({ data, positionSelected, setPositionSelected, isFormDisable }) {
   const options = data.map((item, index) => {
-    return (<option value={index} key={index}>{item[1] + ' ' + item[2] + ' - ' + item[4]}</option>);
+    return (<option value={index} key={index}>{item.firstName + ' ' + item.lastName + ' - ' + item.document}</option>);
   });
 
   return (

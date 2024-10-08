@@ -69,20 +69,13 @@ export const staticData = {
     efecty: {id: 12, name: "EFECTY"},
     afectivo: {id: 13, name: "EFECTIVO"},
   },
-  banks: {
-    davivienda: {id: 1, name: "DAVIVIENDA"},
-    bancolombia: {id: 2, name: "BANCOLOMBIA"},
-    crediservir: {id: 3, name: "CREDISERVIR"},
-    daviplata: {id: 4, name: "DAVIPLATA"},
-    nequi: {id: 5, name: "NEQUI"},
-    bogota: {id: 6, name: "BANCO DE BOGOTA"},
-    cajasocial: {id: 7, name: "BANCO CAJA SOCIAL"},
-    bbva: {id: 8, name: "BBVA"},
-    agragrio: {id: 9, name: "BANCO AGRARIO"},
-    w: {id: 10, name: "BANCO W"},
-    mujer: {id: 11, name: "BANCO DE LA MUJER"},
-    efecty: {id: 12, name: "EFECTY"},
-    afectivo: {id: 13, name: "EFECTIVO"},
+  documentType: {
+    cedula: {id: 1, name: "CEDULA"},
+    nit: {id: 2, name: "NIT"},
+  },
+  accountType: {
+    savings: {id: 1, name: "AHORROS"},
+    current: {id: 2, name: "CORRIENTE"},
   }
 };
 
@@ -118,4 +111,14 @@ export const getBanks = [
   staticData.banks.mujer,
   staticData.banks.efecty,
   staticData.banks.afectivo,
+];
+
+export const documentTypesData = [
+  staticData.documentType.cedula,
+  staticData.documentType.nit,
+];
+
+export const accountTypesData = [
+  staticData.accountType.savings,
+  staticData.accountType.current,
 ];

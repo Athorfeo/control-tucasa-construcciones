@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import { fetchAllSuppliers } from "network/api/data-api";
+import { 
+  fetchAllSuppliersApi, 
+  fetchGetByRangeSuppliersApi, 
+  fetchAppendSuppliersApi, 
+  fetchUpdateSuppliersApi
+ } from "network/api/suppliersApi";
 
-export const useSuppliersRepository = ({spreadsheetId}) => {
-  const [suppliers, setSuppliers] = useState([]);
+export const useSuppliersRepository = () => {
+  /*const [suppliers, setSuppliers] = useState([]);
 
   async function fetchSuppliers() {
     console.log("Fetching suppliers...");
@@ -21,11 +26,44 @@ export const useSuppliersRepository = ({spreadsheetId}) => {
       console.log(response);
       return response.data.suppliers;
     });
+  }*/
+
+  async function fetchAllSuppliersService(payload) {
+    return fetchAllSuppliersApi(payload).then((response) => {
+      console.log("Fetch all service | Suppliers");
+      console.log(response);
+      return response;
+    });
+  }
+
+  async function getByIdSuppliersService(position) {
+    return fetchGetByRangeSuppliersApi(position).then((response) => {
+      console.log("Get by id service | Suppliers");
+      console.log(response);
+      return response;
+    });
+  }
+
+  async function appendSuppliersService(payload) {
+    return fetchAppendSuppliersApi(payload).then((response) => {
+      console.log("Append service | Suppliers");
+      console.log(response);
+      return response;
+    });
+  }
+
+  async function updateSuppliersService(payload) {
+    return fetchUpdateSuppliersApi(payload).then((response) => {
+      console.log("Update service | Suppliers");
+      console.log(response);
+      return response;
+    });
   }
 
   return {
-    suppliers,
-    fetchSuppliers,
-    fetchSuppliersData
+    fetchAllSuppliersService,
+    getByIdSuppliersService,
+    appendSuppliersService,
+    updateSuppliersService
   };
 }
