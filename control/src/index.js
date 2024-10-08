@@ -21,6 +21,7 @@ import DetailMinuteService from 'ui/service/minute/detail/DetailMinuteService';
 import DashboardClients from 'ui/clients/DashboardClients';
 import DetailClientScreen from 'ui/clients/detail/DetailClientScreen';
 import DashboardSuppliersView from 'ui/suppliers/DashboardSuppliersView';
+import DetailSupplierView from 'ui/suppliers/detail/DetailSupplierView';
 
 const router = createBrowserRouter([
   {
@@ -108,7 +109,15 @@ const router = createBrowserRouter([
       {
         path: "/suppliers/",
         element: <DashboardSuppliersView />
-      }
+      },
+      {
+        path: "/suppliers/:action",
+        element: <DetailSupplierView />
+      },
+      {
+        path: "/suppliers/:action/position/:position",
+        element: <DetailSupplierView />
+      },
     ],
   },
 ]);

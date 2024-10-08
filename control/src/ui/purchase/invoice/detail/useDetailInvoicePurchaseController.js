@@ -62,12 +62,12 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     setIsLoading(true);
 
     try {
-      const suppliers = await fetchAllSuppliersService();
+      const suppliers = (await fetchAllSuppliersService()).data;
       const contractors = await fetchContractorsAsData();
 
       setDataState({
         ...dataState,
-        suppliers: suppliers.data,
+        suppliers: suppliers,
         contractors: contractors
       })
 
@@ -121,7 +121,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
 
       // Load Supplier or Contractor
       suppliers.forEach((item, index) => {
-        if (item[4] === payload.provider) {
+        if (item.document === payload.provider) {
           _positionSelectedSupplier = index;
         }
       });
@@ -287,14 +287,16 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
     const selectedTypeInvoice = dataState.typeInvoices[formState.positionSelectedTypeInvoice];
     const selectedPaymentType = dataState.paymentType[formState.positionSelectedPaymentType];
 
-    var typeProvider = null;
+    var provider = null;
     switch (dataState.typeInvoices[formState.positionSelectedTypeInvoice].id) {
       case staticData.typeInvoice.suppliers.id:
-        typeProvider = dataState.suppliers[formState.positionSelectedSupplier];
+        const supplier = dataState.suppliers[formState.positionSelectedSupplier];
+        provider = supplier.document;
         break;
 
       case staticData.typeInvoice.contractors.id:
-        typeProvider = dataState.contractors[formState.positionSelectedContractor];
+        const contractor = dataState.contractors[formState.positionSelectedContractor]
+        provider = contractor[4];
         break;
       default:
         break;
@@ -304,7 +306,7 @@ export const useDetailInvoicePurchaseController = (spreadsheetId, action, start,
       invoiceDate: formState.invoiceDate,
       observations: formState.observations,
       typeInvoice: selectedTypeInvoice.name,
-      provider: (typeProvider[4]),
+      provider: provider,
       paymentType: selectedPaymentType.name,
       invoiceNumber: formState.invoiceNumber,
       withholdingTax: formState.withholdingTax,
